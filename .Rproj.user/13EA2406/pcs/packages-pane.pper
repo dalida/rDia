@@ -1,0 +1,7 @@
+{
+    "installOptions" : {
+        "installDependencies" : true,
+        "installFromRepository" : true,
+        "libraryPath" : "/home/lisa/R/x86_64-unknown-linux-gnu-library/3.1"
+    }
+}

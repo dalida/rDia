@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1432626804146.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EEEFA97F",
+    "lastKnownWriteTime" : 0,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "scadaEndPtsDT",
+        "contentUrl" : "content?title=scadaEndPtsDT&file=b04c20e607934770a6fc85be550e082c.htm",
+        "displayedObservations" : 1000,
+        "displayedVariables" : 10,
+        "totalObservations" : 70220,
+        "variables" : 10
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

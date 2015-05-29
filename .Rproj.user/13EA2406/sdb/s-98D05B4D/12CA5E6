@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1432285979930.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "12CA5E6",
+    "lastKnownWriteTime" : 2337478589217599087,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "scadaDT",
+        "contentUrl" : "content?title=scadaDT&file=07ed65014e47469793e50876c1939be0.htm",
+        "displayedObservations" : 1000,
+        "displayedVariables" : 7,
+        "totalObservations" : 3566892,
+        "variables" : 7
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
