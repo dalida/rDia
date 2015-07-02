@@ -23,6 +23,8 @@ install.packages("gridExtra")
 install.packages("wordcloud")
 install.packages("ROCR")
 
+install.packages("caret")
+
 library(data.table)
 library(tidyr)
 library(lattice)
@@ -63,6 +65,9 @@ library(knitr)
 
 # wordcloud
 library(wordcloud)
+
+# ML
+library(caret)
 
 # anomaly detection
 install.packages("devtools", dependencies=TRUE)
