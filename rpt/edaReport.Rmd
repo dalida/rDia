@@ -1,0 +1,738 @@
+---
+title: |
+  |  Exploratory Data Analysis
+  | Virtual SCADA Network:
+author: "Lisa MALIPHOL"
+output:
+  pdf_document:
+    keep_tex: yes
+  word_document: default
+---
+```{r, echo=FALSE, message=FALSE}
+require(TRSbook)
+require(data.table)
+require(igraph)
+require(ggplot2)
+require(gplots)
+require(lattice)
+require(dplyr)
+require(plyr)
+require(reshape2)
+require(RColorBrewer)
+require(png)
+require(grid)
+require(gridExtra)
+
+# load data- scadaDT, scadaTCPConvDT, scadaEndPtsDT, modbusDT, moddataDT
+# save(scadaDT, scadaTCPConvDT, scadaEndPtsDT, modbusDT, moddataDT, mergedDT, file="report.Rda")
+load("/home/lisa/rDia/report.Rda")
+```
+
+# Introduction
+As a first step in the SCAD\@COPS project presented in its introduction [1], the initial phase of exploratory data analysis is conducted in order to be able to better understand the data. In addition to the traditional methods of using descriptive statistics to explain the data, the various graphical and visual manners of representing the data are presented.
+
+The paper is an analysis and statistical study of network traffic captured over a virtual SCADA network with simulated attacks. The network traffic was captured using Wireshark, and R was the language used to carry out the statistical analysis. The organisation of this study is presented in the following sections-
+
+The paper is organized as follows:
+
+  * Tools used during this process
+  * Data source
+  * Exploratory Data Analysis
+     + Statistical definitions
+     + Visual representations defined
+     + Analysis
+
+# Tools
+A great deal of work is typically involved in preparing the raw data for analysis. Depending on the initial state of the data, various pre-processing and transformations may be required. The following tools were used in the exploratory phase of data analysis in order to capture, transform and analyze the data. The commands and scripts used in this process are found in Appendix B.
+
+## Wireshark[^1] - Network Traffic Analysis Tool
+[^1]: https://www.wireshark.org/docs/wsug_html_chunked
+
+Developed in 1997 by Gerald Combs originally named Ethereal, Wireshark is now an Open Source GNU project. It is a network packet analyzer, or “packet sniffer”, that captures and displays network packets.
+
+Captured network packets are saved in the pcap file format and can be dissected and parsed by Wireshark in order to analyze its contents.  An important aspect of Wireshark is that of its passive/monitoring nature and so does not send, manipulate, or modify the data passing over the network.
+
+An initial packet capture file was created over simulated network traffic using Wireshark. Using its export facilities, various files were created for further analysis, with information such as TCP endpoints, conversations, etc.
+
+## TShark[^2]
+[^2]: https://www.wireshark.org/docs/man-pages/tshark.html
+
+Another tool from the Wireshark suite is the command-line tool similar to tcpdump is tshark, a network protocol analyzer. In addition to capturing packet data over a live network, it is also capable of analyzing packets from an existing capture file. TShark was used to parse out various pertinent variables pertaining to the Modbus/TCP application protocol enclosed in the packet data.
+
+
+## UNIX Utilities
+In order to further parse and transform the data, the UNIX utility tool sed, which supports the use of regular expressions, was also used.
+
+## R - Statistical Tool[^3]
+[^3]: http://www.r-project.org/
+
+R is an Open Source programming language and environment used for statistical computing and graphics. Initially developed by John Chambers at Bell Labs as the S language in 1993, R was created as a freely available version under the GNU project by  Ross Ihaka and Robert Gentleman at the University of Auckland, New Zealand.
+
+Maintained by the R Development Core Team and with an active and growing community, it provides various statistical and graphical creation capabilities available under most operating systems, and is extensible with numerous packages available.
+
+# Data Source
+
+## PCap[^4] File
+[^4]: http://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html
+
+A packet capture file was created via Wireshark, which captured the network traffic simulated over a virtual SCADA network. This file also included injected random attacks over the network.
+
+ SCADA_Security_042915.pcap   
+ ---------------------------- ----------------------------   
+ File  
+ Length:                      271279028 bytes  
+ Format:                      Wireshark/tcpdump/… - libcap  
+ Encapsulation:               Ethernet  
+ Packet size limit:           65536  
+ Time  
+ First packet:                2015-04-29 12:51:40  
+ Last packet:                 2015-04-29 17:28:37  
+ Elapsed:                     04:36:56  
+ Traffic Captured  
+ Packets 		                  3566852  
+ B/t first and last pkt	      16616,418 sec  
+ Avg. packets/sec	            214,661  
+ Avg. packet size      	      60,055 bytes  
+ Bytes			                  214208732  
+ Avg. bytes/sec      		      12891,390  
+ Avg. Mit/sec        		      0,103  
+
+Once the network traffic was captured and saved in a pcap file, Wireshark provides the capability to export the raw data into various comma delimited files in order to do further analysis. Exported files were created with TCP endpoints, TCP conversations, as well as the entire pcap file, each as a CSV file. (Appendix A)
+
+# Exploratory Data Analysis
+Originally championed by John Tukey[2], Exploratory Data Analysis (EDA) is an initial approach to understanding a data set in order to get a “feel” for the data, to summarizing its essential characteristics and to studying patterns in the data. In addition to using quantitative techniques, it is supported predominantly by means of graphical representations.
+
+Conducting EDA possibly gives further insight into the form and structure of the data set, in addition to extracting value from it, visualizing it, and just as importantly, in communicating it.
+
+Following are some brief explanations of descriptive statistical terms, as well as the graphical representations used.
+
+## Statistical Definitions
+
+### Mean
+The (arithmetic) mean is a measure of central tendency, which is a single value which represents an average of the sample or population. It is calculated by dividing all the observations by the number of observations.
+
+### Median
+Another measure of central tendency is the median, however, in this case, the median is determined by first ordering the observations by magnitude. Then the median is taken as the value which falls in the middle, or the average of the two middle values in the case of an even number of observations. The median is better suited when there are observations, or outliers, that fall way outside the norm. These are extreme values that differ greatly from other values in the data set.
+
+### Variance
+The variance is the expected value of the squared differences between the random variables and its mean that is always positive. It gives an indication of how far apart the values are from the mean and each other.
+$$ var[X] = E[(X - E[X])^2] $$
+
+### Standard Deviation
+The standard deviation is a measure of dispersion, or how spread out a random variable is around its mean. It is calculated as the square root of the variance and is, unlike the variance, expressed in the same terms as the data.
+$$ std[X] = \sqrt(var[X]) $$
+
+### Covariance
+A measure of how closely two variables change, or vary together is the covariance. Random random variables whose covariance is 0 is said to be uncorrelated.
+$$ cov[X,Y] = E[(X - E[X])(Y-E[Y])] $$
+
+### Correlation
+Correlation is the strength between the relationship of, or dependence between, two variables whose value is typically bounded between the values of -1 and 1, that is to say, that the value has been normalized. It describes the magnitude and the direction of the relationship. If the correlation is positive, their values increase together, and if it is negative, one value decreases as the other value increases.
+$$ corr[X,Y] = cov[X,Y] / (std[X]std[Y]) $$
+
+## Visual Representations
+
+### Pie chart
+
+A pie chart is a circular diagram representing numerical proportions as slices of the pie.
+Scatter plot
+A diagram showing a collection of points as depicted by the coordinates between (typically) two variables on a plane. One axis represents the independent variable, whereas the other represents the dependent variable.
+
+### Histogram
+A graphical representation which shows the distribution of continuous numerical values is a histogram and can be representative of a probability distribution. A frequency histogram is a univariate graphical way to show frequency counts of a value depicted with bars of different heights.
+
+### Bar chart
+Similar to a histogram, a bar chart shows the distribution of values of a given variable,however, the data is in categorized.
+
+### Boxplot
+An effective and graphical method for visualizing outliers is the boxplot. It displays the data in terms of interquartiles, where outliers are depicted as individual points. (Boxplot image source[3])
+
+```{r, echo=FALSE, fig.width=3, fig.height=3, fig.align='center'}
+setwd("~/rDia")
+img <- readPNG("imgs/boxplot.png")
+grid.raster(img)
+```
+
+
+### Heat Map
+A heat map displays data in a matrix where the values are represented by a range of colors. Typically displayed in 2D, larger values are usually shown in darker colors and smaller values in lighter colors on a heat map. They can also be accompanied by a dendrogram, a tree diagram used to illustrate clusters.
+
+### Network Graph
+Used to model relations between objects, another mathematical structure is the graph, comprised of nodes, or vertices, and edges. Depending on the nature of the relationship, a graph may be either cyclic or acyclic, directed or undirected. Attributes of a node or edge may be reflected in the graph as well.
+
+## Analysis
+
+### Protocols
+
+```{r, echo=FALSE, message=FALSE}
+scadaDT[, .(Count=.N), by=Protocol][order(-Count)]
+protocol <- scadaDT$Protocol
+```
+
+```{r, echo=FALSE, message=FALSE, fig.align='center'}
+camembert(protocol)
+rm(protocol)
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, message=FALSE, fig.height=8, fig.width=8}
+g <- graph.data.frame(scadaTCPConvDT[,.(Address.A, Address.B, Packets, Bytes, Duration)], directed=FALSE)
+gAdjMtx <- get.adjacency(g)  # adjacency mtx
+gAdj <- graph.adjacency(gAdjMtx, mode="undirected", weighted=TRUE)
+V(gAdj)$size <- degree(gAdj)*5  # node size according to degree of centrality
+eW <- E(gAdj)$weight  # edge weights
+eW <- ceiling(eW/max(eW)*55)
+eW[eW>10] <- 10
+plot.igraph(gAdj, main="Graph of SCADA Network", edge.width=eW)
+rm(g, gAdjMtx, gAdj, eW)
+invisible(dev.off())
+```
+
+In the network graph shown above, the size of the node is according to its degree of centrality, that is, the number of adjacent vertices. The thicker edges indicate a higher number of interactions between two nodes.
+
+Node IP Addresses
+----------------  ---------
+192.168.12.253    Schneider  
+192.168.12.51     HMI
+192.168.50.50  
+83.133.119.197  
+192.168.12.80  
+192.168.12.250  
+192.168.12.128  
+192.168.50.11  
+192.168.50.18  
+192.168.12.90  
+192.168.12.252   
+
+### Packet Length Statistics
+
+```{r, echo=FALSE}
+setkey(scadaDT, Protocol)
+```
+
+```{r}
+summary(scadaDT[.(Protocol="TCP"),.(Length)])
+```
+
+```{r, echo=FALSE, fig.height=7, fig.width=7}
+# Number of Packets by Source
+bc <- ggplot(scadaDT, aes(x=Source)) + geom_bar(stat="bin", fill="#FF9999", colour="black")
+bc <- bc + ggtitle("Bar Chart of Packets by Source") + ylab("Packet Count")
+bc + theme(axis.text.x = element_text(angle=90))
+rm(bc)
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, fig.height=7, fig.width=7}
+# Number of Packets by Destination
+bc <- ggplot(scadaDT, aes(x=Destination)) + geom_bar(stat="bin", fill="#56B4E9", colour="black")
+bc <- bc + ggtitle("Bar Chart of Packets by Destination") + ylab("Packet Count")
+bc + theme(axis.text.x = element_text(angle=90))
+rm(bc)
+invisible(dev.off())
+```
+
+\pagebreak
+
+```{r, echo=FALSE, fig.height=10, fig.width=8}
+boxLatLengthProtocol <- 
+  bwplot(~Length | Protocol, data=scadaDT, as.table=TRUE,
+         scales="free", main="Boxplots of Packet Lengths by Protocol",
+         xlab="bytes", layout=c(4,7))
+print(boxLatLengthProtocol, more=TRUE)
+rm(boxLatLengthProtocol)
+invisible(dev.off())
+```
+
+\pagebreak
+
+### Modbus/TCP Statistics
+
+```{r}
+summary(scadaDT[.(Protocol="Modbus/TCP"),.(Length)])
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(moddataDT, aes(x=frame.number)) + geom_line(aes(y=frame.time_relative, color="frame.time_relative"))+
+  geom_point(aes(y=mbtcp.len, color="mbtcp.len"))+
+  scale_colour_manual(name='', values=c('frame.time_relative'='olivedrab', 'mbtcp.len'='firebrick'), guide='legend') +
+  guides(colour = guide_legend(override.aes = list(linetype=c(1,0)
+                                                   , shape=c(NA, 16))))
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, fig.align='center'}
+setkey(scadaDT, Protocol, Source)
+p = ggplot(
+  count(scadaDT[.("Modbus/TCP")], vars="Source"),
+  aes(x="", y=freq, fill=Source))
+p = p + geom_bar(width=1, stat="identity")
+p = p + coord_polar(theta="y")
+p = p + xlab('') + ylab('')
+p = p + ggtitle("Modbus/TCP Packets by Source")
+p
+rm(p)
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, message=FALSE}
+boxLatModbusLengthSource <- 
+  bwplot(~Length | Source, data=scadaDT[Protocol=="Modbus/TCP"], as.table=TRUE,
+         scales="free", main="Boxplot of Modbus/TCP Packet Lengths by Source",
+         xlab="Packet Length", layout=c(2,3))
+print(boxLatModbusLengthSource, more=TRUE)
+rm(boxLatModbusLengthSource)
+invisible(dev.off())
+```
+
+
+```{r, echo=FALSE, message=FALSE, fig.align='center'}
+setkey(scadaDT, Protocol, Destination)
+p = ggplot(
+  count(scadaDT[.("Modbus/TCP")], vars="Destination"),
+  aes(x="", y=freq, fill=Destination))
+p = p + geom_bar(width=1, stat="identity")
+p = p + coord_polar(theta="y")
+p = p + xlab('') + ylab('')
+p = p + ggtitle("Modbus/TCP Packets by Destination")
+p
+rm(p)
+invisible(dev.off())
+```
+
+
+```{r, echo=FALSE, message=FALSE}
+boxLatModbusLengthDestination <- 
+  bwplot(~Length | Destination, data=scadaDT[Protocol=="Modbus/TCP"], as.table=TRUE,
+         scales="free", main="Boxplot of Modbus/TCP Packet Lengths by Destination",
+         xlab="Packet Length", layout=c(2,3))
+print(boxLatModbusLengthDestination, more=TRUE)
+rm(boxLatModbusLengthDestination)
+invisible(dev.off())
+```
+
+### Endpoints
+
+SCADA_Security_042915_TCP_Endpoints.csv
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+qplot(scadaEndPtsDT[,Address], geom="histogram", binwidth = 0.5, main = "Number of Ports Per Address",
+      xlab = "Address", ylab = "Number of Ports", fill = I("blue"), alpha = I(".2"), col = I("red")) +
+      theme(axis.text.x = element_text(angle=90))
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+hp <- ggplot(scadaEndPtsDT[,Address, by=Packets], aes(x=Address, y=Packets/1e3, fill=Address)) +
+  geom_bar(stat="identity") + scale_fill_brewer(palette="Set1")
+hp <- hp + ggtitle("Number of Packets Per Address") + ylab("Packets (x 1e3)")
+hp <- hp + theme(axis.text.x = element_text(angle=90), legend.position="none")
+hp
+rm(hp)
+invisible(dev.off())
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+bp <- ggplot(scadaEndPtsDT[,Address, by=Bytes], aes(x=Address, y=Bytes/1e6, fill=Address)) +
+  geom_bar(stat="identity") + scale_fill_brewer(palette="Set2")
+bp <- bp  + ggtitle("Number of Bytes Per Address") + ylab("MBytes")
+bp <- bp + theme(axis.text.x = element_text(angle=90), legend.position="none")
+bp
+rm(bp)
+invisible(dev.off())
+```
+
+### Correlation and Covariance
+
+```{r, echo=FALSE}
+packets<-scadaTCPConvDT[,.(Packets,Bytes,Packets.A.B,Bytes.A.B,Packets.A.B.1,Bytes.A.B.1,Duration,bps.A.B,bps.A.B.1)]
+```
+
+```{r}
+cor(packets, use="complete.obs",method="spearman")
+cov(packets,method="spearman",use="complete.obs")
+rm(cor.test.2.sample)
+```
+
+### Conversations
+
+SCADA_Security_042915_TCP_Conversations.csv
+
+\pagebreak
+
+```{r, echo=FALSE, fig.align='center'}
+xyp <- ggplot(scadaTCPConvDT, aes(x=Rel.Start, y=Port.A)) + geom_point(shape=1, col="red", alpha=0.5)
+xyp <- xyp + facet_wrap( ~ Address.A, ncol=3, scales="free")
+xyp <- xyp + theme(axis.ticks = element_blank(), axis.text.y = element_blank(),
+                   panel.border = element_rect(fill=NA, size=0.25), legend.position="none")
+xyp <- xyp + labs(title="Scatter Plot of Source and Start Time by Address", y="Source Port", x="Start Time")
+xyp
+rm(xyp)
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, fig.align='center'}
+scadaTCPConvDT[,bwplot(~Bytes/1e6 | Address.A, main="Boxplot of Source and Packet Size by Address",
+                       xlab="MBytes", col="red", layout=c(3,3), 
+                       scales = list(y=list(relation="free")
+                       ))]
+invisible(dev.off())
+```
+
+\pagebreak
+
+```{r, echo=FALSE, message=FALSE, fig.align='center'}
+xyp <- ggplot(scadaTCPConvDT, aes(x=Rel.Start, y=Port.B)) + geom_point(shape=1, colour="blue", alpha=0.5)
+xyp <- xyp + facet_wrap( ~ Address.B, ncol=3, scales="free")
+xyp <- xyp + theme(axis.ticks = element_blank(), axis.text.y = element_blank(),
+                   panel.border = element_rect(fill=NA, size=0.25), legend.position="none")
+xyp <- xyp + labs(title="Scatter Plot of Destination and Start Time by Address", y="Destination Port", x="Start Time")
+xyp
+rm(xyp)
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, message=FALSE, fig.align='center'}
+scadaTCPConvDT[,bwplot(~Bytes/1e6 | Address.B, main="Boxplot of Destination and Packet Size by Address",
+                       xlab="MBytes", layout=c(3,3),
+                       scales = list(y=list(relation="free")
+                       ))]
+invisible(dev.off())
+```
+
+\pagebreak
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=7, fig.align='center'}
+breaks <- c(0, 1800, 3600, 5400, 7200, 9000, 10800, 12600, 14400, 16200, 18000, 19800)
+## All protocols
+# source
+# acast to convert Source to variables on y and Time on x
+tSource <- acast(scadaDT[, .(Count=.N),
+                 by=.(Time=cut(Time, breaks=breaks, labels=breaks[1:11]),
+                      Source)][order(Time, Source)]
+                     , Source~Time, value.var="Count")
+
+tSource[is.na(tSource)] <- 0  ## replace NA->0
+dimnames(tSource)[2][[1]][11]<-18000  ## rename NA col
+
+col_breaks = c(seq(0,500,length=25),
+               seq(500,25e2,length=25),
+               seq(25e2,5e5,length=25),
+               seq(5e5,1e6,length=25),
+               seq(1e6,3e6,length=25),
+               seq(3e6,5e6,length=25))
+par(cex.main=.9) # title size
+
+heatmap.2(tSource,
+          main = "Heatmap of Packet \nFrequency by Source", # heat map title
+          xlab = "Time From Start of Capture",
+          ylab = "Source",
+          density.info="none",  # turns off density plot inside color legend
+          trace="none",         # turns off trace lines inside the heat map
+          margins =c(5,10),     # widens margins around plot
+          col=heat.colors(149),
+          breaks=col_breaks,    # enable color transition at specified limits
+          dendrogram="none",
+          key.xlab="Packet Count",
+          cex.lab=.7,
+          cexRow=.7, # size of y labels
+          cexCol=.8,
+          Colv="NA")            # turn off column clustering
+
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=7, fig.align='center'}
+# destination
+tDest <- acast(scadaDT[, .(Count=.N),
+                         by=.(Time=cut(Time, breaks=breaks, labels=breaks[1:11]),
+                              Destination)][order(Time, Destination)]
+                 , Destination~Time, value.var="Count")
+
+tDest[is.na(tDest)] <- 0  ## replace NA->0
+dimnames(tDest)[2][[1]][11]<-18000  ## rename NA col
+
+par(cex.main=.9) # title size
+
+heatmap.2(tDest,
+          main = "Heatmap of Packet \nFrequency by Destination", # heat map title
+          xlab = "Time From Start of Capture",
+          ylab = "Destination",
+          density.info="none",  # turns off density plot inside color legend
+          trace="none",         # turns off trace lines inside the heat map
+          margins =c(5,9),     # widens margins around plot
+          col=heat.colors(149),
+          breaks=col_breaks,    # enable color transition at specified limits
+          dendrogram="none",
+          key.xlab="Packet Count",
+          cexRow=.7, # size of y labels
+          cexCol=.8,
+          Colv="NA")            # turn off column clustering
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, message=FALSE, fig.align='center'}
+## Modbus
+# source
+# acast to convert Source to variables on y and Time on x
+tModSource <- acast( scadaDT[Protocol=="Modbus/TCP", .(Count=.N),
+                             by=.(Time=cut(Time, breaks=breaks[1:11], labels=breaks[1:10]),
+                                  Source)][order(Time, Source)]
+                     , Source~Time, value.var="Count")
+# replace NA->0
+tModSource[is.na(tModSource)] <- 0
+
+# heatmap
+hmcol <- brewer.pal(9,"GnBu")
+par(cex.main=.8) # title size
+# tModSourceH <- heatmap(tModSource, Rowv=NA, Colv=NA, margins=c(5,8), col=hmcol, cexRow=1, cexCol=1,
+#                        main="Heatmap of Modbus/TCP Packet Frequency by Source", cellnote,
+#                        xlab="Start Time", ylab="Source Address", scale=c("row"))
+
+heatmap.2(tModSource,
+          main = "Heatmap of Modbus/TCP \nPacket Frequency by Source", # heat map title
+          xlab = "Time From Start of Capture",
+          ylab = "Source",
+          density.info="none",  # turns off density plot inside color legend
+          trace="none",         # turns off trace lines inside the heat map
+          margins =c(5,9),     # widens margins around plot
+          col=hmcol,
+          dendrogram="none",     # only draw a row dendrogram
+          #keysize=1, # text size of key
+          #key.xlab="Packet Count",
+          cexRow=1, # size of y labels
+          cexCol=1, # size of x labels
+          Colv="NA")            # turn off column clustering
+invisible(dev.off())
+```
+
+
+```{r, echo=FALSE, message=FALSE, fig.align='center'}
+# destination
+tModDest <- acast( scadaDT[Protocol=="Modbus/TCP", .(Count=.N),
+                             by=.(Time=cut(Time, breaks=breaks[1:11], labels=breaks[1:10]),
+                                  Destination)][order(Time, Destination)]
+                     , Destination~Time, value.var="Count")
+# replace NA->0
+tModDest[is.na(tModDest)] <- 0
+
+# heatmap
+#hmcol <- brewer.pal(9,"GnBu")
+#par(cex.main=.85) # title size
+# tModSourceH <- heatmap(tModSource, Rowv=NA, Colv=NA, margins=c(5,8), col=hmcol, cexRow=1, cexCol=1,
+#                        main="Heatmap of Modbus/TCP Packet Frequency by Source", cellnote,
+#                        xlab="Start Time", ylab="Source Address", scale=c("row"))
+
+par(cex.main=.8) # title size
+
+heatmap.2(tModDest,
+          main = "Heatmap of Modbus/TCP \nPacket Frequency by Destination", # heat map title
+          xlab = "Time From Start of Capture",
+          ylab = "Source",
+          density.info="none",  # turns off density plot inside color legend
+          trace="none",         # turns off trace lines inside the heat map
+          margins =c(5,9),     # widens margins around plot
+          col=hmcol,
+          dendrogram="none",     # only draw a row dendrogram
+          #keysize=1, # text size of key
+          #key.xlab="Packet Count",
+          cexRow=1, # size of y labels
+          cexCol=1, # size of x labels
+          Colv="NA")            # turn off column clustering
+invisible(dev.off())
+```
+
+
+### MODBUS/TCP Data[^5]
+[^5]: https://www.wireshark.org/docs/dfref/m/mbtcp.html
+
+MODBUS/TCP responses are identified by packets having source port number 502
+```{r, echo=FALSE}
+responses<-moddataDT[tcp.srcport=="502"]
+```
+
+```{r}
+summary(responses)
+```
+
+\pagebreak
+
+MODBUS/TCP requests are identified by packets having destination port number 502
+```{r, echo=FALSE}
+requests<-moddataDT[tcp.dstport=="502"]
+```
+
+```{r}
+summary(requests)
+```
+
+MODBUS function codes requested:
+
+```{r}
+table(moddataDT[,mbtcp.modbus.func_code])
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+xypl <- ggplot(mergedDT, aes(x=frame.time_relative, y=d, color=mbtcp.modbus.reference_num)) +
+  geom_point() + facet_grid(mbtcp.modbus.reference_num~resp.func.code) +
+  ggtitle("Modbus Data Values Over Time by Reference Number") + 
+  theme(axis.text.x = element_text(angle=90), plot.title = element_text(size=10),
+        legend.position = "top", legend.title = element_text(size=6))
+xypl
+invisible(dev.off())
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+xypl <- ggplot(mergedDT, aes(x=frame.time_relative, y=d, color=resp.func.code)) +
+  geom_point() + facet_wrap(~mbtcp.modbus.reference_num) +
+  ggtitle("Modbus Data Values Over Time by Reference Number") + 
+  scale_fill_brewer(palette="Spectral") +
+  theme(axis.text.x = element_text(angle=90), plot.title = element_text(size=10),
+        legend.position = "top", legend.title = element_text(size=7))
+xypl
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+xyp <- ggplot(mergedDT, aes(resp.time.rel, d, color=mbtcp.modbus.reference_num)) +
+  geom_point() + facet_grid(~resp.func.code) +
+  ggtitle("Modbus Data Value Over Time by Function Code") +
+  scale_fill_brewer(palette="Set1") +
+  theme(axis.text.x = element_text(angle=90), plot.title = element_text(size=10),
+        legend.position = "top", legend.title = element_text(size=8))
+xyp
+invisible(dev.off())
+rm(xyp)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# xyp <- ggplot(mergedDT[mbtcp.modbus.func_code=="4"], aes(resp.time.rel, d, color=mbtcp.modbus.reference_num)) +
+#   geom_point() + ggtitle("Modbus Data Value Over Time For Function Code 4") + 
+#   scale_fill_brewer(palette="Set1") +
+#   theme(axis.text.x = element_text(angle=90), legend.position = "top", 
+#         legend.title = element_text(size=8) )
+# xyp
+# invisible(dev.off())
+# 
+# rm(xyp, xypl)
+```
+
+\pagebreak
+
+```{r}
+summary(mergedDT)
+```
+
+\pagebreak
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = mergedDT[resp.func.code=="4"],
+      col.point = mergedDT$mbtcp.modbus.reference_num, pch= 19,
+      xlab = "d", ylab = "refNum", zlab = "resp.time.rel",
+      main="3D Scatterplot \nReference Number, Data Value Over Time for Function Code 4",
+      key = list(points = list(pch = 19, col = seq_along(levels(mergedDT$mbtcp.modbus.reference_num))), 
+                 text = list(levels(mergedDT$mbtcp.modbus.reference_num)), space = 'top',
+                 columns = nlevels(mergedDT$mbtcp.modbus.reference_num)))
+invisible(dev.off())
+```
+
+```{r}
+mergedDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
+            d.sd=sd(d, na.rm=T), min.resp.time.rel=min(resp.time.rel),
+            min.resp.time.rel= max(resp.time.rel)), 
+         by =.(resp.func.code, mbtcp.modbus.reference_num)][
+           order(resp.func.code, mbtcp.modbus.reference_num)]
+```
+
+\pagebreak
+
+# References
+
+[1] L. Maliphol, SCAD@COPS: A Hybrid Network Intrusion Detection System
+
+[2] J.W. Tukey, (1977). Exploratory Data Analysis. Addison-Wesley. ISBN 0-201-07616-0
+
+[3] P. Lafaye de Micheaux et al., (2013). The R Software: Fundamentals of Programming and Statistical Analysis, Statistics and Computing. Springer New York. ISBN 978-1-4614-9019-7
+
+\pagebreak
+
+# Appendix A
+
+Using the export facility in Wireshark, the following are a description of the exported files:
+
+Entire pcap file exported in CSV format:  
+
+ SCADA_20150429_042915.csv  
+ -------------------------
+ Time   
+ Source   
+ Destination   
+ Protocol   
+ Length   
+ Info                                             
+
+List of endpoints, the traffic to and from an IP address:  
+
+ SCADA_Security_042915_TCP_Endpoints.csv
+ --------------------------------------
+ Address   
+ Port   
+ Packets   
+ Bytes  
+ Tx.Packets   
+ Tx.Bytes    
+ Rx.Packets   
+ Rx.Bytes   
+ Latitude   
+ Longitude
+
+
+List of conversations, the traffic between two endpoints :  
+
+ SCADA_Security_042915_TCP_Conversations.csv
+ -----------------
+ Address.A   
+ Port.A    
+ Address.B   
+ Port.B    
+ Packets  
+ Bytes  
+ Packets.A.B   
+ Bytes.A.B   
+ Packets.A.B.1   
+ Bytes.A.B.1  
+ Rel.Start   
+ Duration   
+ bps.A.B    
+ bps.A.B.1   
+
+\pagebreak
+
+# Appendix B
+
+## Commands and Scripts
+
+### TShark
+
+Command used to extract various fields from the pcap file used for analysis.
+
+tshark -r modbus.pcap -T fields -E separator=, -t r -E header=y 
+-e frame.number -e frame.time_relative -e frame.time_delta_displayed -e frame.len 
+-e ip.proto -e ip.version -e ip.src -e ip.dst -e mbtcp.modbus.unit_id
+-e tcp.srcport -e tcp.dstport -e mbtcp.prot_id -e mbtcp.trans_id 
+-e mbtcp.len -e mbtcp.modbus.func_code -e mbtcp.modbus.reference_num 
+
+-e mbtcp.modbus.word_cnt -e mbtcp.modbus.data > modbus.data
+
+### sed
+Command used to remove empty lines from the pcap data.
+
+sed '/^,.*$/d' modbus.data > modbus.data
+
+### R
+install.R - Setup script to install required packages.
+scada.R - Script in the language R containing for conducting statistical analysis
+and creating graphic visualisations.
+modVals.R - Script for processing and analysing modbus data packets.
+

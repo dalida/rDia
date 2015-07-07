@@ -1,0 +1,43 @@
+---
+title: |
+  |  EDA Test
+author: "Lisa MALIPHOL"
+output:
+  pdf_document:
+    keep_tex: yes
+  word_document: default
+---
+```{r, echo=FALSE, message=FALSE}
+require(TRSbook)
+require(data.table)
+require(igraph)
+require(ggplot2)
+require(gplots)
+require(lattice)
+require(dplyr)
+require(plyr)
+require(reshape2)
+require(RColorBrewer)
+require(png)
+require(grid)
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+ggplot(moddataDT, aes(x=frame.number)) + geom_line(aes(y=frame.time_relative, color="frame.time_relative"))+
+  geom_point(aes(y=mbtcp.len, color="mbtcp.len"))+
+  scale_colour_manual(name='', values=c('frame.time_relative'='olivedrab', 'mbtcp.len'='firebrick'), guide='legend') +
+  guides(colour = guide_legend(override.aes = list(linetype=c(1,0)
+                                                   , shape=c(NA, 16))))
+
+#ggplot(moddataDT, aes(x=frame.number, y=frame.time_relative)) +
+# gp <- ggplot(moddataDT, aes(x=frame.number))
+# gp <- gp + geom_point(aes(y=frame.time_relative), color="Frame time relative")
+# gp <- gp + scale_colour_manual(name='', values=c('Frame time relative'='firebrickred'))
+# gp
+
+# 
+# xypO <- ggplot(moddataDT, aes(x=frame.number, y=frame.time_relative)) +
+#   geom_point(aes(color="Frame time relative") +
+#   scale_colour_manual(name='', values=c('Frame time relative'='firebrick'))
+# xypO
+```

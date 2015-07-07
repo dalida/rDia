@@ -1,0 +1,227 @@
+---
+title: |
+  | Exploratory Data Analysis
+  | MODBUS / TCP
+author: "Lisa MALIPHOL"
+date: June 2015
+output: pdf_document
+  keep_text: yes
+---
+```{r, echo=FALSE, message=FALSE}
+require(TRSbook)
+require(data.table)
+require(igraph)
+require(ggplot2)
+require(gplots)
+require(lattice)
+require(dplyr)
+require(plyr)
+require(reshape2)
+require(RColorBrewer)
+require(png)
+require(grid)
+require(gridExtra)
+```
+
+# Introduction
+
+The following analysis was done using a pcap file created from a simulation using the new SCADA simulation box under noral conditions (no attacks):
+
+capture_sew_20150617.pcap   
+3.0 MB   
+38,082 packets 
+10 minutes   
+
+## Analysis
+
+### Protocols
+
+```{r, echo=FALSE, message=FALSE}
+sewModbusDT[, .(Count=.N), by=Protocol][order(-Count)]
+protocol <- sewModbusDT$Protocol
+```
+
+```{r, echo=FALSE, message=FALSE, fig.align='center'}
+camembert(protocol)
+rm(protocol)
+invisible(dev.off())
+```
+
+
+# Packet Analysis
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Load data from save(sewModbusDT, mergedSewDT, file="sew.Rda")
+load("/home/lisa/rDia/sew.Rda")
+
+# Number of Packets by Source
+bc1 <- ggplot(sewModbusDT, aes(x=ip.src)) + geom_bar(stat="bin", fill="#FF9999", colour="black")
+bc1 <- bc1 + ggtitle("Bar Chart of Packets by Source") + ylab("Packet Count")
+bc1 <- bc1 + theme(axis.text.x = element_text(angle=90),
+                   plot.title = element_text(size=10))
+
+# Number of Packets by Destination
+bc2 <- ggplot(sewModbusDT, aes(x=ip.dst)) + geom_bar(stat="bin", fill="#56B4E9", colour="black")
+bc2 <- bc2 + ggtitle("Bar Chart of Packets by Destination") + ylab("Packet Count")
+bc2 <- bc2 + theme(axis.text.x = element_text(angle=90),
+                   plot.title = element_text(size=10))
+
+grid.arrange(bc1, bc2, ncol=2)
+```
+
+```{r, echo=FALSE, warning=FALSE}
+rm(bc1, bc2)
+```
+
+\pagebreak
+
+### MODBUS/TCP responses are identified by packets having source port number 502
+```{r, echo=FALSE, warning=FALSE}
+responses<-sewModbusDT[tcp.srcport=="502"]
+```
+
+```{r, warning=FALSE}
+summary(responses)
+```
+
+\pagebreak
+
+### MODBUS/TCP requests are identified by packets having destination port number 502
+```{r, echo=FALSE}
+requests<-sewModbusDT[tcp.dstport=="502"]
+```
+
+```{r, warning=FALSE}
+summary(requests)
+```
+
+```{r, echo=FALSE}
+rm(responses, requests)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(sewModbusDT, aes(x=frame.number)) +
+  geom_line(aes(y=frame.time_relative, color="frame.time_relative"))+
+  geom_point(aes(y=mbtcp.len, color="mbtcp.len")) +
+  ggtitle("Scatterplot of Time Recorded \nMODBUS Data Length as a \nFunction of Frame Number") +
+  theme(axis.text = element_text(size = 13),
+        plot.title = element_text(face="bold"),
+        plot.margin = unit(c(1, 0, 1, 0), "cm")) +
+  scale_colour_manual(name='', values=c('frame.time_relative'='olivedrab',
+                                        'mbtcp.len'='firebrick'), guide='legend') +
+  guides(colour = guide_legend(override.aes = list(linetype=c(1,0)
+                                                   , shape=c(NA, 16))))
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=4.5, fig.width=4, fig.align='center'}
+ggplot(sewModbusDT,  aes(x=factor(0), y=mbtcp.len)) + geom_violin() +
+  xlab("") + scale_x_discrete(breaks = NULL) + coord_flip() +
+  ggtitle("Boxplot of MODBUS/TCP Data Length") +
+  theme(plot.title = element_text(face="bold"),
+        plot.margin = unit(c(0, 0, 2, 0), "cm"))
+
+invisible(dev.off())
+```
+
+Conversation End Points:
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sewModbusDT[,.(count=.N), by=.(ip.src, ip.dst, mbtcp.modbus.unit_id)]
+
+```
+
+# MODBUS/TCP Data[^1] Analysis 
+[^1]: https://www.wireshark.org/docs/dfref/m/mbtcp.html
+
+The following analysis was done over the dataset of the previous that have been
+merged to include the request and response of the same transaction in the same
+record. An additional field was created to transform **resp.data** as a numeric
+value.
+
+```{r, warning=FALSE}
+summary(mergedSewDT)
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+ggplot(mergedSewDT, aes(x=frame.time_relative, y=d, color=mbtcp.modbus.reference_num)) +
+  geom_point() + facet_grid(mbtcp.modbus.reference_num~resp.func.code) +
+  ggtitle("MODBUS Data Values \nOver Time by Reference Number") + 
+  scale_fill_brewer(palette="Spectral") +
+  theme(plot.title = element_text(face="bold"),
+        plot.margin = unit(c(0, 0, 2, 0), "cm"),
+        legend.position = "top", legend.title = element_text(size=10))
+invisible(dev.off())
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(mergedSewDT, aes(resp.time.rel, d, color=mbtcp.modbus.reference_num)) +
+  geom_point() + facet_grid(~resp.func.code) +
+  scale_fill_brewer(palette="Set1") +
+  ggtitle("MODBUS Data Value Over Time by Function Code") +
+  theme(plot.title = element_text(face="bold"),
+        plot.margin = unit(c(0, 0, 2, 0), "cm"),
+        legend.position = "top", legend.title = element_text(size=10))
+invisible(dev.off())
+```
+
+### MODBUS Data Value Statistics
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
+            d.sd=sd(d, na.rm=T), min.resp.time.rel=min(resp.time.rel),
+            min.resp.time.rel= max(resp.time.rel)),
+            by =.(resp.func.code, mbtcp.modbus.reference_num)][
+           order(resp.func.code, mbtcp.modbus.reference_num)]
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Frequency of Reference Numbers by Function Code
+ggplot(sewModbusDT, aes(x=mbtcp.modbus.reference_num, fill=mbtcp.modbus.reference_num)) +
+  geom_bar(stat="bin") +
+  facet_grid(~mbtcp.modbus.func_code) +
+  ggtitle("Bar Chart of Reference Numbers by Function Code") +
+  ylab("Reference Number") +
+  scale_fill_brewer(palette="Set1")
+invisible(dev.off())
+```
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(mergedSewDT, aes(x = mbtcp.modbus.reference_num, y = d)) +
+  geom_boxplot(fill="lightpink4") +
+  facet_grid(~mbtcp.modbus.func_code) +
+  ggtitle("Boxplot of Modbus Data Values by Reference Number")
+invisible(dev.off())
+
+ggplot(mergedSewDT, aes(x = mbtcp.modbus.reference_num, y = d)) +
+  geom_boxplot(fill="lightpink4") +
+  ggtitle("Boxplot of Modbus Data Values by Reference Number")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# xyp <- ggplot(mergedSewDT[resp.func.code=="4"], aes(resp.time.rel, d, color=mbtcp.modbus.reference_num)) +
+#   geom_point() + ggtitle("Modbus Data Value Over Time For Function Code 4") + 
+#   theme(axis.text.x = element_text(angle=90), legend.position = "top",
+#         plot.margin = unit(c(0, 0, 2, 0), "cm"), 
+#         legend.title = element_text(size=9) )
+# xyp
+# invisible(dev.off())
+```
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+pairs(mergedSewDT[,.(mbtcp.len, mbtcp.modbus.func_code=as.numeric(mbtcp.modbus.func_code),
+                     mbtcp.modbus.reference_num=as.numeric(mbtcp.modbus.reference_num) , d)])
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = mergedSewDT[resp.func.code=="4"],
+      col.point = mergedSewDT$mbtcp.modbus.reference_num, pch= 19,
+      xlab = "d", ylab = "refNum", zlab = "resp.time.rel",
+      panel.aspect = 0.7,
+      main="3D Scatterplot \nReference Number, Data Value Over Time for Function Code 4",
+      key = list(points = list(pch = 19, col = seq_along(levels(mergedSewDT$mbtcp.modbus.reference_num))), 
+                 text = list(levels(mergedSewDT$mbtcp.modbus.reference_num)), space = 'top',
+                 columns = nlevels(mergedSewDT$mbtcp.modbus.reference_num)))
+invisible(dev.off())
+```

@@ -28,7 +28,7 @@ library(tgl)
 library(ape)
 
 #### Read in data - entire pcap file ####
-scadaDT <- as.data.table(read.csv("~/Bureau/data/scadaCops/SCADA_20150429_csv", stringsAsFactors=TRUE))
+scadaDT <- as.data.table(read.csv("~/rDia/data/scadaCops/SCADA_20150429_csv", stringsAsFactors=TRUE))
 
 
 #### Describe data ####
@@ -521,7 +521,7 @@ rm(scadaDT)
 
 
 #### Read in data - TCP Endpoints pcap file ####
-scadaEndPtsDT <- as.data.table(read.csv("~/Bureau/data/scadaCops/SCADA_Security_042915_TCP_Endpoints.csv"))
+scadaEndPtsDT <- as.data.table(read.csv("~/rDia/data/scadaCops/SCADA_Security_042915_TCP_Endpoints.csv"))
 
 setkey(scadaEndPtsDT, Address, Port)
 str(scadaEndPtsDT)
@@ -1049,7 +1049,7 @@ rm(g, gAdjMtx, gAdj, eW)
 #   - length
 
 # TODO use moddata instead?
-modbusDT <- as.data.table(read.csv("~/Bureau/data/scadaCops/modbus/modbus_transform.data", header=FALSE,
+modbusDT <- as.data.table(read.csv("~/rDia/data/scadaCops/modbus/modbus_transform.data", header=FALSE,
                                  col.names=c("protocolID", "transID", "length","functionCode","refType","wordCnt","data"),
                                  colClass=c(protocolID="factor", functionCode="factor", refType="factor")))
 # setnames(modbus, c("protocolID", "length","functionCode","refNum","refType","wordCnt","data"))
@@ -1128,14 +1128,14 @@ ggplot(modbusDT, aes(x=functionCode)) + geom_histogram() + ggtitle("Histogram of
 
 
 ## modbus/tcp data
-moddataDT <- as.data.table(read.csv("~/Bureau/data/scadaCops/modbus/modbus.data", header=TRUE,
+moddataDT <- as.data.table(read.csv("~/rDia/data/scadaCops/modbus/modbus.data", header=TRUE,
                                    colClass=c(ip.proto="factor", ip.version="factor",
                                               mbtcp.modbus.func_code="factor", tcp.srcport="factor",
                                               tcp.dstport="factor", mbtcp.modbus.reference_num="factor",
                                               mbtcp.prot_id="factor")))
 
 
-modsubDT <- as.data.table(read.csv("~/Bureau/data/scadaCops/modbus/modsplit/data.txt", header=TRUE,
+modsubDT <- as.data.table(read.csv("~/rDia/data/scadaCops/modbus/modsplit/data.txt", header=TRUE,
                                     colClass=c(ip.proto="factor", ip.version="factor",
                                                mbtcp.modbus.func_code="factor", tcp.srcport="factor",
                                                tcp.dstport="factor", mbtcp.modbus.reference_num="factor",
