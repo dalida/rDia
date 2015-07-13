@@ -4,6 +4,8 @@
 # change to full dataset
 require(data.table)
 
+# TODO add unitID
+
 #datafile <- "10k.dat"
 datafile <- "~/rDia/data/scadaCops/modbus/modbus.data"
 
@@ -136,6 +138,7 @@ for (i in 1:nrow(moddataDT)) {
 #     print("mergedrow+addCols: ")
 #     print(mergedRow)
 
+    # add merged row to dataset
     mergedDT[idx, `:=`("frame.number"=mergedRow$frame.number, "frame.time_relative"=mergedRow$frame.time_relative,
                       "frame.time_delta_displayed"=mergedRow$frame.time_delta_displayed, "frame.len"=mergedRow$frame.len,
                       "ip.src"=mergedRow$ip.src, "ip.dst"=mergedRow$ip.dst,
@@ -241,7 +244,7 @@ summary(mergedDT)
 #                 NA's   :  3450   NA's   :14291
 
 
-modDataStats <- mergedDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
+modDataStats <- mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
                             d.sd=sd(d, na.rm=T), min.resp.time.rel=min(resp.time.rel),min.resp.time.rel= max(resp.time.rel)),
                          by=.(resp.func.code, mbtcp.modbus.reference_num)][order(resp.func.code, mbtcp.modbus.reference_num)]
 
@@ -308,6 +311,18 @@ rm("frame.number",  "frame.time_relative",  "frame.time_delta_displayed"
 ,"resp.time.rel"  ,"resp.time.delta",  "resp.len", "resp.src"                  
 ,"resp.dest", "resp.srcport", "resp.dstport",  "resp.prot_id"              
 ,"resp.trans_id", "resp.mbcp.len",  "resp.func.code", "resp.data" )
+
+
+sewEndPtsDT <- as.data.table(read.csv("~/rDia/data/scadaCops/normal/sewTCPEndpoints.csv"))
+sewTCPConvDT <- as.data.table(read.csv("~/rDia/data/scadaCops/normal/sewTCPConv.csv"))
+
+# correlation
+casted <- dcast(modDataStats[,.(resp.func.code, mbtcp.modbus.reference_num, d.mean)], resp.func.code ~ mbtcp.modbus.reference_num)
+thecor <- cor(casted[2:5], method="spearman", use="complete.obs")
+casted
+
+
+head(nmmaps[,sort(c("death", "temp", "dewpoint", "pm10", "o3"))])
 
 
 # df1<- melt(data=merged10k, id.vars="mbtcp.modbus.reference_num")

@@ -6,7 +6,7 @@ sewModbusDT <- as.data.table(
   read.csv(datafile, header=TRUE,
            stringsAsFactors=F,
            colClass=c(ip.proto="factor", ip.version="factor", ip.src="factor",
-                      ip.dst="factor",
+                      ip.dst="factor", mbtcp.modbus.unit_id="factor",
                       tcp.srcport="factor", tcp.dstport="factor",
                       mbtcp.modbus.func_code="factor",
                       mbtcp.modbus.reference_num="factor",
@@ -58,7 +58,7 @@ mergedSewDT<- data.table(frame.number, frame.time_relative, frame.time_delta_dis
                       mbtcp.prot_id, mbtcp.trans_id, mbtcp.len, mbtcp.modbus.func_code,
                       mbtcp.modbus.word_cnt, mbtcp.modbus.reference_num, resp.fr.number,
                       resp.time.rel, resp.time.delta, resp.len, resp.src, resp.dest,
-                      resp.srcport, resp.dstport, resp.prot_id, resp.trans_id,
+                      resp.srcport, resp.unit_id, resp.dstport, resp.prot_id, resp.trans_id,
                       resp.mbcp.len, resp.func.code, resp.data
 )
 
@@ -90,10 +90,11 @@ system.time(
       addCols <- pkt[,.(resp.fr.number=frame.number, resp.time.rel=frame.time_relative, 
                         resp.time.delta=frame.time_delta_displayed,
                         resp.len=frame.len, resp.src=ip.src, resp.dest=ip.dst,
-                        resp.srcport=tcp.srcport, resp.dstport=tcp.dstport, 
-                        resp.prot_id=mbtcp.prot_id, resp.trans_id=mbtcp.trans_id,
-                        resp.mbcp.len=mbtcp.len, resp.func.code=mbtcp.modbus.func_code,
-                        resp.data=mbtcp.modbus.data)]
+                        resp.unit_id=mbtcp.modbus.unit_id, resp.srcport=tcp.srcport, 
+                        resp.dstport=tcp.dstport, resp.prot_id=mbtcp.prot_id, 
+                        resp.trans_id=mbtcp.trans_id, resp.mbcp.len=mbtcp.len,
+                        resp.func.code=mbtcp.modbus.func_code, resp.data=mbtcp.modbus.data)]
+      
       setkey(addCols, resp.trans_id)
       #     print(paste("addCols: ", i))
       #     print(addCols)
@@ -117,6 +118,7 @@ system.time(
                             "resp.fr.number"=mergedSewRow$resp.fr.number, "resp.time.rel"=mergedSewRow$resp.time.rel,
                             "resp.time.delta"=mergedSewRow$resp.time.delta, "resp.len"=mergedSewRow$resp.len,
                             "resp.src"=mergedSewRow$resp.src, "resp.dest"=mergedSewRow$resp.dest,
+                            "resp.unit_id"=mergedSewRow$resp.unit_id,
                             "resp.srcport"=mergedSewRow$resp.srcport, "resp.dstport"=mergedSewRow$resp.dstport,
                             "resp.prot_id"=mergedSewRow$resp.prot_id, "resp.trans_id"=mergedSewRow$mbtcp.trans_id,
                             "resp.mbcp.len"=mergedSewRow$resp.mbcp.len, "resp.func.code"=mergedSewRow$resp.func.code,
@@ -144,6 +146,7 @@ mergedSewDT$mbtcp.prot_id <- factor(mergedSewDT$mbtcp.prot_id)
 mergedSewDT$mbtcp.modbus.func_code<- factor(mergedSewDT$mbtcp.modbus.func_code)
 mergedSewDT$resp.src <- factor(mergedSewDT$resp.src)
 mergedSewDT$resp.dest <- factor(mergedSewDT$resp.dest)
+mergedSewDT$resp.unit_id <- factor(mergedSewDT$resp.unit_id)
 mergedSewDT$resp.srcport <- factor(mergedSewDT$resp.srcport)
 mergedSewDT$resp.dstport <- factor(mergedSewDT$resp.dstport)
 mergedSewDT$resp.prot_id <- factor(mergedSewDT$resp.prot_id)
@@ -193,9 +196,9 @@ ggplot(mergedSewDT, aes(resp.time.rel, d, color=factor(mbtcp.modbus.reference_nu
   geom_point() + facet_grid(~resp.func.code) + ggtitle("Modbus Data Value (d) Over Time by Function Code")
 
 
-meltedSew <- melt(mergedSewDT, id=c("resp.time.rel","mbtcp.trans_id","resp.func.code", 
-                                    "mbtcp.modbus.reference_num", "d"
-                                    ), measure=c("mbtcp.modbus.reference_num"))
+# meltedSew <- melt(mergedSewDT, id=c("resp.time.rel","mbtcp.trans_id","resp.func.code", 
+#                                     "mbtcp.modbus.reference_num", "d"
+#                                     ), measure=c("mbtcp.modbus.reference_num"))
 
 # trivariate plot
 cloud(resp.time.rel ~ factor(mbtcp.modbus.reference_num) * d | resp.func.code,
