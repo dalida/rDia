@@ -305,12 +305,12 @@ cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = me
 
 
 rm("frame.number",  "frame.time_relative",  "frame.time_delta_displayed"
-,"frame.len",  "ip.src", "ip.dst", "tcp.srcport"  
+,"frame.len",  "ip.src", "ip.dst", "mbtcp.modbus.unit_id", "tcp.srcport"  
 ,"tcp.dstport", "mbtcp.prot_id",  "mbtcp.trans_id",  "mbtcp.len"                 
 ,"mbtcp.modbus.func_code", "mbtcp.modbus.word_cnt", "mbtcp.modbus.reference_num", "resp.fr.number"            
 ,"resp.time.rel"  ,"resp.time.delta",  "resp.len", "resp.src"                  
 ,"resp.dest", "resp.srcport", "resp.dstport",  "resp.prot_id"              
-,"resp.trans_id", "resp.mbcp.len",  "resp.func.code", "resp.data" )
+,"resp.trans_id", "resp.mbcp.len",  "resp.func.code", "resp.data", numrows )
 
 
 sewEndPtsDT <- as.data.table(read.csv("~/rDia/data/scadaCops/normal/sewTCPEndpoints.csv"))

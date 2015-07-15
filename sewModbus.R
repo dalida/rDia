@@ -1,12 +1,13 @@
 # sewModbusDT
 
-datafile <- "~/rDia/data/scadaCops/normal/sew.data"
+datafile <- "~/Bureau/data/scadaCops/normal/sew.data"
 
 sewModbusDT <- as.data.table(
   read.csv(datafile, header=TRUE,
            stringsAsFactors=F,
            colClass=c(ip.proto="factor", ip.version="factor", ip.src="factor",
-                      ip.dst="factor", mbtcp.modbus.unit_id="factor",
+                      ip.dst="factor", eth.src="factor", eth.dst="factor",
+                      mbtcp.modbus.unit_id="factor",
                       tcp.srcport="factor", tcp.dstport="factor",
                       mbtcp.modbus.func_code="factor",
                       mbtcp.modbus.reference_num="factor",
@@ -28,7 +29,9 @@ frame.time_relative<-numeric(numrows)
 frame.time_delta_displayed<-numeric(numrows)
 frame.len<-numeric(numrows)
 ip.src <- character(numrows)
+eth.src <- character(numrows)
 ip.dst <- character(numrows)
+eth.dst <- character(numrows)
 mbtcp.modbus.unit_id <- character(numrows)
 tcp.srcport <- character(numrows)
 tcp.dstport <- character(numrows)
@@ -42,10 +45,13 @@ resp.fr.number <- numeric(numrows)
 resp.time.rel <- numeric(numrows)
 resp.time.delta <- numeric(numrows)
 resp.len <- numeric(numrows)
-resp.src <- character(numrows)
-resp.dest <- character(numrows)
+resp.ipsrc <- character(numrows)
+resp.ethsrc <- character(numrows)
+resp.ipdest <- character(numrows)
+resp.ethdest <- character(numrows)
 resp.srcport <- character(numrows)
 resp.dstport<- character(numrows)
+resp.unit_id<- character(numrows)
 resp.prot_id <- character(numrows)
 resp.trans_id <- numeric(numrows)
 resp.mbcp.len <- numeric(numrows)
@@ -54,10 +60,10 @@ resp.data <- character(numrows)
 
 
 mergedSewDT<- data.table(frame.number, frame.time_relative, frame.time_delta_displayed, frame.len,
-                      ip.src, ip.dst, mbtcp.modbus.unit_id, tcp.srcport, tcp.dstport,
+                      ip.src, eth.src, ip.dst, eth.dst, mbtcp.modbus.unit_id, tcp.srcport, tcp.dstport,
                       mbtcp.prot_id, mbtcp.trans_id, mbtcp.len, mbtcp.modbus.func_code,
                       mbtcp.modbus.word_cnt, mbtcp.modbus.reference_num, resp.fr.number,
-                      resp.time.rel, resp.time.delta, resp.len, resp.src, resp.dest,
+                      resp.time.rel, resp.time.delta, resp.len, resp.ipsrc, resp.ipdest,
                       resp.srcport, resp.unit_id, resp.dstport, resp.prot_id, resp.trans_id,
                       resp.mbcp.len, resp.func.code, resp.data
 )
@@ -89,7 +95,8 @@ system.time(
       # set response fields in mergedSewRow
       addCols <- pkt[,.(resp.fr.number=frame.number, resp.time.rel=frame.time_relative, 
                         resp.time.delta=frame.time_delta_displayed,
-                        resp.len=frame.len, resp.src=ip.src, resp.dest=ip.dst,
+                        resp.len=frame.len, resp.ipsrc=ip.src, resp.ethsrc=eth.src,
+                        resp.ipdest=ip.dst, resp.ethdest=eth.dst,
                         resp.unit_id=mbtcp.modbus.unit_id, resp.srcport=tcp.srcport, 
                         resp.dstport=tcp.dstport, resp.prot_id=mbtcp.prot_id, 
                         resp.trans_id=mbtcp.trans_id, resp.mbcp.len=mbtcp.len,
@@ -108,7 +115,9 @@ system.time(
                             "frame.time_relative"=mergedSewRow$frame.time_relative,
                             "frame.time_delta_displayed"=mergedSewRow$frame.time_delta_displayed,
                             "frame.len"=mergedSewRow$frame.len, "ip.src"=mergedSewRow$ip.src,
-                            "ip.dst"=mergedSewRow$ip.dst, "mbtcp.modbus.unit_id"=mergedSewRow$mbtcp.modbus.unit_id,
+                            "eth.src"=mergedSewRow$eth.src,  "ip.dst"=mergedSewRow$ip.dst,
+                            "eth.dst"=mergedSewRow$eth.dst,
+                            "mbtcp.modbus.unit_id"=mergedSewRow$mbtcp.modbus.unit_id,
                             "tcp.srcport"=mergedSewRow$tcp.srcport, "tcp.dstport"=mergedSewRow$tcp.dstport,
                             "mbtcp.prot_id"=mergedSewRow$mbtcp.prot_id,
                             "mbtcp.trans_id"=mergedSewRow$mbtcp.trans_id, "mbtcp.len"=mergedSewRow$mbtcp.len,
@@ -117,7 +126,8 @@ system.time(
                             "mbtcp.modbus.reference_num"=mergedSewRow$mbtcp.modbus.reference_num,
                             "resp.fr.number"=mergedSewRow$resp.fr.number, "resp.time.rel"=mergedSewRow$resp.time.rel,
                             "resp.time.delta"=mergedSewRow$resp.time.delta, "resp.len"=mergedSewRow$resp.len,
-                            "resp.src"=mergedSewRow$resp.src, "resp.dest"=mergedSewRow$resp.dest,
+                            "resp.ipsrc"=mergedSewRow$resp.ipsrc, "resp.ethsrc"=mergedSewRow$resp.ethsrc,
+                            "resp.ipdest"=mergedSewRow$resp.ipdest, "resp.ethdest"=mergedSewRow$resp.ethdest,
                             "resp.unit_id"=mergedSewRow$resp.unit_id,
                             "resp.srcport"=mergedSewRow$resp.srcport, "resp.dstport"=mergedSewRow$resp.dstport,
                             "resp.prot_id"=mergedSewRow$resp.prot_id, "resp.trans_id"=mergedSewRow$mbtcp.trans_id,
@@ -144,8 +154,10 @@ mergedSewDT$tcp.srcport <- factor(mergedSewDT$tcp.srcport)
 mergedSewDT$tcp.dstport <- factor(mergedSewDT$tcp.dstport)
 mergedSewDT$mbtcp.prot_id <- factor(mergedSewDT$mbtcp.prot_id)
 mergedSewDT$mbtcp.modbus.func_code<- factor(mergedSewDT$mbtcp.modbus.func_code)
-mergedSewDT$resp.src <- factor(mergedSewDT$resp.src)
-mergedSewDT$resp.dest <- factor(mergedSewDT$resp.dest)
+mergedSewDT$resp.ipsrc <- factor(mergedSewDT$resp.ipsrc)
+mergedSewDT$resp.ethsrc <- factor(mergedSewDT$resp.ethsrc)
+mergedSewDT$resp.ipdest <- factor(mergedSewDT$resp.ipdest)
+mergedSewDT$resp.ethdest <- factor(mergedSewDT$resp.ethdest)
 mergedSewDT$resp.unit_id <- factor(mergedSewDT$resp.unit_id)
 mergedSewDT$resp.srcport <- factor(mergedSewDT$resp.srcport)
 mergedSewDT$resp.dstport <- factor(mergedSewDT$resp.dstport)
@@ -222,8 +234,8 @@ save(mergedSewDT, sewModbusDT, file="sewData.Rda")
 vars <- ls()
 vars <- vars[-14][-28]
 vars
-do.call(rm, as.list(vars))
-rm(vars)
+#do.call(rm, as.list(vars))
+#rm(vars)
 
 
 

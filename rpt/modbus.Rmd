@@ -42,7 +42,7 @@ capture_sew_20150617.pcap
 38,082 packets   
 10 minutes   
 
-# Analysis
+# Network Analysis
 
 ## Protocols
 
@@ -51,13 +51,6 @@ protocol <- sewModbusDT$ip.proto
 camembert(protocol)
 rm(protocol)
 invisible(dev.off())
-```
-
-Conversation End Points:
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-sewModbusDT[,.(count=.N), by=.(ip.src, ip.dst, mbtcp.modbus.unit_id)]
-
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning, fig.align='center'}
@@ -73,7 +66,24 @@ rm(g, gAdjMtx, gAdj, eW)
 invisible(dev.off())
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.align='center'}
+Source / Destination / UnitID
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sewModbusDT[,.(count=.N), by=.(ip.src, ip.dst, mbtcp.modbus.unit_id)]
+```
+
+Sources
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sewModbusDT[,.(count=.N), by=.(ip.src)]
+```
+
+Destinations
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sewModbusDT[,.(count=.N), by=.(ip.dst)]
+```
+
+# Packet Analysis
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=4, fig.align='center'}
 ggplot(sewTCPConvDT, aes(x = factor(0), y = Bytes/1e6)) +
   geom_boxplot(fill="darkorchid3") + xlab("") + scale_x_discrete(breaks = NULL) +
   facet_grid(~Address.A) +
@@ -83,8 +93,6 @@ ggplot(sewTCPConvDT, aes(x = factor(0), y = Bytes/1e6)) +
 
 invisible(dev.off())
 ```
-
-## Packet Analysis
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -109,7 +117,7 @@ rm(bc1, bc2)
 
 \pagebreak
 
-### MODBUS/TCP Request/Response Packet Statistics (Appendix 1)
+## MODBUS/TCP Request/Response Packet Statistics (Appendix 1)
 
 
 MODBUS/TCP requests are identified by packets having destination port number 502
@@ -194,7 +202,7 @@ invisible(dev.off())
 
 \pagebreak
 
-## MODBUS/TCP Data[^1] Analysis 
+# MODBUS/TCP Data[^1] Analysis 
 [^1]: https://www.wireshark.org/docs/dfref/m/mbtcp.html
 
 The following analysis was done over the previous dataset that has been processed
@@ -230,7 +238,7 @@ invisible(dev.off())
 
 \pagebreak
 
-## MODBUS Data Value Statistics
+# MODBUS Data Value Statistics
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
             d.sd=sd(d, na.rm=T), min.resp.time.rel=min(resp.time.rel),
