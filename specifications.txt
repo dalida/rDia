@@ -1,0 +1,52 @@
+
+
+Inside the appliance (final code execution target) there's X different container in charge of different processing. For example, right now (for the moment), there's 3 different approach (only 1, 2 & 3) :
+ - 1 - NIDS (Network Intrusion Detection System) with suricata. The purpose is to sniff in real time all the flow and to detect by pattern matching (signature based) different well know attack (signature for "listen_only" modbus command for example, ....);
+ - 2 - White list approach. The purpose of this software/container is to control, for each information extracted (such as IP SRC, MAC ADDRESS SRC, IP DST, MAC ADDRESS DST, PROTOCOL, PORT DST, etc...) if they are "allowed" (predefined list/structure build during the learning phase);
+ - 3 - Statistical approach #1 (simple approach for the moment). The purpose of this software/container is to compute some simple statistic criteria for industrial protocol (only Modbus/TCP -SCHNEIDER/MODICON- for the moment, but S5/S7/S7+ -SIEMENS- after for example, or DNP3, or Profibus, ....) and to control if it's ok or not (during the "learning" phase computation)
+
+During the learning phase, the purpose is to construct the two "reference database" for both "white list approach" & "simple statistical approach".
+WLA_DB : white list approach db
+SSA_DB : simple statistical approach db
+
+Dumping traffic (sniffing) -> file1.pcap, file2.pcap, .... (in real it's real time analysis by the appliance in dumping/learning phase).
+Industrial Protocol filtering (only modbus,...) and layer 7 exchange reconstruction (query/answer), protocol by protocol (for example in Modbus/TCP, by following Transaction Id.)
+file1_modbus.pcap, ...
+
+Record 1 : IP_SRC_1 (SRC), IP_SRC_2 (DST), MODBUS_UNIT_ID_1
+Record 2 : IP_SRC_1, MAC_ADDR_1
+Record 3 : IP_SRC_2, MAC_ADDR_2
+Record 4 : .....
+
+After this, the purpose is to SUM, COUNT, ... all the records to have 2 dbs (WLA_DB et SSA_DB) to upload into the appliance (running mode).
+
+WLA_DB:
+ - IP_SRC_ALLOWED (IP_1, IP_3, ...)
+ - IP_DST_ALLOWED (IP_2)
+ - IP_DST_UNIT_ID_ALLOWED (IP_2/UNIT_ID_1) :
+    - for example : 192.168.12.253/1
+ - IP_MAC_ASSOCIATION (IP_1/MAC_ADDR_1, IP_2/MAC_ADDR_2, IP_3/MAC_ADDR_3, ...)
+ - MODBUS_FUNCTION (IP_2/FUNCTION_CODE_1, IP_2/FUNCTION_CODE_2, ....)
+
+
+SSA_DB:
+ - Frequency (important) : the question is "how many query by second for this function for a specific src/destination"
+
+
+
+
+json file
+{
+ "IP_SRC" : ["192.168.12.1","192.168.12.2", "....."],
+ "IP_DST" : ["192.168.12.253"],
+ "IP_MODBUS_UNIT_IDENTIFIER" : [
+ 	"192.168.12.253/1" : {
+ 		"IP_ADDR" : "192.168.12.253",
+ 		"MODBUS_UNIT_IDENTIFIER" : "1"
+ 	},
+ 	"192"
+
+'key':value, 'key': {
+	
+}}
+

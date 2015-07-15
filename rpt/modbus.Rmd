@@ -83,7 +83,7 @@ sewModbusDT[,.(count=.N), by=.(ip.dst)]
 
 # Packet Analysis
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=4, fig.align='center'}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=5, fig.align='center'}
 ggplot(sewTCPConvDT, aes(x = factor(0), y = Bytes/1e6)) +
   geom_boxplot(fill="darkorchid3") + xlab("") + scale_x_discrete(breaks = NULL) +
   facet_grid(~Address.A) +
@@ -316,3 +316,25 @@ rm(responses, requests)
 ```{r, warning=FALSE}
 summary(mergedSewDT)
 ```
+
+# Appendix 3 - Commands and Scripts
+
+## TShark
+
+Command used to extract various fields from the pcap file used for analysis.
+
+tshark -r modbus.pcap -T fields -E separator=, -t r -E header=y 
+-e frame.number -e frame.time_relative -e frame.time_delta_displayed -e frame.len 
+-e ip.proto -e ip.version -e ip.src -e eth.src -e ip.dst -e eth.dst
+-e mbtcp.modbus.unit_id -e tcp.srcport -e tcp.dstport -e mbtcp.prot_id
+-e mbtcp.trans_id -e mbtcp.len -e mbtcp.modbus.func_code -e mbtcp.modbus.reference_num 
+-e mbtcp.modbus.word_cnt -e mbtcp.modbus.data > modbus.data
+
+## sed
+Command used to remove empty lines from the pcap data.
+
+sed '/^,,,,,.*$/d' modbus.data > modbus.data
+
+## R
+install.R - Setup script to install required packages.
+sewModbus.R - Script for processing, analysing and visualizing modbus data.
