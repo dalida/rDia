@@ -143,34 +143,48 @@ Destinations
 ## 2:  192.168.12.53 18496
 \end{verbatim}
 
+Destination / UnitID
+
+\begin{verbatim}
+##            ip.dst mbtcp.modbus.unit_id count
+## 1: 192.168.12.252                    1 18496
+## 2:  192.168.12.53                    1 18496
+\end{verbatim}
+
+\begin{verbatim}
+##            ip.src mbtcp.modbus.func_code count
+## 1:  192.168.12.53                      4 18496
+## 2: 192.168.12.252                      4 18496
+\end{verbatim}
+
 \section{Packet Analysis}\label{packet-analysis}
 
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-7-1} \end{center}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-10-1} \end{center}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-8-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-11-1.pdf}
 
 \pagebreak
 
 \subsection{MODBUS/TCP Request/Response Packet Statistics (Appendix
 1)}\label{modbustcp-requestresponse-packet-statistics-appendix-1}
 
-MODBUS/TCP requests are identified by packets having destination port
-number 502
+MODBUS/TCP \textbf{requests} are identified by packets having
+destination port number 502
 
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-11-1} \end{center}
-
-\pagebreak
-
-MODBUS/TCP responses are identified by packets having source port number
-502
-
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-13-1} \end{center}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-14-1} \end{center}
 
 \pagebreak
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-14-1.pdf}
+MODBUS/TCP \textbf{responses} are identified by packets having source
+port number 502
 
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-15-1} \end{center}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-16-1} \end{center}
+
+\pagebreak
+
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-18-1} \end{center}
 
 \pagebreak
 
@@ -183,9 +197,9 @@ transaction. An additional field ``d'' is the data field ``resp.data''
 converted from a hex to a decimal value. (Appendix 2)
 ~\\\hspace*{0.333em}\\\hspace*{0.333em}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-16-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-19-1.pdf}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-17-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-20-1.pdf}
 
 \pagebreak
 
@@ -205,15 +219,15 @@ Statistics}\label{modbus-data-value-statistics}
 ## 4: 2125.525453          24.61349          601.3094
 \end{verbatim}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-19-1.pdf}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-22-1} \end{center}
 
 \pagebreak
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-20-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-23-1.pdf}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-21-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-24-1.pdf}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-22-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-25-1.pdf}
 
 \pagebreak
 
@@ -398,5 +412,32 @@ Statistics}\label{appendix-2---merged-requestresponse-packet-statistics}
 ##  Max.   :7327.0  
 ## 
 \end{verbatim}
+
+\section{Appendix 3 - Commands and
+Scripts}\label{appendix-3---commands-and-scripts}
+
+\subsection{TShark}\label{tshark}
+
+Command used to extract various fields from the pcap file used for
+analysis.
+
+tshark -r modbus.pcap -T fields -E separator=, -t r -E header=y -e
+frame.number -e frame.time\_relative -e frame.time\_delta\_displayed -e
+frame.len -e ip.proto -e ip.version -e ip.src -e eth.src -e ip.dst -e
+eth.dst -e mbtcp.modbus.unit\_id -e tcp.srcport -e tcp.dstport -e
+mbtcp.prot\_id -e mbtcp.trans\_id -e mbtcp.len -e
+mbtcp.modbus.func\_code -e mbtcp.modbus.reference\_num -e
+mbtcp.modbus.word\_cnt -e mbtcp.modbus.data \textgreater{} modbus.data
+
+\subsection{sed}\label{sed}
+
+Command used to remove empty lines from the pcap data.
+
+sed '/\^{},,,,,.*\$/d' modbus.data \textgreater{} modbus.data
+
+\subsection{R}\label{r}
+
+install.R - Setup script to install required packages. sewModbus.R -
+Script for processing, analysing and visualizing modbus data.
 
 \end{document}

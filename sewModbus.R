@@ -1,10 +1,10 @@
 # sewModbusDT
 
-datafile <- "~/Bureau/data/scadaCops/normal/sew.data"
+datafile <- "~/scada/sew.data"
 
 sewModbusDT <- as.data.table(
   read.csv(datafile, header=TRUE,
-           stringsAsFactors=F,
+           stringsAsFactors=T,
            colClass=c(ip.proto="factor", ip.version="factor", ip.src="factor",
                       ip.dst="factor", eth.src="factor", eth.dst="factor",
                       mbtcp.modbus.unit_id="factor",
@@ -13,8 +13,6 @@ sewModbusDT <- as.data.table(
                       mbtcp.modbus.reference_num="factor",
                       mbtcp.prot_id="factor")))
 
-rm(datafile)
-
 # cleanup
 
 sewModbusDT <- sewModbusDT[!(is.na(frame.number))]
@@ -22,11 +20,15 @@ sewModbusDT <- sewModbusDT[!(is.na(mbtcp.modbus.unit_id))]
 sewModbusDT <- sewModbusDT[!(is.na(mbtcp.trans_id))]
 sewModbusDT <- sewModbusDT[!(is.na(mbtcp.modbus.reference_num))]
 
+save(sewModbusDT, file="sew.Rda")
+rm(datafile)
+
 numrows <- (nrow(sewModbusDT)/2)
+#numrows<-500
 
 frame.number<-numeric(numrows)
 frame.time_relative<-numeric(numrows)
-frame.time_delta_displayed<-numeric(numrows)
+frame.time_delta<-numeric(numrows)
 frame.len<-numeric(numrows)
 ip.src <- character(numrows)
 eth.src <- character(numrows)
@@ -41,14 +43,15 @@ mbtcp.len <- numeric(numrows)
 mbtcp.modbus.func_code <- character(numrows)
 mbtcp.modbus.word_cnt <- numeric(numrows)
 mbtcp.modbus.reference_num <- character(numrows)
-resp.fr.number <- numeric(numrows) 
+frame.second <-numeric(numrows)
+resp.frame.number <- numeric(numrows) 
 resp.time.rel <- numeric(numrows)
 resp.time.delta <- numeric(numrows)
 resp.len <- numeric(numrows)
-resp.ipsrc <- character(numrows)
-resp.ethsrc <- character(numrows)
-resp.ipdest <- character(numrows)
-resp.ethdest <- character(numrows)
+resp.ip.src <- character(numrows)
+resp.eth.src <- character(numrows)
+resp.ip.dst <- character(numrows)
+resp.eth.dst <- character(numrows)
 resp.srcport <- character(numrows)
 resp.dstport<- character(numrows)
 resp.unit_id<- character(numrows)
@@ -56,35 +59,38 @@ resp.prot_id <- character(numrows)
 resp.trans_id <- numeric(numrows)
 resp.mbcp.len <- numeric(numrows)
 resp.func.code <- character(numrows)
+resp.second <-numeric(numrows)
 resp.data <- character(numrows)
 
 
-mergedSewDT<- data.table(frame.number, frame.time_relative, frame.time_delta_displayed, frame.len,
+mergedSewDT<- data.table(frame.number, frame.time_relative, frame.time_delta, frame.len,
                       ip.src, eth.src, ip.dst, eth.dst, mbtcp.modbus.unit_id, tcp.srcport, tcp.dstport,
                       mbtcp.prot_id, mbtcp.trans_id, mbtcp.len, mbtcp.modbus.func_code,
-                      mbtcp.modbus.word_cnt, mbtcp.modbus.reference_num, resp.fr.number,
-                      resp.time.rel, resp.time.delta, resp.len, resp.ipsrc, resp.ipdest,
+                      mbtcp.modbus.word_cnt, frame.second, mbtcp.modbus.reference_num, resp.frame.number,
+                      resp.time.rel, resp.time.delta, resp.len, resp.ip.src, resp.ip.dst,
                       resp.srcport, resp.unit_id, resp.dstport, resp.prot_id, resp.trans_id,
-                      resp.mbcp.len, resp.func.code, resp.data
+                      resp.mbcp.len, resp.func.code, resp.second, resp.data
 )
 
 idx <- 1
 
 system.time(
   for (i in 1:nrow(sewModbusDT)) {
+#  for (i in 1:(numrows*2)) {
     pkt <- sewModbusDT[i,]
     #   print(paste("pkt :", i))
     #   print(pkt)
   
-    # TODO: need to check transactionID are the same
+    # TODO: need to check transactionID are the same, right now this is an assumption
     
     #   if request (assumption is that we're starting with a request)
     if (pkt$tcp.dstport=="502") {
-      mergedSewRow <- pkt[,.(frame.number, frame.time_relative, frame.time_delta_displayed,
-                             frame.len, ip.src, ip.dst, mbtcp.modbus.unit_id, tcp.srcport,
-                             tcp.dstport, mbtcp.prot_id, mbtcp.trans_id, mbtcp.len,
+      mergedSewRow <- pkt[,.(frame.number, frame.time_relative, frame.time_delta,
+                             frame.len, ip.src, eth.src, ip.dst, eth.dst, mbtcp.modbus.unit_id,
+                             tcp.srcport, tcp.dstport, mbtcp.prot_id, mbtcp.trans_id, mbtcp.len,
                              mbtcp.modbus.func_code, mbtcp.modbus.word_cnt, 
                              mbtcp.modbus.reference_num)]
+                             
       setkey(mergedSewRow, mbtcp.trans_id)
       #     print(paste("mergedSewRow: ", i))
       #     print(mergedSewRow)
@@ -93,10 +99,10 @@ system.time(
     # get next row, should be response
     if (pkt$tcp.srcport=="502") {
       # set response fields in mergedSewRow
-      addCols <- pkt[,.(resp.fr.number=frame.number, resp.time.rel=frame.time_relative, 
-                        resp.time.delta=frame.time_delta_displayed,
-                        resp.len=frame.len, resp.ipsrc=ip.src, resp.ethsrc=eth.src,
-                        resp.ipdest=ip.dst, resp.ethdest=eth.dst,
+      addCols <- pkt[,.(resp.frame.number=frame.number, resp.time.rel=frame.time_relative, 
+                        resp.time.delta=frame.time_delta,
+                        resp.len=frame.len, resp.ip.src=ip.src, resp.eth.src=eth.src,
+                        resp.ip.dst=ip.dst, resp.eth.dst=eth.dst,
                         resp.unit_id=mbtcp.modbus.unit_id, resp.srcport=tcp.srcport, 
                         resp.dstport=tcp.dstport, resp.prot_id=mbtcp.prot_id, 
                         resp.trans_id=mbtcp.trans_id, resp.mbcp.len=mbtcp.len,
@@ -113,7 +119,7 @@ system.time(
       
       mergedSewDT[idx, `:=`("frame.number"=mergedSewRow$frame.number,
                             "frame.time_relative"=mergedSewRow$frame.time_relative,
-                            "frame.time_delta_displayed"=mergedSewRow$frame.time_delta_displayed,
+                            "frame.time_delta"=mergedSewRow$frame.time_delta,
                             "frame.len"=mergedSewRow$frame.len, "ip.src"=mergedSewRow$ip.src,
                             "eth.src"=mergedSewRow$eth.src,  "ip.dst"=mergedSewRow$ip.dst,
                             "eth.dst"=mergedSewRow$eth.dst,
@@ -124,10 +130,10 @@ system.time(
                             "mbtcp.modbus.func_code"=mergedSewRow$mbtcp.modbus.func_code,
                             "mbtcp.modbus.word_cnt"=mergedSewRow$mbtcp.modbus.word_cnt,
                             "mbtcp.modbus.reference_num"=mergedSewRow$mbtcp.modbus.reference_num,
-                            "resp.fr.number"=mergedSewRow$resp.fr.number, "resp.time.rel"=mergedSewRow$resp.time.rel,
+                            "resp.frame.number"=mergedSewRow$resp.frame.number, "resp.time.rel"=mergedSewRow$resp.time.rel,
                             "resp.time.delta"=mergedSewRow$resp.time.delta, "resp.len"=mergedSewRow$resp.len,
-                            "resp.ipsrc"=mergedSewRow$resp.ipsrc, "resp.ethsrc"=mergedSewRow$resp.ethsrc,
-                            "resp.ipdest"=mergedSewRow$resp.ipdest, "resp.ethdest"=mergedSewRow$resp.ethdest,
+                            "resp.ip.src"=mergedSewRow$resp.ip.src, "resp.eth.src"=mergedSewRow$resp.eth.src,
+                            "resp.ip.dst"=mergedSewRow$resp.ip.dst, "resp.eth.dst"=mergedSewRow$resp.eth.dst,
                             "resp.unit_id"=mergedSewRow$resp.unit_id,
                             "resp.srcport"=mergedSewRow$resp.srcport, "resp.dstport"=mergedSewRow$resp.dstport,
                             "resp.prot_id"=mergedSewRow$resp.prot_id, "resp.trans_id"=mergedSewRow$mbtcp.trans_id,
@@ -136,15 +142,20 @@ system.time(
                ]
       
       idx <- idx+1
-    }
-    
+      rm(mergedSewRow)
+    } # end srcport=502
+    rm(pkt,addCols)
   } # end for i in sewModbusDT
 ) # end system.time
 
 
-rm(pkt, mergedSewRow, addCols, i, idx)
+rm(mergedSewRow, i, idx)
 
+# convert hex to decimal
 mergedSewDT[, d:=as.integer(paste("0x", gsub(":", "", resp.data), sep=""))]
+# seconds
+mergedSewDT$frame.second <- floor(mergedSewDT$frame.time_relative)
+mergedSewDT$resp.second <- floor(mergedSewDT$resp.time.rel)
 
 # factorize
 mergedSewDT$ip.src <- factor(mergedSewDT$ip.src)
@@ -154,10 +165,10 @@ mergedSewDT$tcp.srcport <- factor(mergedSewDT$tcp.srcport)
 mergedSewDT$tcp.dstport <- factor(mergedSewDT$tcp.dstport)
 mergedSewDT$mbtcp.prot_id <- factor(mergedSewDT$mbtcp.prot_id)
 mergedSewDT$mbtcp.modbus.func_code<- factor(mergedSewDT$mbtcp.modbus.func_code)
-mergedSewDT$resp.ipsrc <- factor(mergedSewDT$resp.ipsrc)
-mergedSewDT$resp.ethsrc <- factor(mergedSewDT$resp.ethsrc)
-mergedSewDT$resp.ipdest <- factor(mergedSewDT$resp.ipdest)
-mergedSewDT$resp.ethdest <- factor(mergedSewDT$resp.ethdest)
+mergedSewDT$resp.ip.src <- factor(mergedSewDT$resp.ip.src)
+mergedSewDT$resp.eth.src <- factor(mergedSewDT$resp.eth.src)
+mergedSewDT$resp.ip.dst <- factor(mergedSewDT$resp.ip.dst)
+mergedSewDT$resp.eth.dst <- factor(mergedSewDT$resp.eth.dst)
 mergedSewDT$resp.unit_id <- factor(mergedSewDT$resp.unit_id)
 mergedSewDT$resp.srcport <- factor(mergedSewDT$resp.srcport)
 mergedSewDT$resp.dstport <- factor(mergedSewDT$resp.dstport)
@@ -166,7 +177,9 @@ mergedSewDT$resp.data <- factor(mergedSewDT$resp.data)
 mergedSewDT$resp.func.code <- factor(mergedSewDT$resp.func.code)
 mergedSewDT$mbtcp.modbus.reference_num <- factor(mergedSewDT$mbtcp.modbus.reference_num)
 
+mergedSewDT <- mergedSewDT[ip.src!=""]
 
+save(mergedSewDT, file="sewMerged.Rda")
 
 # decompose data field
 # mergedSewDT$PX <- as.character(lapply(strsplit(as.character(mergedSewDT$resp.data), split=":"), "[", 1))
@@ -203,6 +216,10 @@ modsewDataStats
 # 3:              4                          2  1088  3455 4972.96140  5241  256.073630          24.52703          601.2214
 # 4:              4                          3  1088     0 3467.62592  7327 2125.525453          24.61349          601.3094
 
+# average frequency of packets per second
+avgFrequency <- mergedSewDT[,.(frequency=.N),by=frame.second][,mean(frequency)]
+
+
 # scatterplot
 ggplot(mergedSewDT, aes(resp.time.rel, d, color=factor(mbtcp.modbus.reference_num))) +
   geom_point() + facet_grid(~resp.func.code) + ggtitle("Modbus Data Value (d) Over Time by Function Code")
@@ -229,13 +246,12 @@ cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = me
                  columns = nlevels(mergedSewDT$mbtcp.modbus.reference_num)))
 
 
-save(mergedSewDT, sewModbusDT, file="sewData.Rda")
-
 vars <- ls()
 vars <- vars[-14][-28]
 vars
 #do.call(rm, as.list(vars))
 #rm(vars)
+
 
 
 

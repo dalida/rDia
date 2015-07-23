@@ -22,6 +22,7 @@ require(RColorBrewer)
 require(png)
 require(grid)
 require(gridExtra)
+require(rjson)
 ```
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
@@ -81,6 +82,20 @@ Destinations
 sewModbusDT[,.(count=.N), by=.(ip.dst)]
 ```
 
+Destination / UnitID
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sewModbusDT[,.(ip.dst.unit_id = paste(ip.dst, mbtcp.modbus.unit_id, sep="/")),
+                    by=.(ip.dst, mbtcp.modbus.unit_id)]
+```
+
+Source / Function Code
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sewModbusDT[,.(src.func = paste(ip.src, mbtcp.modbus.func_code, sep="/"))
+                       , by=.(ip.src, mbtcp.modbus.func_code)]
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```
 # Packet Analysis
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=5, fig.align='center'}
@@ -120,7 +135,7 @@ rm(bc1, bc2)
 ## MODBUS/TCP Request/Response Packet Statistics (Appendix 1)
 
 
-MODBUS/TCP requests are identified by packets having destination port number 502
+MODBUS/TCP **requests** are identified by packets having destination port number 502
 ```{r, echo=FALSE}
 requests<-sewModbusDT[tcp.dstport=="502"]
 ```
@@ -147,7 +162,7 @@ invisible(dev.off())
 
 \pagebreak
 
-MODBUS/TCP responses are identified by packets having source port number 502
+MODBUS/TCP **responses** are identified by packets having source port number 502
 ```{r, echo=FALSE, warning=FALSE}
 responses<-sewModbusDT[tcp.srcport=="502"]
 ```
@@ -247,7 +262,7 @@ mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
            order(resp.func.code, mbtcp.modbus.reference_num)]
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 # Frequency of Reference Numbers by Function Code
 ggplot(sewModbusDT, aes(x=mbtcp.modbus.reference_num, fill=mbtcp.modbus.reference_num)) +
   geom_bar(stat="bin") +
@@ -265,6 +280,7 @@ ggplot(mergedSewDT, aes(x = factor(0), y = d)) +
   geom_boxplot(fill="lightpink4") +
   facet_grid(mbtcp.modbus.func_code~mbtcp.modbus.reference_num) +
   xlab("") + scale_x_discrete(breaks = NULL) +
+#  theme(plot.margin = unit(c(0, 1, 5, 1), "cm")  +
   ggtitle("Boxplot of Modbus Data Values by Function/Reference Number")
 
 invisible(dev.off())
