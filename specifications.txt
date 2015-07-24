@@ -42,11 +42,11 @@ json file
  "IP_MODBUS_UNIT_IDENTIFIER" : [
  	"192.168.12.253/1" : {
  		"IP_ADDR" : "192.168.12.253",
- 		"MODBUS_UNIT_IDENTIFIER" : "1"
+ 		"MODBUS_UNIT_IDENTIFIER" : "1 "
  	},
  	"192"
 
-'key':value, 'key': {
-	
-}}
+'key':value, 'key': {}
+]
+}
 

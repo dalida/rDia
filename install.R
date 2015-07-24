@@ -29,6 +29,9 @@ install.packages("hash")
 install.packages("xts")
 install.packages("jsonlite")
 
+install.packages("Rcpp")
+install.packages("microbenchmark")
+
 library(data.table)
 library(tidyr)
 library(lattice)
@@ -49,6 +52,8 @@ library(rjson)
 library(hash)
 library(xts)
 #library(jsonlite)
+library(Rcpp)
+library(microbenchmark)
 
 # descriptive stats
 library(boots)

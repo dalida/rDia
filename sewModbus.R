@@ -61,7 +61,7 @@ resp.mbcp.len <- numeric(numrows)
 resp.func.code <- character(numrows)
 resp.second <-numeric(numrows)
 resp.data <- character(numrows)
-
+d <- character(numrows)
 
 mergedSewDT<- data.table(frame.number, frame.time_relative, frame.time_delta, frame.len,
                       ip.src, eth.src, ip.dst, eth.dst, mbtcp.modbus.unit_id, tcp.srcport, tcp.dstport,
@@ -201,13 +201,11 @@ sewModbusDT[,.(count=.N), by=.(ip.src, ip.dst, mbtcp.modbus.unit_id)]
 # mergedSewDT[,.(count=.N), by=.(ip.src, ip.dst, mbtcp.modbus.unit_id, resp.data)]
 
 
-modsewDataStats <- mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T),
-                                  d.max=max(d), d.sd=sd(d, na.rm=T),
-                                  min.resp.time.rel=min(resp.time.rel),
-                                  min.resp.time.rel= max(resp.time.rel)),
-                            by=.(resp.func.code, mbtcp.modbus.reference_num)][order(resp.func.code, mbtcp.modbus.reference_num)]
-
-modsewDataStats
+# modsewDataStats <- mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T),
+#                                   d.sd=sd(d, na.rm=T), d.max=max(d)),
+#                             by=.(resp.func.code, mbtcp.modbus.reference_num)][order(resp.func.code, mbtcp.modbus.reference_num)]
+# 
+# modsewDataStats
 
 # > modsewDataStats
 #    resp.func.code mbtcp.modbus.reference_num count d.min     d.mean d.max        d.sd min.resp.time.rel min.resp.time.rel
@@ -219,10 +217,179 @@ modsewDataStats
 # average frequency of packets per second
 avgFrequency <- mergedSewDT[,.(frequency=.N),by=frame.second][,mean(frequency)]
 
+# Source / Destination / UnitID
+#sdu <- sewModbusDT[,.(count=.N), by=.(ip.src, ip.dst,mbtcp.modbus.unit_id)]
+sdu <- unique(sewModbusDT, by=c("ip.src", "ip.dst", "mbtcp.modbus.unit_id"))[,.(ip.src, ip.dst,mbtcp.modbus.unit_id)]
+sdu
+
+#### GENERATE WHITE LIST ####
+# Sources
+# srcs <- sewModbusDT[,.(count=.N), by=.(ip.src)]
+srcs  <- unique(sewModbusDT, by=c("ip.src"))[,.(ip.src)]
+srcs
+txt1 <- sprintf('"IP_SRC" : [%s]',
+                paste0(
+                  with(srcs,
+                       sprintf('"%s"',
+                               ip.src)),
+                  collapse = ","))
+txt1
+
+
+# Destinations
+# dst <- sewModbusDT[,.(count=.N), by=.(ip.dst)]
+dst <- unique(sewModbusDT, by=c("ip.dst"))[,.(ip.dst)]
+dst
+txt2 <- sprintf('"IP_DST" : [%s]',
+                paste0(
+                  with(dst,
+                       sprintf('"%s"',
+                               ip.dst)),
+                  collapse = ","))
+txt2
+
+# Destination / UnitID
+# du <- sewModbusDT[,.(ip.dst.unit_id = paste(ip.dst, mbtcp.modbus.unit_id, sep="/")),
+#                   by=.(ip.dst, mbtcp.modbus.unit_id)]
+du <- unique(sewModbusDT,
+             by=c("ip.dst",
+                  "mbtcp.modbus.unit_id"))[
+                    ,.(IP_MODBUS_UNIT_ID = paste(ip.dst,
+                                                 mbtcp.modbus.unit_id, sep="/"),
+                       ip.dst,
+                       mbtcp.modbus.unit_id)]
+du
+txt3 <- sprintf('"IP_MODBUS_UNIT_ID" : [\n%s\n]',
+                paste0(
+                  with(du,
+                       sprintf('  "%s" : {\n   "IP_ADDR" : "%s",\n   "UNIT_ID" : "%s "\n  }',
+                               IP_MODBUS_UNIT_ID, ip.dst, mbtcp.modbus.unit_id)),
+                  collapse = ",\n"))
+txt3
+
+# Source / MAC Address
+#smac <- sewModbusDT[,.(count=.N), by=.(ip.src, eth.src)]
+smac <- unique(sewModbusDT,
+               by=c("ip.src", "eth.src"))[
+                 ,.(IP_ADDR_MAC_ADDR = paste(ip.src, eth.src, sep="/"),
+                    ip.src,
+                    eth.src)]
+smac
+txt4 <- sprintf('"IP_ADDR_MAC_ADDR" : [\n%s\n]',
+                paste0(
+                  with(smac,
+                       sprintf('  "%s" : {\n    "IP_ADDR" : "%s",\n   "MAC_ADDR" : "%s "\n  }',
+                               IP_ADDR_MAC_ADDR, ip.src, eth.src)),
+                  collapse = ",\n"))
+txt4
+
+# Source / Function Code
+sfunc <- sewModbusDT[,.(IP_ADDR_MOD_FUNC = paste(ip.src, mbtcp.modbus.func_code, sep="/"))
+                     , by=.(ip.src, mbtcp.modbus.func_code)][
+                       ,.(IP_ADDR_MOD_FUNC, ip.src,
+                         mbtcp.modbus.func_code)]
+sfunc
+txt5 <- sprintf('"IP_ADDR_MODBUS_FUNC" : [\n%s\n]',
+                paste0(
+                  with(sfunc,
+                       sprintf('  "%s" : {\n    "IP_ADDR" : "%s",\n   "MODBUS_FUNCTION" : "%s "\n  }',
+                               IP_ADDR_MOD_FUNC, ip.src, mbtcp.modbus.func_code)),
+                  collapse = ",\n"))
+txt5
+
+# Source / Function Code
+sfuncRef <- mergedSewDT[,.(IP_ADDR_MOD_FUNC_REF = paste(ip.src, mbtcp.modbus.func_code,
+                                                mbtcp.modbus.reference_num, sep="/"))
+                     , by=.(ip.src, mbtcp.modbus.func_code, mbtcp.modbus.reference_num)][
+                       ,.(IP_ADDR_MOD_FUNC_REF,
+                          ip.src,
+                          mbtcp.modbus.func_code,
+                          mbtcp.modbus.reference_num)][order(mbtcp.modbus.reference_num)]
+sfuncRef
+txt6 <- sprintf('"IP_ADDR_MODBUS_FUNC_REF" : [\n%s\n]',
+                paste0(
+                  with(sfuncRef,
+                       sprintf('  "%s" : {\n    "IP_SRC" : "%s",\n     "MODBUS_FUNCTION" : "%s ",\n    "MODBUS_REFERENCE" : "%s "\n  }',
+                               IP_ADDR_MOD_FUNC_REF, ip.src, mbtcp.modbus.func_code, mbtcp.modbus.reference_num)),
+                  collapse = ",\n"))
+txt6
+
+whitelist <- sprintf('{\n%s\n}',
+                     paste(txt1, txt2, txt3, txt4, txt5, txt6, sep=",\n")
+)
+write(whitelist, file="whitelist.db")
+rm(txt1, txt2, txt3, txt4, txt5, txt6, sdu, srcs, dst, du, smac, sfunc, sfuncRef, whitelist)
+
+# Packet Analysis
+
+#### STATS ####
+#Average frequency of packets per second
+avgPkt <- mergedSewDT[,.(frequency=.N),by=frame.second][,mean(frequency)]
+avgPkt
+
+# Frequency per second, per source/dest ip and function code
+srcFuncFreq <- mergedSewDT[,.(frequency=.N),
+            by =.(ip.src, ip.dst, mbtcp.modbus.func_code,
+                  frame.second)][
+                    order(ip.src, ip.dst, mbtcp.modbus.func_code,
+                          frame.second)][,.(avgFrequencySec=mean(frequency)),
+                                         by=.(ip.src, ip.dst, mbtcp.modbus.func_code)]
+srcFuncFreq
+txt1 <- sprintf('"SOURCE_DEST_FUNCTION_FREQUENCY" : [\n%s\n]',
+                paste0(
+                  with(srcFuncFreq,
+                       sprintf('  "%s" : {\n    "IP_SRC" : "%s",\n    "IP_DST" : "%s",\n    "MODBUS_FUNCTION" : "%s ",\n    "FREQUENCY" : "%f "\n  }',
+                               paste(ip.src, ip.dst, mbtcp.modbus.func_code, sep="/"),
+                               ip.src, ip.dst, mbtcp.modbus.func_code,
+                               avgFrequencySec)),
+                  collapse = ",\n"))
+txt1
+
+# Frequency per second, per source/dest ip, function code, and reference num
+srcFuncRefFreq <- mergedSewDT[,.(frequency=.N),
+            by =.(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num,
+                  frame.second)][
+                    order(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num,
+                          frame.second)][,.(avgFrequncySec=mean(frequency)),
+                                         by=.(ip.src, ip.dst, mbtcp.modbus.func_code,
+                                              mbtcp.modbus.reference_num)]
+srcFuncRefFreq
+txt2 <- sprintf('"SOURCE_DEST_FUNCTION_REFERENCE_FREQUENCY" : [\n%s\n]',
+                paste0(
+                  with(srcFuncRefFreq,
+                       sprintf('  "%s" : {\n    "IP_SRC" : "%s",\n    "IP_DST" : "%s",\n    "MODBUS_FUNCTION" : "%s ",\n    "MODBUS_REFERENCE" : "%s ",\n    "FREQUENCY" : "%f "\n  }',
+                               paste(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num, sep="/"),
+                               ip.src, ip.dst, mbtcp.modbus.func_code,
+                               mbtcp.modbus.reference_num,
+                               avgFrequncySec)),
+                  collapse = ",\n"))
+txt2
+
+modbusStats <- mergedSewDT[,.(frequency=.N, d.min=min(d), d.mean=mean(d, na.rm=T),
+                              d.sd=sd(d, na.rm=T), d.max=max(d)
+), by =.(mbtcp.modbus.func_code, mbtcp.modbus.reference_num)][
+  order(mbtcp.modbus.func_code, mbtcp.modbus.reference_num)]
+modbusStats
+txt3 <- sprintf('"MODBUS_FUNCTION_REFERENCE_DATA_STATS" : [\n%s\n]',
+                paste0(
+                  with(modbusStats,
+                       sprintf('  "%s" : {\n    "MODBUS_FUNCTION" : "%s",\n    "MODBUS_REFERENCE" : "%s",\n    "D_MIN" : "%.2f ",\n    "D_MEAN" : "%.2f ",\n    "D_STD_DEV" : "%.2f ",\n    "D_MAX" : "%.2f "\n  }',
+                               paste(mbtcp.modbus.func_code, mbtcp.modbus.reference_num, sep="/"),
+                               mbtcp.modbus.func_code,
+                               mbtcp.modbus.reference_num,
+                               d.min, d.mean, d.sd, d.max)),
+                  collapse = ",\n"))
+txt3
+stats <- sprintf('{\n%s\n}',
+                     paste(txt1, txt2, txt3, sep=",\n")
+)
+write(stats, file="stats.db")
+rm(txt1, txt2, txt3)
+
 
 # scatterplot
-ggplot(mergedSewDT, aes(resp.time.rel, d, color=factor(mbtcp.modbus.reference_num))) +
-  geom_point() + facet_grid(~resp.func.code) + ggtitle("Modbus Data Value (d) Over Time by Function Code")
+# ggplot(mergedSewDT, aes(resp.time.rel, d, color=factor(mbtcp.modbus.reference_num))) +
+#   geom_point() + facet_grid(~resp.func.code) + ggtitle("Modbus Data Value (d) Over Time by Function Code")
 
 
 # meltedSew <- melt(mergedSewDT, id=c("resp.time.rel","mbtcp.trans_id","resp.func.code", 
@@ -230,26 +397,26 @@ ggplot(mergedSewDT, aes(resp.time.rel, d, color=factor(mbtcp.modbus.reference_nu
 #                                     ), measure=c("mbtcp.modbus.reference_num"))
 
 # trivariate plot
-cloud(resp.time.rel ~ factor(mbtcp.modbus.reference_num) * d | resp.func.code,
-            data = mergedSewDT[!(is.na(resp.data))], zlim = rev(range(mergedSewDT$resp.time.rel)),
-            screen = list(z = 135, x = -70), panel.aspect = 0.75, xlab = "d",
-            ylab = "refNum", zlab = "resp.time.rel",
-            main="3D of Reference Number by d Over Time Grouped by Function Code")
+# cloud(resp.time.rel ~ factor(mbtcp.modbus.reference_num) * d | resp.func.code,
+#             data = mergedSewDT[!(is.na(resp.data))], zlim = rev(range(mergedSewDT$resp.time.rel)),
+#             screen = list(z = 135, x = -70), panel.aspect = 0.75, xlab = "d",
+#             ylab = "refNum", zlab = "resp.time.rel",
+#             main="3D of Reference Number by d Over Time Grouped by Function Code")
 
 # with color
-cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = mergedSewDT,
-      col.point = mergedSewDT$mbtcp.modbus.reference_num, pch= 19,
-      zlim = rev(range(mergedSewDT$resp.time.rel)), xlab = "d",
-      ylab = "refNum", zlab = "resp.time.rel", main="3D of Reference Number by d Over Time Grouped by Function Code",
-      key = list(points = list(pch = 19, col = seq_along(levels(mergedSewDT$mbtcp.modbus.reference_num))), 
-                 text = list(levels(mergedSewDT$mbtcp.modbus.reference_num)), space = 'top',
-                 columns = nlevels(mergedSewDT$mbtcp.modbus.reference_num)))
-
-
-vars <- ls()
-vars <- vars[-14][-28]
-vars
-#do.call(rm, as.list(vars))
+# cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = mergedSewDT,
+#       col.point = mergedSewDT$mbtcp.modbus.reference_num, pch= 19,
+#       zlim = rev(range(mergedSewDT$resp.time.rel)), xlab = "d",
+#       ylab = "refNum", zlab = "resp.time.rel", main="3D of Reference Number by d Over Time Grouped by Function Code",
+#       key = list(points = list(pch = 19, col = seq_along(levels(mergedSewDT$mbtcp.modbus.reference_num))), 
+#                  text = list(levels(mergedSewDT$mbtcp.modbus.reference_num)), space = 'top',
+#                  columns = nlevels(mergedSewDT$mbtcp.modbus.reference_num)))
+# 
+# 
+# vars <- ls()
+# vars <- vars[-49]
+# vars
+# do.call(rm, as.list(vars))
 #rm(vars)
 
 
