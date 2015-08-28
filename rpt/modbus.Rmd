@@ -29,9 +29,11 @@ require(rjson)
 # Load data from save(sewTCPConvDT, sewEndPtsDT, file="sewConvEnd.Rda")
 load("/home/lisa/rDia/sewConvEnd.Rda")
 
-# Load data from save(sewModbusDT, mergedSewDT, file="sew.Rda")
+# Load data from save(sewModbusDT file="sew.Rda")
 load("/home/lisa/rDia/sew.Rda")
 
+# Load data from save(mergedSewDT, file="sewMerged.Rda")
+load("/home/lisa/rDia/sewMerged.Rda")
 ```
 
 # Introduction
@@ -94,10 +96,7 @@ sewModbusDT[,.(src.func = paste(ip.src, mbtcp.modbus.func_code, sep="/"))
                        , by=.(ip.src, mbtcp.modbus.func_code)]
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-```
 # Packet Analysis
-
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=5, fig.align='center'}
 ggplot(sewTCPConvDT, aes(x = factor(0), y = Bytes/1e6)) +
   geom_boxplot(fill="darkorchid3") + xlab("") + scale_x_discrete(breaks = NULL) +
@@ -146,7 +145,7 @@ p1 <- ggplot(requests, aes(x=factor(0))) +
   scale_x_discrete(breaks = NULL)
     
 p2 <- ggplot(requests, aes(x=factor(0))) +
-  geom_boxplot(aes(y=frame.time_delta_displayed)) + xlab("") +
+  geom_boxplot(aes(y=frame.time_delta)) + xlab("") +
   scale_x_discrete(breaks = NULL)
     
 p3 <- ggplot(requests, aes(x=factor(0))) +
@@ -173,7 +172,7 @@ p1 <- ggplot(responses, aes(x=factor(0))) +
   scale_x_discrete(breaks = NULL)
     
 p2 <- ggplot(responses, aes(x=factor(0))) +
-  geom_boxplot(aes(y=frame.time_delta_displayed)) + xlab("") +
+  geom_boxplot(aes(y=frame.time_delta)) + xlab("") +
   scale_x_discrete(breaks = NULL)
     
 p3 <- ggplot(responses, aes(x=factor(0))) +
@@ -340,7 +339,7 @@ summary(mergedSewDT)
 Command used to extract various fields from the pcap file used for analysis.
 
 tshark -r modbus.pcap -T fields -E separator=, -t r -E header=y 
--e frame.number -e frame.time_relative -e frame.time_delta_displayed -e frame.len 
+-e frame.number -e frame.time_relative -e frame.time_delta -e frame.len 
 -e ip.proto -e ip.version -e ip.src -e eth.src -e ip.dst -e eth.dst
 -e mbtcp.modbus.unit_id -e tcp.srcport -e tcp.dstport -e mbtcp.prot_id
 -e mbtcp.trans_id -e mbtcp.len -e mbtcp.modbus.func_code -e mbtcp.modbus.reference_num 

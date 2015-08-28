@@ -84,6 +84,14 @@
 
 %%% Change title format to be more compact
 \usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
 \setlength{\droptitle}{-2em}
   \title{Exploratory Data Analysis\\MODBUS / TCP}
   \pretitle{\vspace{\droptitle}\centering\huge}
@@ -94,7 +102,6 @@
   \predate{\centering\large\emph}
   \postdate{\par}
   \date{June 2015}
-
 
 
 
@@ -123,45 +130,47 @@ Source / Destination / UnitID
 
 \begin{verbatim}
 ##            ip.src         ip.dst mbtcp.modbus.unit_id count
-## 1:  192.168.12.53 192.168.12.252                    1 18496
-## 2: 192.168.12.252  192.168.12.53                    1 18496
+## 1: 192.168.12.117 192.168.12.252                    1 24947
+## 2: 192.168.12.252 192.168.12.117                    1 24945
 \end{verbatim}
 
 Sources
 
 \begin{verbatim}
 ##            ip.src count
-## 1:  192.168.12.53 18496
-## 2: 192.168.12.252 18496
+## 1: 192.168.12.117 24947
+## 2: 192.168.12.252 24945
 \end{verbatim}
 
 Destinations
 
 \begin{verbatim}
 ##            ip.dst count
-## 1: 192.168.12.252 18496
-## 2:  192.168.12.53 18496
+## 1: 192.168.12.252 24947
+## 2: 192.168.12.117 24945
 \end{verbatim}
 
 Destination / UnitID
 
 \begin{verbatim}
-##            ip.dst mbtcp.modbus.unit_id count
-## 1: 192.168.12.252                    1 18496
-## 2:  192.168.12.53                    1 18496
+##            ip.dst mbtcp.modbus.unit_id   ip.dst.unit_id
+## 1: 192.168.12.252                    1 192.168.12.252/1
+## 2: 192.168.12.117                    1 192.168.12.117/1
 \end{verbatim}
 
+Source / Function Code
+
 \begin{verbatim}
-##            ip.src mbtcp.modbus.func_code count
-## 1:  192.168.12.53                      4 18496
-## 2: 192.168.12.252                      4 18496
+##            ip.src mbtcp.modbus.func_code         src.func
+## 1: 192.168.12.117                      4 192.168.12.117/4
+## 2: 192.168.12.252                      4 192.168.12.252/4
 \end{verbatim}
 
 \section{Packet Analysis}\label{packet-analysis}
 
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-10-1} \end{center}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-9-1} \end{center}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-11-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-10-1.pdf}
 
 \pagebreak
 
@@ -171,20 +180,20 @@ Destination / UnitID
 MODBUS/TCP \textbf{requests} are identified by packets having
 destination port number 502
 
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-14-1} \end{center}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-13-1} \end{center}
 
 \pagebreak
 
 MODBUS/TCP \textbf{responses} are identified by packets having source
 port number 502
 
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-16-1} \end{center}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-15-1} \end{center}
 
 \pagebreak
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-17-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-16-1.pdf}
 
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-18-1} \end{center}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-17-1} \end{center}
 
 \pagebreak
 
@@ -197,9 +206,9 @@ transaction. An additional field ``d'' is the data field ``resp.data''
 converted from a hex to a decimal value. (Appendix 2)
 ~\\\hspace*{0.333em}\\\hspace*{0.333em}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-19-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-18-1.pdf}
 
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-20-1.pdf}
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-19-1.pdf}
 
 \pagebreak
 
@@ -208,26 +217,26 @@ Statistics}\label{modbus-data-value-statistics}
 
 \begin{verbatim}
 ##    resp.func.code mbtcp.modbus.reference_num count d.min     d.mean d.max
-## 1:              4                          0  7616   112  112.00000   112
-## 2:              4                          1  8704    64   81.30423    84
-## 3:              4                          2  1088  3455 4972.96140  5241
-## 4:              4                          3  1088     0 3467.62592  7327
+## 1:              4                          0 10273   112  112.00000   112
+## 2:              4                          1 11737    64   81.31448    84
+## 3:              4                          2  1468  4758 5005.32493  5242
+## 4:              4                          3  1467     0 3392.64554  6890
 ##           d.sd min.resp.time.rel min.resp.time.rel
-## 1:    0.000000          24.53739          601.3492
-## 2:    3.960659          24.58845          601.4262
-## 3:  256.073630          24.52703          601.2214
-## 4: 2125.525453          24.61349          601.3094
+## 1:    0.000000          0.196988          778.1052
+## 2:    3.891773          0.246152          778.1175
+## 3:  179.359760          0.185127          778.0571
+## 4: 2074.517793          0.270168          777.6427
 \end{verbatim}
 
-\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-22-1} \end{center}
+\begin{center}\includegraphics{modbus_files/figure-latex/unnamed-chunk-21-1} \end{center}
 
 \pagebreak
+
+\includegraphics{modbus_files/figure-latex/unnamed-chunk-22-1.pdf}
 
 \includegraphics{modbus_files/figure-latex/unnamed-chunk-23-1.pdf}
 
 \includegraphics{modbus_files/figure-latex/unnamed-chunk-24-1.pdf}
-
-\includegraphics{modbus_files/figure-latex/unnamed-chunk-25-1.pdf}
 
 \pagebreak
 
@@ -241,41 +250,54 @@ Statistics}\label{appendix-1---modbustcp-requestresponse-packet-statistics}
 \end{Shaded}
 
 \begin{verbatim}
-##   frame.number   frame.time_relative frame.time_delta_displayed
-##  Min.   :    5   Min.   : 24.52      Min.   :0.000162          
-##  1st Qu.: 9524   1st Qu.:169.16      1st Qu.:0.000261          
-##  Median :19044   Median :313.80      Median :0.000303          
-##  Mean   :19044   Mean   :313.33      Mean   :0.009683          
-##  3rd Qu.:28563   3rd Qu.:457.17      3rd Qu.:0.000355          
-##  Max.   :38082   Max.   :601.41      Max.   :1.893315          
-##    frame.len  ip.proto  ip.version            ip.src     
-##  Min.   :68   6:18496   4:18496    192.168.12.252:    0  
-##  1st Qu.:68                        192.168.12.53 :18496  
-##  Median :68                                              
-##  Mean   :68                                              
-##  3rd Qu.:68                                              
-##  Max.   :68                                              
-##             ip.dst      mbtcp.modbus.unit_id tcp.srcport  tcp.dstport 
-##  192.168.12.252:18496   Min.   :1            1058:18496   1058:    0  
-##  192.168.12.53 :    0   1st Qu.:1            502 :    0   502 :18496  
-##                         Median :1                                     
-##                         Mean   :1                                     
-##                         3rd Qu.:1                                     
-##                         Max.   :1                                     
-##  mbtcp.prot_id mbtcp.trans_id    mbtcp.len mbtcp.modbus.func_code
-##   :    0       Min.   :  0.0   Min.   :6    :    0               
-##  0:18496       1st Qu.: 64.0   1st Qu.:6   4:18496               
-##                Median :127.0   Median :6                         
-##                Mean   :127.4   Mean   :6                         
-##                3rd Qu.:191.0   3rd Qu.:6                         
-##                Max.   :255.0   Max.   :6                         
-##  mbtcp.modbus.reference_num mbtcp.modbus.word_cnt mbtcp.modbus.data 
-##   :   0                     Min.   :1             Length:18496      
-##  0:7616                     1st Qu.:1             Class :character  
-##  1:8704                     Median :1             Mode  :character  
-##  2:1088                     Mean   :1                               
-##  3:1088                     3rd Qu.:1                               
-##                             Max.   :1
+##   frame.number   frame.time_relative frame.time_delta     frame.len 
+##  Min.   :    2   Min.   :  0.1803    Min.   :0.000148   Min.   :66  
+##  1st Qu.:12838   1st Qu.:198.0391    1st Qu.:0.000277   1st Qu.:66  
+##  Median :25678   Median :388.5031    Median :0.000350   Median :66  
+##  Mean   :25678   Mean   :388.8098    Mean   :0.010093   Mean   :66  
+##  3rd Qu.:38518   3rd Qu.:584.1722    3rd Qu.:0.000376   3rd Qu.:66  
+##  Max.   :51358   Max.   :778.1178    Max.   :1.893549   Max.   :66  
+##                                                                     
+##  ip.proto  ip.version            ip.src                   eth.src     
+##  6:24947   4:24947    192.168.12.117:24947   00:0f:69:0d:55:cd:    0  
+##                       192.168.12.252:    0   08:00:27:f9:b1:f1:24947  
+##                                                                       
+##                                                                       
+##                                                                       
+##                                                                       
+##                                                                       
+##             ip.dst                   eth.dst      mbtcp.modbus.unit_id
+##  192.168.12.117:    0   00:0f:69:0d:55:cd:24947    :    0             
+##  192.168.12.252:24947   08:00:27:f9:b1:f1:    0   1:24947             
+##                                                                       
+##                                                                       
+##                                                                       
+##                                                                       
+##                                                                       
+##  tcp.srcport  tcp.dstport  mbtcp.prot_id mbtcp.trans_id    mbtcp.len
+##  1043:24947   1043:    0    :    0       Min.   :  0.0   Min.   :6  
+##  502 :    0   502 :24947   0:24947       1st Qu.: 64.0   1st Qu.:6  
+##                                          Median :128.0   Median :6  
+##                                          Mean   :127.6   Mean   :6  
+##                                          3rd Qu.:191.0   3rd Qu.:6  
+##                                          Max.   :255.0   Max.   :6  
+##                                                                     
+##  mbtcp.modbus.func_code mbtcp.modbus.reference_num mbtcp.modbus.word_cnt
+##   :    0                 :    0                    Min.   :1            
+##  4:24947                0:10273                    1st Qu.:1            
+##                         1:11739                    Median :1            
+##                         2: 1468                    Mean   :1            
+##                         3: 1467                    3rd Qu.:1            
+##                                                    Max.   :1            
+##                                                                         
+##  mbtcp.modbus.data
+##         :24947    
+##  00:00  :    0    
+##  00:07  :    0    
+##  00:08  :    0    
+##  00:09  :    0    
+##  00:0c  :    0    
+##  (Other):    0
 \end{verbatim}
 
 \begin{Shaded}
@@ -285,46 +307,54 @@ Statistics}\label{appendix-1---modbustcp-requestresponse-packet-statistics}
 \end{Shaded}
 
 \begin{verbatim}
-##   frame.number   frame.time_relative frame.time_delta_displayed
-##  Min.   :    6   Min.   : 24.53      Min.   :0.001583          
-##  1st Qu.: 9525   1st Qu.:169.16      1st Qu.:0.011678          
-##  Median :19044   Median :313.81      Median :0.012367          
-##  Mean   :19044   Mean   :313.35      Mean   :0.011918          
-##  3rd Qu.:28564   3rd Qu.:457.18      3rd Qu.:0.012762          
-##  Max.   :38083   Max.   :601.43      Max.   :0.014795          
-##                                                                
-##    frame.len  ip.proto  ip.version            ip.src     
-##  Min.   :67   6:18496   4:18496    192.168.12.252:18496  
-##  1st Qu.:67                        192.168.12.53 :    0  
-##  Median :67                                              
-##  Mean   :67                                              
-##  3rd Qu.:67                                              
-##  Max.   :67                                              
-##                                                          
-##             ip.dst      mbtcp.modbus.unit_id tcp.srcport  tcp.dstport 
-##  192.168.12.252:    0   Min.   :1            1058:    0   1058:18496  
-##  192.168.12.53 :18496   1st Qu.:1            502 :18496   502 :    0  
-##                         Median :1                                     
-##                         Mean   :1                                     
-##                         3rd Qu.:1                                     
-##                         Max.   :1                                     
+##   frame.number   frame.time_relative frame.time_delta     frame.len 
+##  Min.   :    3   Min.   :  0.1851    Min.   :0.001642   Min.   :65  
+##  1st Qu.:12840   1st Qu.:198.0572    1st Qu.:0.011584   1st Qu.:65  
+##  Median :25679   Median :388.5154    Median :0.011861   Median :65  
+##  Mean   :25679   Mean   :388.8184    Mean   :0.011772   Mean   :65  
+##  3rd Qu.:38518   3rd Qu.:584.1774    3rd Qu.:0.012571   3rd Qu.:65  
+##  Max.   :51357   Max.   :778.1175    Max.   :0.775146   Max.   :65  
+##                                                                     
+##  ip.proto  ip.version            ip.src                   eth.src     
+##  6:24945   4:24945    192.168.12.117:    0   00:0f:69:0d:55:cd:24945  
+##                       192.168.12.252:24945   08:00:27:f9:b1:f1:    0  
 ##                                                                       
-##  mbtcp.prot_id mbtcp.trans_id    mbtcp.len mbtcp.modbus.func_code
-##   :    0       Min.   :  0.0   Min.   :5    :    0               
-##  0:18496       1st Qu.: 64.0   1st Qu.:5   4:18496               
-##                Median :127.0   Median :5                         
-##                Mean   :127.4   Mean   :5                         
-##                3rd Qu.:191.0   3rd Qu.:5                         
-##                Max.   :255.0   Max.   :5                         
-##                                                                  
-##  mbtcp.modbus.reference_num mbtcp.modbus.word_cnt mbtcp.modbus.data 
-##   :18496                    Min.   : NA           Length:18496      
-##  0:    0                    1st Qu.: NA           Class :character  
-##  1:    0                    Median : NA           Mode  :character  
-##  2:    0                    Mean   :NaN                             
-##  3:    0                    3rd Qu.: NA                             
-##                             Max.   : NA                             
-##                             NA's   :18496
+##                                                                       
+##                                                                       
+##                                                                       
+##                                                                       
+##             ip.dst                   eth.dst      mbtcp.modbus.unit_id
+##  192.168.12.117:24945   00:0f:69:0d:55:cd:    0    :    0             
+##  192.168.12.252:    0   08:00:27:f9:b1:f1:24945   1:24945             
+##                                                                       
+##                                                                       
+##                                                                       
+##                                                                       
+##                                                                       
+##  tcp.srcport  tcp.dstport  mbtcp.prot_id mbtcp.trans_id    mbtcp.len
+##  1043:    0   1043:24945    :    0       Min.   :  0.0   Min.   :5  
+##  502 :24945   502 :    0   0:24945       1st Qu.: 64.0   1st Qu.:5  
+##                                          Median :128.0   Median :5  
+##                                          Mean   :127.6   Mean   :5  
+##                                          3rd Qu.:191.0   3rd Qu.:5  
+##                                          Max.   :255.0   Max.   :5  
+##                                                                     
+##  mbtcp.modbus.func_code mbtcp.modbus.reference_num mbtcp.modbus.word_cnt
+##   :    0                 :24945                    Min.   : NA          
+##  4:24945                0:    0                    1st Qu.: NA          
+##                         1:    0                    Median : NA          
+##                         2:    0                    Mean   :NaN          
+##                         3:    0                    3rd Qu.: NA          
+##                                                    Max.   : NA          
+##                                                    NA's   :24945        
+##  mbtcp.modbus.data
+##  00:70  :10273    
+##  00:50  : 5750    
+##  00:54  : 5561    
+##  00:40  :  426    
+##  14:74  :   26    
+##  12:a0  :   22    
+##  (Other): 2887
 \end{verbatim}
 
 \pagebreak
@@ -339,77 +369,85 @@ Statistics}\label{appendix-2---merged-requestresponse-packet-statistics}
 \end{Shaded}
 
 \begin{verbatim}
-##   frame.number   frame.time_relative frame.time_delta_displayed
-##  Min.   :    5   Min.   : 24.52      Min.   :0.000162          
-##  1st Qu.: 9524   1st Qu.:169.16      1st Qu.:0.000261          
-##  Median :19044   Median :313.80      Median :0.000303          
-##  Mean   :19044   Mean   :313.33      Mean   :0.009683          
-##  3rd Qu.:28563   3rd Qu.:457.17      3rd Qu.:0.000355          
-##  Max.   :38082   Max.   :601.41      Max.   :1.893315          
-##                                                                
-##    frame.len            ip.src                 ip.dst     
-##  Min.   :68   192.168.12.53:18496   192.168.12.252:18496  
-##  1st Qu.:68                                               
-##  Median :68                                               
-##  Mean   :68                                               
-##  3rd Qu.:68                                               
-##  Max.   :68                                               
-##                                                           
-##  mbtcp.modbus.unit_id tcp.srcport  tcp.dstport mbtcp.prot_id
-##  1:18496              1058:18496   502:18496   0:18496      
-##                                                             
-##                                                             
-##                                                             
-##                                                             
-##                                                             
-##                                                             
-##  mbtcp.trans_id    mbtcp.len mbtcp.modbus.func_code mbtcp.modbus.word_cnt
-##  Min.   :  0.0   Min.   :6   4:18496                Min.   :1            
-##  1st Qu.: 64.0   1st Qu.:6                          1st Qu.:1            
-##  Median :127.0   Median :6                          Median :1            
-##  Mean   :127.4   Mean   :6                          Mean   :1            
-##  3rd Qu.:191.0   3rd Qu.:6                          3rd Qu.:1            
-##  Max.   :255.0   Max.   :6                          Max.   :1            
-##                                                                          
-##  mbtcp.modbus.reference_num resp.fr.number  resp.time.rel   
-##  0:7616                     Min.   :    6   Min.   : 24.53  
-##  1:8704                     1st Qu.: 9525   1st Qu.:169.16  
-##  2:1088                     Median :19044   Median :313.81  
-##  3:1088                     Mean   :19044   Mean   :313.35  
-##                             3rd Qu.:28564   3rd Qu.:457.18  
-##                             Max.   :38083   Max.   :601.43  
-##                                                             
-##  resp.time.delta       resp.len            resp.src    
-##  Min.   :0.001583   Min.   :67   192.168.12.252:18496  
-##  1st Qu.:0.011678   1st Qu.:67                         
-##  Median :0.012367   Median :67                         
-##  Mean   :0.011918   Mean   :67                         
-##  3rd Qu.:0.012762   3rd Qu.:67                         
-##  Max.   :0.014795   Max.   :67                         
-##                                                        
-##          resp.dest     resp.srcport resp.dstport resp.prot_id
-##  192.168.12.53:18496   502:18496    1058:18496   0:18496     
-##                                                              
-##                                                              
-##                                                              
-##                                                              
-##                                                              
-##                                                              
-##  resp.trans_id   resp.mbcp.len resp.func.code   resp.data   
-##  Min.   :  0.0   Min.   :5     4:18496        00:70  :7616  
-##  1st Qu.: 64.0   1st Qu.:5                    00:50  :4212  
-##  Median :127.0   Median :5                    00:54  :4162  
-##  Mean   :127.4   Mean   :5                    00:40  : 331  
-##  3rd Qu.:191.0   3rd Qu.:5                    14:74  :  21  
-##  Max.   :255.0   Max.   :5                    14:70  :  15  
-##                                               (Other):2139  
-##        d         
-##  Min.   :   0.0  
-##  1st Qu.:  84.0  
-##  Median : 112.0  
-##  Mean   : 580.9  
-##  3rd Qu.: 112.0  
-##  Max.   :7327.0  
+##   frame.number   frame.time_relative frame.time_delta     frame.len 
+##  Min.   :    2   Min.   :  0.1803    Min.   :0.000148   Min.   :66  
+##  1st Qu.:12839   1st Qu.:198.0456    1st Qu.:0.000277   1st Qu.:66  
+##  Median :25678   Median :388.5031    Median :0.000350   Median :66  
+##  Mean   :25678   Mean   :388.8066    Mean   :0.010094   Mean   :66  
+##  3rd Qu.:38517   3rd Qu.:584.1655    3rd Qu.:0.000376   3rd Qu.:66  
+##  Max.   :51356   Max.   :778.1055    Max.   :1.893549   Max.   :66  
+##                                                                     
+##             ip.src        eth.src                     ip.dst     
+##                :    0   Length:24945                     :    0  
+##  192.168.12.117:24945   Class :character   192.168.12.252:24945  
+##                         Mode  :character                         
+##                                                                  
+##                                                                  
+##                                                                  
+##                                                                  
+##    eth.dst          mbtcp.modbus.unit_id tcp.srcport  tcp.dstport
+##  Length:24945        :    0                  :    0      :    0  
+##  Class :character   1:24945              1043:24945   502:24945  
+##  Mode  :character                                                
+##                                                                  
+##                                                                  
+##                                                                  
+##                                                                  
+##  mbtcp.prot_id mbtcp.trans_id    mbtcp.len mbtcp.modbus.func_code
+##   :    0       Min.   :  0.0   Min.   :6    :    0               
+##  0:24945       1st Qu.: 64.0   1st Qu.:6   4:24945               
+##                Median :128.0   Median :6                         
+##                Mean   :127.6   Mean   :6                         
+##                3rd Qu.:191.0   3rd Qu.:6                         
+##                Max.   :255.0   Max.   :6                         
+##                                                                  
+##  mbtcp.modbus.word_cnt  frame.second   mbtcp.modbus.reference_num
+##  Min.   :1             Min.   :  0.0    :    0                   
+##  1st Qu.:1             1st Qu.:198.0   0:10273                   
+##  Median :1             Median :388.0   1:11737                   
+##  Mean   :1             Mean   :388.3   2: 1468                   
+##  3rd Qu.:1             3rd Qu.:584.0   3: 1467                   
+##  Max.   :1             Max.   :778.0                             
+##                                                                  
+##  resp.frame.number resp.time.rel      resp.time.delta       resp.len 
+##  Min.   :    3     Min.   :  0.1851   Min.   :0.001642   Min.   :65  
+##  1st Qu.:12840     1st Qu.:198.0572   1st Qu.:0.011584   1st Qu.:65  
+##  Median :25679     Median :388.5154   Median :0.011861   Median :65  
+##  Mean   :25679     Mean   :388.8184   Mean   :0.011772   Mean   :65  
+##  3rd Qu.:38518     3rd Qu.:584.1774   3rd Qu.:0.012571   3rd Qu.:65  
+##  Max.   :51357     Max.   :778.1175   Max.   :0.775146   Max.   :65  
+##                                                                      
+##          resp.ip.src            resp.ip.dst    resp.srcport resp.unit_id
+##                :    0                 :    0      :    0     :    0     
+##  192.168.12.252:24945   192.168.12.117:24945   502:24945    1:24945     
+##                                                                         
+##                                                                         
+##                                                                         
+##                                                                         
+##                                                                         
+##  resp.dstport resp.prot_id resp.trans_id   resp.mbcp.len resp.func.code
+##      :    0    :    0      Min.   :  0.0   Min.   :5      :    0       
+##  1043:24945   0:24945      1st Qu.: 64.0   1st Qu.:5     4:24945       
+##                            Median :128.0   Median :5                   
+##                            Mean   :127.6   Mean   :5                   
+##                            3rd Qu.:191.0   3rd Qu.:5                   
+##                            Max.   :255.0   Max.   :5                   
+##                                                                        
+##   resp.second      resp.data                resp.eth.src  
+##  Min.   :  0.0   00:70  :10273   00:0f:69:0d:55:cd:24945  
+##  1st Qu.:198.0   00:50  : 5750                            
+##  Median :388.0   00:54  : 5561                            
+##  Mean   :388.3   00:40  :  426                            
+##  3rd Qu.:584.0   14:74  :   26                            
+##  Max.   :778.0   12:a0  :   22                            
+##                  (Other): 2887                            
+##             resp.eth.dst         d         
+##  08:00:27:f9:b1:f1:24945   Min.   :   0.0  
+##                            1st Qu.:  84.0  
+##                            Median : 112.0  
+##                            Mean   : 578.5  
+##                            3rd Qu.: 112.0  
+##                            Max.   :6890.0  
 ## 
 \end{verbatim}
 
@@ -422,12 +460,12 @@ Command used to extract various fields from the pcap file used for
 analysis.
 
 tshark -r modbus.pcap -T fields -E separator=, -t r -E header=y -e
-frame.number -e frame.time\_relative -e frame.time\_delta\_displayed -e
-frame.len -e ip.proto -e ip.version -e ip.src -e eth.src -e ip.dst -e
-eth.dst -e mbtcp.modbus.unit\_id -e tcp.srcport -e tcp.dstport -e
-mbtcp.prot\_id -e mbtcp.trans\_id -e mbtcp.len -e
-mbtcp.modbus.func\_code -e mbtcp.modbus.reference\_num -e
-mbtcp.modbus.word\_cnt -e mbtcp.modbus.data \textgreater{} modbus.data
+frame.number -e frame.time\_relative -e frame.time\_delta -e frame.len
+-e ip.proto -e ip.version -e ip.src -e eth.src -e ip.dst -e eth.dst -e
+mbtcp.modbus.unit\_id -e tcp.srcport -e tcp.dstport -e mbtcp.prot\_id -e
+mbtcp.trans\_id -e mbtcp.len -e mbtcp.modbus.func\_code -e
+mbtcp.modbus.reference\_num -e mbtcp.modbus.word\_cnt -e
+mbtcp.modbus.data \textgreater{} modbus.data
 
 \subsection{sed}\label{sed}
 

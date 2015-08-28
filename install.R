@@ -1,5 +1,6 @@
 
 
+install.packages("Rcpp")
 install.packages("data.table")
 install.packages("tidyr")
 
@@ -17,7 +18,7 @@ install.packages("ape");)
 
 install.packages("knitr")
 install.packages("png")
-install.packages("grid")
+#install.packages("grid")
 install.packages("gridExtra")
 
 install.packages("wordcloud")
@@ -29,7 +30,6 @@ install.packages("hash")
 install.packages("xts")
 install.packages("jsonlite")
 
-install.packages("Rcpp")
 install.packages("microbenchmark")
 
 library(data.table)
@@ -41,9 +41,8 @@ library(plyr)
 library(dplyr)
 library(reshape2)
 library(RColorBrewer)
-library(igraph
+library(igraph)
 library(png)
-library(grid)
 library(Matrix)
 library(ROCR)
 library(grid)
@@ -56,7 +55,7 @@ library(Rcpp)
 library(microbenchmark)
 
 # descriptive stats
-library(boots)
+library(boots) ### not in R3.2.2
 library(pastecs)
 
 # package from stats book
@@ -70,7 +69,7 @@ require(grDevices)
 
 # graph
 library(tcltk)
-library(tgl)
+#library(tgl)  ### installed tgl2
 library(ape)
 
 # reporting

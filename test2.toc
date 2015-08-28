@@ -1,0 +1,4 @@
+\contentsline {section}{header 1}{2}{section*.2}
+\contentsline {subsection}{header 2}{2}{section*.3}
+\contentsline {subsection}{header 3}{2}{section*.4}
+\contentsline {section}{header 4}{2}{section*.5}

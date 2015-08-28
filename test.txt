@@ -1,0 +1,34 @@
+"MODBUS_FUNCTION_REFERENCE_DATA_STATS" : [
+  "4/0" : {
+    "MODBUS_FUNCTION" : "4",
+    "MODBUS_REFERENCE" : "0",
+    "D_MIN" : "112.00 ",
+    "D_MEAN" : "112.00 ",
+    "D_STD_DEV" : "0.00 ",
+    "D_MAX" : "112.00 "
+  },
+  "4/1" : {
+    "MODBUS_FUNCTION" : "4",
+    "MODBUS_REFERENCE" : "1",
+    "D_MIN" : "64.00 ",
+    "D_MEAN" : "81.31 ",
+    "D_STD_DEV" : "3.89 ",
+    "D_MAX" : "84.00 "
+  },
+  "4/2" : {
+    "MODBUS_FUNCTION" : "4",
+    "MODBUS_REFERENCE" : "2",
+    "D_MIN" : "4758.00 ",
+    "D_MEAN" : "5005.32 ",
+    "D_STD_DEV" : "179.36 ",
+    "D_MAX" : "5242.00 "
+  },
+  "4/3" : {
+    "MODBUS_FUNCTION" : "4",
+    "MODBUS_REFERENCE" : "3",
+    "D_MIN" : "0.00 ",
+    "D_MEAN" : "3392.65 ",
+    "D_STD_DEV" : "2074.52 ",
+    "D_MAX" : "6890.00 "
+  }
+]

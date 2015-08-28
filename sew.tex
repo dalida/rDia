@@ -1,0 +1,490 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\ErrorTok}[1]{\textbf{{#1}}}
+\newcommand{\NormalTok}[1]{{#1}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={Lisa MALIPHOL},
+            pdftitle={Exploratory Data Analysis MODBUS / TCP},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+\setlength{\droptitle}{-2em}
+  \title{Exploratory Data Analysis\\MODBUS / TCP}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Lisa MALIPHOL}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{June 2015}
+
+
+
+
+\begin{document}
+
+\maketitle
+
+
+\section{Introduction}\label{introduction}
+
+The following analysis was done using a pcap file created from a
+simulation using the new SCADA simulation box under normal conditions
+(no attacks):
+
+capture\_sew\_20150721.pcap\\3.0 MB\\38,082 packets\\10 minutes
+
+\section{Network Analysis}\label{network-analysis}
+
+\subsection{Protocols}\label{protocols}
+
+\includegraphics{sew_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{center}\includegraphics{sew_files/figure-latex/warning-1} \end{center}
+
+Source / Destination / UnitID
+
+\begin{verbatim}
+##            ip.src         ip.dst mbtcp.modbus.unit_id count
+## 1:  192.168.12.53 192.168.12.252                    1 18496
+## 2: 192.168.12.252  192.168.12.53                    1 18496
+\end{verbatim}
+
+Sources
+
+\begin{verbatim}
+##            ip.src count
+## 1:  192.168.12.53 18496
+## 2: 192.168.12.252 18496
+\end{verbatim}
+
+Destinations
+
+\begin{verbatim}
+##            ip.dst count
+## 1: 192.168.12.252 18496
+## 2:  192.168.12.53 18496
+\end{verbatim}
+
+Destination / UnitID
+
+\begin{verbatim}
+##            ip.dst mbtcp.modbus.unit_id   ip.dst.unit_id
+## 1: 192.168.12.252                    1 192.168.12.252/1
+## 2:  192.168.12.53                    1  192.168.12.53/1
+\end{verbatim}
+
+Source / MAC Address
+
+\begin{verbatim}
+##            ip.src eth.src count
+## 1:  192.168.12.53         18496
+## 2: 192.168.12.252         18496
+\end{verbatim}
+
+Source / Function Code
+
+\begin{verbatim}
+##            ip.src mbtcp.modbus.func_code         src.func
+## 1:  192.168.12.53                      4  192.168.12.53/4
+## 2: 192.168.12.252                      4 192.168.12.252/4
+\end{verbatim}
+
+\section{Packet Analysis}\label{packet-analysis}
+
+Average frequency of packets per second
+
+\begin{verbatim}
+## [1] 33.17154
+\end{verbatim}
+
+\begin{center}\includegraphics{sew_files/figure-latex/unnamed-chunk-12-1} \end{center}
+
+\includegraphics{sew_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\pagebreak
+
+\subsection{MODBUS/TCP Request/Response Packet Statistics (Appendix
+1)}\label{modbustcp-requestresponse-packet-statistics-appendix-1}
+
+MODBUS/TCP \textbf{requests} are identified by packets having
+destination port number 502
+
+\begin{center}\includegraphics{sew_files/figure-latex/unnamed-chunk-16-1} \end{center}
+
+\pagebreak
+
+MODBUS/TCP \textbf{responses} are identified by packets having source
+port number 502
+
+\begin{center}\includegraphics{sew_files/figure-latex/unnamed-chunk-18-1} \end{center}
+
+\pagebreak
+
+\includegraphics{sew_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\begin{center}\includegraphics{sew_files/figure-latex/unnamed-chunk-20-1} \end{center}
+
+\pagebreak
+
+\section[MODBUS/TCP Data Analysis]{MODBUS/TCP Data\footnote{\url{https://www.wireshark.org/docs/dfref/m/mbtcp.html}}
+Analysis}\label{modbustcp-data1-analysis}
+
+The following analysis was done over the previous dataset that has been
+processed to merge response packet to the request packet of the same
+transaction. An additional field ``d'' is the data field ``resp.data''
+converted from a hex to a decimal value. (Appendix 2)
+~\\\hspace*{0.333em}\\\hspace*{0.333em}
+
+\includegraphics{sew_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\includegraphics{sew_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\pagebreak
+
+\section{MODBUS Data Value
+Statistics}\label{modbus-data-value-statistics}
+
+\begin{verbatim}
+##    resp.func.code mbtcp.modbus.reference_num count d.min     d.mean d.max
+## 1:              4                          0 10273   112  112.00000   112
+## 2:              4                          1 11737    64   81.31448    84
+## 3:              4                          2  1468  4758 5005.32493  5242
+## 4:              4                          3  1467     0 3392.64554  6890
+##           d.sd min.resp.time.rel min.resp.time.rel
+## 1:    0.000000          0.196988          778.1052
+## 2:    3.891773          0.246152          778.1175
+## 3:  179.359760          0.185127          778.0571
+## 4: 2074.517793          0.270168          777.6427
+\end{verbatim}
+
+\begin{center}\includegraphics{sew_files/figure-latex/unnamed-chunk-24-1} \end{center}
+
+\pagebreak
+
+\includegraphics{sew_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+\includegraphics{sew_files/figure-latex/unnamed-chunk-26-1.pdf}
+
+\includegraphics{sew_files/figure-latex/unnamed-chunk-27-1.pdf}
+
+\pagebreak
+
+\section{Appendix 1 - MODBUS/TCP Request/Response Packet
+Statistics}\label{appendix-1---modbustcp-requestresponse-packet-statistics}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(requests)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   frame.number   frame.time_relative frame.time_delta_displayed
+##  Min.   :    5   Min.   : 24.52      Min.   :0.000162          
+##  1st Qu.: 9524   1st Qu.:169.16      1st Qu.:0.000261          
+##  Median :19044   Median :313.80      Median :0.000303          
+##  Mean   :19044   Mean   :313.33      Mean   :0.009683          
+##  3rd Qu.:28563   3rd Qu.:457.17      3rd Qu.:0.000355          
+##  Max.   :38082   Max.   :601.41      Max.   :1.893315          
+##                                                                
+##    frame.len  ip.proto  ip.version            ip.src      eth.src 
+##  Min.   :68   6:18496   4:18496    192.168.12.252:    0   :18496  
+##  1st Qu.:68                        192.168.12.53 :18496           
+##  Median :68                                                       
+##  Mean   :68                                                       
+##  3rd Qu.:68                                                       
+##  Max.   :68                                                       
+##                                                                   
+##             ip.dst      eth.dst  mbtcp.modbus.unit_id tcp.srcport 
+##  192.168.12.252:18496   :18496   1:18496              1058:18496  
+##  192.168.12.53 :    0                                 502 :    0  
+##                                                                   
+##                                                                   
+##                                                                   
+##                                                                   
+##                                                                   
+##  tcp.dstport  mbtcp.prot_id mbtcp.trans_id    mbtcp.len
+##  1058:    0   0:18496       Min.   :  0.0   Min.   :6  
+##  502 :18496                 1st Qu.: 64.0   1st Qu.:6  
+##                             Median :127.0   Median :6  
+##                             Mean   :127.4   Mean   :6  
+##                             3rd Qu.:191.0   3rd Qu.:6  
+##                             Max.   :255.0   Max.   :6  
+##                                                        
+##  mbtcp.modbus.func_code mbtcp.modbus.reference_num mbtcp.modbus.word_cnt
+##  4:18496                 :   0                     Min.   :1            
+##                         0:7616                     1st Qu.:1            
+##                         1:8704                     Median :1            
+##                         2:1088                     Mean   :1            
+##                         3:1088                     3rd Qu.:1            
+##                                                    Max.   :1            
+##                                                                         
+##  mbtcp.modbus.data
+##         :18496    
+##  00:00  :    0    
+##  00:08  :    0    
+##  00:0a  :    0    
+##  00:0b  :    0    
+##  00:0c  :    0    
+##  (Other):    0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(responses)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   frame.number   frame.time_relative frame.time_delta_displayed
+##  Min.   :    6   Min.   : 24.53      Min.   :0.001583          
+##  1st Qu.: 9525   1st Qu.:169.16      1st Qu.:0.011678          
+##  Median :19044   Median :313.81      Median :0.012367          
+##  Mean   :19044   Mean   :313.35      Mean   :0.011918          
+##  3rd Qu.:28564   3rd Qu.:457.18      3rd Qu.:0.012762          
+##  Max.   :38083   Max.   :601.43      Max.   :0.014795          
+##                                                                
+##    frame.len  ip.proto  ip.version            ip.src      eth.src 
+##  Min.   :67   6:18496   4:18496    192.168.12.252:18496   :18496  
+##  1st Qu.:67                        192.168.12.53 :    0           
+##  Median :67                                                       
+##  Mean   :67                                                       
+##  3rd Qu.:67                                                       
+##  Max.   :67                                                       
+##                                                                   
+##             ip.dst      eth.dst  mbtcp.modbus.unit_id tcp.srcport 
+##  192.168.12.252:    0   :18496   1:18496              1058:    0  
+##  192.168.12.53 :18496                                 502 :18496  
+##                                                                   
+##                                                                   
+##                                                                   
+##                                                                   
+##                                                                   
+##  tcp.dstport  mbtcp.prot_id mbtcp.trans_id    mbtcp.len
+##  1058:18496   0:18496       Min.   :  0.0   Min.   :5  
+##  502 :    0                 1st Qu.: 64.0   1st Qu.:5  
+##                             Median :127.0   Median :5  
+##                             Mean   :127.4   Mean   :5  
+##                             3rd Qu.:191.0   3rd Qu.:5  
+##                             Max.   :255.0   Max.   :5  
+##                                                        
+##  mbtcp.modbus.func_code mbtcp.modbus.reference_num mbtcp.modbus.word_cnt
+##  4:18496                 :18496                    Min.   : NA          
+##                         0:    0                    1st Qu.: NA          
+##                         1:    0                    Median : NA          
+##                         2:    0                    Mean   :NaN          
+##                         3:    0                    3rd Qu.: NA          
+##                                                    Max.   : NA          
+##                                                    NA's   :18496        
+##  mbtcp.modbus.data
+##  00:70  :7616     
+##  00:50  :4212     
+##  00:54  :4162     
+##  00:40  : 331     
+##  14:74  :  21     
+##  14:70  :  15     
+##  (Other):2139
+\end{verbatim}
+
+\pagebreak
+
+\section{Appendix 2 - Merged Request/Response Packet
+Statistics}\label{appendix-2---merged-requestresponse-packet-statistics}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(mergedSewDT)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   frame.number   frame.time_relative frame.time_delta     frame.len 
+##  Min.   :    2   Min.   :  0.1803    Min.   :0.000148   Min.   :66  
+##  1st Qu.:12839   1st Qu.:198.0456    1st Qu.:0.000277   1st Qu.:66  
+##  Median :25678   Median :388.5031    Median :0.000350   Median :66  
+##  Mean   :25678   Mean   :388.8066    Mean   :0.010094   Mean   :66  
+##  3rd Qu.:38517   3rd Qu.:584.1655    3rd Qu.:0.000376   3rd Qu.:66  
+##  Max.   :51356   Max.   :778.1055    Max.   :1.893549   Max.   :66  
+##                                                                     
+##             ip.src        eth.src                     ip.dst     
+##                :    0   Length:24945                     :    0  
+##  192.168.12.117:24945   Class :character   192.168.12.252:24945  
+##                         Mode  :character                         
+##                                                                  
+##                                                                  
+##                                                                  
+##                                                                  
+##    eth.dst          mbtcp.modbus.unit_id tcp.srcport  tcp.dstport
+##  Length:24945        :    0                  :    0      :    0  
+##  Class :character   1:24945              1043:24945   502:24945  
+##  Mode  :character                                                
+##                                                                  
+##                                                                  
+##                                                                  
+##                                                                  
+##  mbtcp.prot_id mbtcp.trans_id    mbtcp.len mbtcp.modbus.func_code
+##   :    0       Min.   :  0.0   Min.   :6    :    0               
+##  0:24945       1st Qu.: 64.0   1st Qu.:6   4:24945               
+##                Median :128.0   Median :6                         
+##                Mean   :127.6   Mean   :6                         
+##                3rd Qu.:191.0   3rd Qu.:6                         
+##                Max.   :255.0   Max.   :6                         
+##                                                                  
+##  mbtcp.modbus.word_cnt  frame.second   mbtcp.modbus.reference_num
+##  Min.   :1             Min.   :  0.0    :    0                   
+##  1st Qu.:1             1st Qu.:198.0   0:10273                   
+##  Median :1             Median :388.0   1:11737                   
+##  Mean   :1             Mean   :388.3   2: 1468                   
+##  3rd Qu.:1             3rd Qu.:584.0   3: 1467                   
+##  Max.   :1             Max.   :778.0                             
+##                                                                  
+##  resp.frame.number resp.time.rel      resp.time.delta       resp.len 
+##  Min.   :    3     Min.   :  0.1851   Min.   :0.001642   Min.   :65  
+##  1st Qu.:12840     1st Qu.:198.0572   1st Qu.:0.011584   1st Qu.:65  
+##  Median :25679     Median :388.5154   Median :0.011861   Median :65  
+##  Mean   :25679     Mean   :388.8184   Mean   :0.011772   Mean   :65  
+##  3rd Qu.:38518     3rd Qu.:584.1774   3rd Qu.:0.012571   3rd Qu.:65  
+##  Max.   :51357     Max.   :778.1175   Max.   :0.775146   Max.   :65  
+##                                                                      
+##          resp.ip.src            resp.ip.dst    resp.srcport resp.unit_id
+##                :    0                 :    0      :    0     :    0     
+##  192.168.12.252:24945   192.168.12.117:24945   502:24945    1:24945     
+##                                                                         
+##                                                                         
+##                                                                         
+##                                                                         
+##                                                                         
+##  resp.dstport resp.prot_id resp.trans_id   resp.mbcp.len resp.func.code
+##      :    0    :    0      Min.   :  0.0   Min.   :5      :    0       
+##  1043:24945   0:24945      1st Qu.: 64.0   1st Qu.:5     4:24945       
+##                            Median :128.0   Median :5                   
+##                            Mean   :127.6   Mean   :5                   
+##                            3rd Qu.:191.0   3rd Qu.:5                   
+##                            Max.   :255.0   Max.   :5                   
+##                                                                        
+##   resp.second      resp.data                resp.eth.src  
+##  Min.   :  0.0   00:70  :10273   00:0f:69:0d:55:cd:24945  
+##  1st Qu.:198.0   00:50  : 5750                            
+##  Median :388.0   00:54  : 5561                            
+##  Mean   :388.3   00:40  :  426                            
+##  3rd Qu.:584.0   14:74  :   26                            
+##  Max.   :778.0   12:a0  :   22                            
+##                  (Other): 2887                            
+##             resp.eth.dst         d         
+##  00:0f:69:0d:55:cd:    0   Min.   :   0.0  
+##  08:00:27:f9:b1:f1:24945   1st Qu.:  84.0  
+##                            Median : 112.0  
+##                            Mean   : 578.5  
+##                            3rd Qu.: 112.0  
+##                            Max.   :6890.0  
+## 
+\end{verbatim}
+
+\pagebreak
+
+\section{Appendix 3 - Commands and
+Scripts}\label{appendix-3---commands-and-scripts}
+
+\subsection{TShark}\label{tshark}
+
+Command used to extract various fields from the pcap file used for
+analysis.
+
+tshark -r modbus.pcap -T fields -E separator=, -t r -E header=y -e
+frame.number -e frame.time\_relative -e frame.time\_delta\_displayed -e
+frame.len -e ip.proto -e ip.version -e ip.src -e eth.src -e ip.dst -e
+eth.dst -e mbtcp.modbus.unit\_id -e tcp.srcport -e tcp.dstport -e
+mbtcp.prot\_id -e mbtcp.trans\_id -e mbtcp.len -e
+mbtcp.modbus.func\_code -e mbtcp.modbus.reference\_num -e
+mbtcp.modbus.word\_cnt -e mbtcp.modbus.data \textgreater{} modbus.data
+
+\subsection{sed}\label{sed}
+
+Command used to remove empty lines from the pcap data.
+
+sed '/\^{},,,,,.*\$/d' modbus.data \textgreater{} modbus.data
+
+\subsection{R}\label{r}
+
+install.R - Setup script to install required packages. sewModbus.R -
+Script for processing, analysing and visualizing modbus data.
+
+\end{document}

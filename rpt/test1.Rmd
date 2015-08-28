@@ -1,0 +1,155 @@
+---
+title: "TEST TITLE PAGE"
+author: "Lisa MALIPHOL"
+date: "26/08/2015"
+output:
+  pdf_document:
+    toc_depth: 3
+    fig_caption: true
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+require(png)
+require(grid)
+load("/home/lisa/rDia/sewMerged.Rda")
+
+```
+
+
+```{r, echo=FALSE, fig.showtext=FALSE, fig.subcap=""}
+img <- readPNG("/home/lisa/rDia/imgs/wordle.png")
+grid.raster(img)
+```
+
+\thispagestyle{empty}
+\clearpage
+
+
+\begin{center}
+
+\vspace{30mm}
+
+{\Huge Diateam: SCAD@COPS}\\
+\bigskip
+{\Huge A Hybrid Network Intrusion Detection System}\\
+\vspace{15mm}
+{\Large by}\\
+
+\vspace{18mm}
+{\huge Lisa MALIPHOL}\\
+
+\vspace{25mm}
+
+\textit{A thesis submitted in partial satisfaction of the}\\
+\medskip
+\textit{requirements for the diploma of the}\\
+\medskip
+\textit{Masters of Science}\\
+\medskip
+\textit{in}\\
+\medskip
+\textit{Computer Science and Decision Systems}\\
+\medskip
+\textit{in the}\\
+\medskip
+\textit{Grande École}\\
+\medskip
+\textbf{\textit{\Large Télécom Bretagne}}\\
+
+\vspace{10mm}
+
+\textit{Academic Advisors:}\\
+\medskip
+\textit{Professor Yannis Haralambous}\\
+\medskip
+\textit{Professor Sandrine Vaton}\\
+
+\vspace{15mm}
+
+\textit{September 2015}\\
+\medskip
+\textit{Plouzane, FRANCE}\\
+
+\end{center}
+
+
+\thispagestyle{empty}
+\clearpage
+
+\tableofcontents
+
+\thispagestyle{empty}
+\newpage
+
+
+# section 1
+```{r, comment=''}
+str(mergedSewDT)
+```
+
+\newpage
+
+# section 2
+
+some stuff here
+
+## subsection 2.1
+
+subsection stuff here
+subsection stuff here
+subsection stuff here
+
+## subsection 2.2
+
+subsection stuff here
+subsection stuff here
+subsection stuff here
+
+### subSubsection 2.2.1
+
+susubsection stuff here
+subsubsection stuff here
+subsubsection stuff here
+
+
+\newpage
+
+# section 3
+
+some stuff here
+
+## section 3.1
+
+some stuff here
+some stuff here
+some stuff here
+
+## section 3.1
+
+some stuff here
+some stuff here
+some stuff here
+
+\newpage
+
+# Exploratory Data Analysis 
+
+Originally championed by John Tukey[2], Exploratory Data Analysis (EDA) is an initial approach to understanding a data set in order to get a “feel” for the data, to summarizing its essential characteristics and to studying patterns in the data. Moreover, exploratory data analysis frequently incorporates graphical representations beyond using quantitative techniques.
+
+Conducting EDA possibly gives further insight into the form and structure of the data set, in addition to extracting value from it, visualizing it, and just as importantly, in communicating it. After a fairly exhaustive study of the state of the art of IDS and SCADA systems, an  initial phase of exploratory data analysis was conducted in order to better understand the data. This section presents a short list of statistical terminology, followed by the exploratory data analysis carried out on the network traffic data captured over the simulated SCADA network.     
+
+## Statistical Definitions
+
+### Mean
+
+The (arithmetic) mean is a measure of central tendency, which is a single value which represents an average of the sample or population. It is calculated by dividing all the observations by the number of observations.
+
+### Median
+
+Another measure of central tendency is the median, however, in this case, the median is determined by first ordering the observations by magnitude. Then the median is taken as the value which falls in the middle, or the average of the two middle values in the case of an even number of observations. The median is better suited when there are observations, or outliers, that fall way outside the norm. These are extreme values that differ greatly from other values in the data set.
+
+### Variance
+
+The variance is the expected value of the squared differences between the random variables and its mean that is always positive. It gives an indication of how far apart the values are from the mean and each other.
+
+$$ var[X] = E[(X - E[X])^2] $$

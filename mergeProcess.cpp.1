@@ -1,0 +1,293 @@
+#include <Rcpp.h>
+#include <iostream>
+#include <exception>
+#include <string>
+#include <exception>
+#include <cstring>
+#include <fstream>
+#include <vector>
+#include <math.h>
+
+#include "/home/lisa/rDia/lib/csv.h"
+
+using namespace Rcpp;
+using namespace io;
+using namespace std;
+
+// Enable C++11
+// [[Rcpp::plugins("cpp11")]]
+
+// debug
+//const bool check = 1;
+const bool check = 0;
+
+string FILENAME = "sew.dat";
+string CSVFILE  = "sew.csv";
+
+// number of variables in packet
+const int packetLen = 20;
+
+// packet
+struct PacketStr {
+  int    frameNumber;
+	double frameTimeRel;
+	double frameTimeDelta;
+	int    frameLen;
+	char   ipProto;
+	char   ipVersion;
+	string ipSrc;
+	string ethSrc;
+	string ipDst;
+	string ethDst;
+	string modbusUnitId;
+	string tcpSrcPort;
+	string tcpDstPort;
+	char   mbtcpProtId;
+	int    mbtcpTransId;
+	int    mbtcpLen;
+	string modbusFunctionCode;
+	string modbusRefNum;
+	int    modbusWordCnt;
+	string modbusData;
+} packet, prevPacket;
+
+// merged mbtcp transaction
+struct MbtcpTransStr {
+  int    frameNumber;
+  double frameTimeRel;
+  double frameTimeDelta;
+  int    frameLen;
+  char   ipProto;
+  char   ipVersion;
+  string ipSrc;
+  string ethSrc;
+  string ipDst;
+  string ethDst;
+  string modbusUnitId;
+  string tcpSrcPort;
+  string tcpDstPort;
+	char   mbtcpProtId;
+	int    mbtcpTransId;
+	int    mbtcpLen;
+	string modbusFunctionCode;
+	string modbusRefNum;
+	int    modbusWordCnt;
+	int    frameSecond;
+	int    respFrameNumber;
+	double respTimeRel;
+	double respTimeDelta;
+	int    respLen;
+	string respIpSrc;
+	string respEthSrc;
+	string respIpDest;
+	string respEthDest;
+	string respUnitId;
+	string respSrcport;
+	string respDstPort;
+	char   respProtId;
+	int    respTransId;
+	int    respMbtcpLen;
+	string respFuncCode;
+	string modbusData;
+	int    respSecond;
+	int    d;
+} mbtcpTrans;
+
+// all merged mbtcp transactions
+vector<int>    frNum;
+vector<double> frameTimeRel;
+vector<double> frameTimeDelta;
+vector<int>    frameLen;
+vector<char>   ipProto;
+vector<char>   ipVersion;
+vector<string> ipSrc;
+vector<string> ethSrc;
+vector<string> ipDst;
+vector<string> ethDst;
+vector<string> modbusUnitId;
+vector<string> tcpSrcPort;
+vector<string> tcpDstPort;
+vector<char>   mbtcpProtId;
+vector<int>    mbtcpTransId;
+vector<int>    mbtcpLen;
+vector<string> modbusFunctionCode;
+vector<string> modbusRefNum;
+vector<int>    modbusWordCnt;
+vector<int>    frameSecond;
+vector<int>    respFrameNumber;
+vector<double> respTimeRel;
+vector<double> respTimeDelta;
+vector<int>    respLen;
+vector<string> respIpSrc;
+vector<string> respEthSrc;
+vector<string> respIpDst;
+vector<string> respEthDst;
+vector<string> respUnitId;
+vector<string> respSrcPort;
+vector<string> respDstPort;
+vector<char>   respProtId;
+vector<int>    respTransId;
+vector<int>    respMbtcpLen;
+vector<string> respFuncCode;
+vector<string> modbusData;
+vector<int>    respSecond;
+vector<int>    d;
+
+// ********************* FUNCTIONS ********************* 
+
+// convert hexadecimal string to decimal
+int hexToDec(string str) {
+
+  string decS;
+	char delim[] = ":";
+	char *token = strtok( &str[0], delim );
+
+	while (token != NULL ) {
+
+		decS += token;
+		token = strtok( NULL, delim );
+	}
+
+	return strtol( decS.c_str(), NULL, 16 );
+}
+// merge transactions from pcap file
+int mergeTrans(string file) {
+
+  int countTrans = 0;
+  int reqs = 0;
+  int resp = 0;
+  
+  try {
+
+		//CSVReader<packetLen, trim_chars<' '>, no_quote_escape<'|'> > in( FILENAME.c_str() );
+		CSVReader<packetLen> in( file.c_str() );
+		while( in.read_row(
+				   packet.frameNumber, packet.frameTimeRel, packet.frameTimeDelta,
+				   packet.frameLen, packet.ipProto, packet.ipVersion, packet.ipSrc, packet.ethSrc,
+				   packet.ipDst, packet.ethDst, packet.modbusUnitId, packet.tcpSrcPort,
+				   packet.tcpDstPort, packet.mbtcpProtId, packet.mbtcpTransId, 
+				   packet.mbtcpLen, packet.modbusFunctionCode, packet.modbusRefNum, 
+				   packet.modbusWordCnt, packet.modbusData 
+				   ) ) {
+
+
+			// merge request and response packets
+			if( packet.mbtcpTransId == prevPacket.mbtcpTransId ) {
+				
+				// request packet has destination port 502
+				if( prevPacket.tcpDstPort == "502" ) {
+          
+          cout << prevPacket.frameNumber << endl;
+					frNum.push_back(prevPacket.frameNumber);
+					frameTimeRel.push_back(prevPacket.frameTimeRel);
+					frameTimeDelta.push_back(prevPacket.frameTimeDelta);
+					frameLen.push_back(prevPacket.frameLen);
+					ipProto.push_back(prevPacket.ipProto);
+					ipVersion.push_back(prevPacket.ipVersion);
+					ipSrc.push_back(prevPacket.ipSrc);
+					ethSrc.push_back(prevPacket.ethSrc);
+					ipDst.push_back(prevPacket.ipDst);
+					ethDst.push_back(prevPacket.ethDst);
+					modbusUnitId.push_back(prevPacket.modbusUnitId);
+					tcpSrcPort.push_back(prevPacket.tcpSrcPort);
+					tcpDstPort.push_back(prevPacket.tcpDstPort);
+					mbtcpProtId.push_back(prevPacket.mbtcpProtId);
+					mbtcpTransId.push_back(prevPacket.mbtcpTransId);
+					mbtcpLen.push_back(prevPacket.mbtcpLen);
+					modbusFunctionCode.push_back(prevPacket.modbusFunctionCode);
+					modbusRefNum.push_back(prevPacket.modbusRefNum);
+					modbusWordCnt.push_back(prevPacket.modbusWordCnt);
+          frameSecond.push_back(floor(prevPacket.frameTimeRel));
+          reqs++;
+          
+				} // if dstport=502
+				
+				// response packet has source port 502
+				if( packet.tcpSrcPort == "502" ) {
+          
+          respFrameNumber.push_back(packet.frameNumber);
+          respTimeRel.push_back(packet.frameTimeRel);
+          respTimeDelta.push_back(packet.frameTimeDelta);
+          respLen.push_back(packet.frameLen);
+          respIpSrc.push_back(packet.ipSrc);
+          respEthSrc.push_back(packet.ethSrc);
+          respIpDst.push_back(packet.ipDst);
+          respEthDst.push_back(packet.ethDst);
+          respUnitId.push_back(packet.modbusUnitId);
+          respSrcPort.push_back(packet.tcpSrcPort);
+          respDstPort.push_back(packet.tcpDstPort);
+          respProtId.push_back(packet.mbtcpProtId);
+          respTransId.push_back(packet.mbtcpTransId);
+          resp++;
+          
+  			} // if srcport=502
+
+			} // current and previous transid equal
+			
+			prevPacket = packet;
+			
+		} // end while read_row
+
+  } catch (std::exception & e) {
+
+		cout << "Exception mergeTrans() :\n" << endl;
+		cout << e.what() << "\n" << endl;
+
+	} // end try/catch
+
+  cout << "reqs: " << reqs << " resp: " << resp << endl;
+	return 0;
+
+}
+
+// [[Rcpp::export]]
+DataFrame mergeProcess(DataFrame df, string file, string csv) {
+  
+  mergeTrans(file);
+  
+  /*
+  DataFrame dfOut = DataFrame::create(Named("frameNumber")=frNum,
+									  Named("frameTimeRel")=frameTimeRel,
+									  Named("frameTimeDelta")=frameTimeDelta,
+									  Named("frameLen")=frameLen,
+									  Named("ipProto")=ipProto,
+									  Named("ipVersion")=ipVersion,
+									  Named("ipSrc")=ipSrc,
+									  Named("ethSrc")=ethSrc,
+									  Named("ipDst")=ipDst,
+									  Named("ethDst")=ethDst,
+									  Named("modbusUnitId")=modbusUnitId,
+									  Named("tcpSrcPort")=tcpSrcPort,
+									  Named("tcpDstPort")=tcpDstPort,
+									  Named("mbtcpProtId")=mbtcpProtId,
+									  Named("mbtcpTransId")=mbtcpTransId,
+									  Named("mbtcpLen")=mbtcpLen,
+									  Named("modbusFunctionCode")=modbusFunctionCode,
+									  Named("modbusRefNum")=modbusRefNum,
+									  Named("modbusWordCnt")=modbusWordCnt,
+									  Named("frameSecond")=frameSecond
+                    );
+  
+  return dfOut;
+                    return DataFrame::create(Named("frameNumber")=respFrameNumber,
+                                             Named("mbtcpTransId")=respTransId);
+                    */
+                    cout << frNum.size() << endl;
+                    cout << respFrameNumber.size() << endl;
+                    return DataFrame::create(Named("frameNumber")=frNum,
+                                             Named("mbtcpTransId")=mbtcpTransId);
+}
+
+/*** R
+library(microbenchmark)
+library(data.table)
+
+
+# call mergeProcess to merge transactions from pcap file and returns as DF
+
+FILENAME <- "/home/lisa/scada/sew.data.1"
+CSVFILE  <- "sew.csv"
+
+out <- mergeProcess(sewModbusDT, FILENAME, CSVFILE)
+
+*/
