@@ -1,10 +1,13 @@
 \documentclass[12pt,]{article}
+\usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
+% Set line spacing
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
 \else % if luatex or xelatex
   \ifxetex
@@ -16,13 +19,8 @@
   \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
   \newcommand{\euro}{€}
 \fi
-% use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -49,14 +47,24 @@
 \newcommand{\NormalTok}[1]{{#1}}
 \usepackage{longtable,booktabs}
 \usepackage{graphicx}
+% Redefine \includegraphics so that, unless explicit options are
+% given, the image width will not exceed the width of the page.
+% Images get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\def\ScaleIfNeeded{%
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
 \makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\let\Oldincludegraphics\includegraphics
+{%
+ \catcode`\@=11\relax%
+ \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
+}%
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -79,20 +87,8 @@
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \setcounter{secnumdepth}{5}
 
-%%% Use protect on footnotes to avoid problems with footnotes in titles
-\let\rmarkdownfootnote\footnote%
-\def\footnote{\protect\rmarkdownfootnote}
-
 %%% Change title format to be more compact
 \usepackage{titling}
-
-% Create subtitle command for use in maketitle
-\newcommand{\subtitle}[1]{
-  \posttitle{
-    \begin{center}\large#1\end{center}
-    }
-}
-
 \setlength{\droptitle}{-2em}
   \title{Diateam\\SCAD@COPS\\A Hybrid Network Intrusion Detection System}
   \pretitle{\vspace{\droptitle}\centering\huge}
@@ -105,6 +101,7 @@
 
 
 
+
 \begin{document}
 
 \maketitle
@@ -112,7 +109,13 @@
 
 \includegraphics{thesis_files/figure-latex/unnamed-chunk-3-1.pdf}
 
-\thispagestyle{empty} \clearpage
+\thispagestyle{empty}
+
+\newpage
+\thispagestyle{empty} \mbox{}
+
+\clearpage
+\pagenumbering{roman}
 
 \begin{center}
 
@@ -161,44 +164,86 @@
 
 \end{center}
 
-\thispagestyle{empty} \clearpage
-
-\tableofcontents
-
 \thispagestyle{empty} \newpage
+\mbox{} \thispagestyle{empty}
+
+\newpage
 
 \section*{Acknowledgements}\label{acknowledgements}
 \addcontentsline{toc}{section}{Acknowledgements}
 
-In memory of my late mother, Pisamai Maliphol, if only she could have
-witnessed not only her latest grandchild, but to see me make it through
-the completion of this masters degree. In many ways, these two years
-were part of the healing process after her loss. She would have been
-extremely proud.
+\newpage
+\mbox{} \thispagestyle{empty}
 
-This work is also dedicated to my children, Mintra, Samya, and Lucien,
-may they never cease to continue and to have the motivation and
-curiosity to learn, no matter how late in life.
-
-Not enough gratitude can be expressed to Nehme Boghdadi and Aimee
-Johansen. You both were there to encourage and to help along the
-journey, especially during difficult times. I would not have done this
-without you guys.
-
-Thank you to Guillaume Prigent and all the folks at Diateam for
-providing a convivial environment in which to work. Not only did I have
-much to learn there technically, but lessons in the French language and
-culture that I would not have found in the classrooms.
-
-Lastly, I would like to also thank Sandrine Vaton for agreeing to be my
-advisor and then encouraging me to take the next step.
-
-\pagebreak
+\clearpage
 
 \section*{Abstract}\label{abstract}
 \addcontentsline{toc}{section}{Abstract}
 
-\pagebreak
+\newpage
+\mbox{} \thispagestyle{empty}
+
+\clearpage
+
+\section*{Résumé}\label{resume}
+\addcontentsline{toc}{section}{Résumé}
+
+\newpage
+\mbox{} \thispagestyle{empty}
+
+\clearpage
+
+\tableofcontents
+
+\cleardoublepage
+
+\listoffigures
+
+\newpage
+\mbox{} \thispagestyle{empty}
+
+\clearpage
+
+\section*{Acronyms}\label{acronyms}
+\addcontentsline{toc}{section}{Acronyms}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  ANIDS - Anomoly-based Network Intrusion Detection System
+\item
+  HNS - Hybrid Network Simulation
+\item
+  HMI - Human-Machine Interface - a software and hardware designed for a
+  human operator to monitor the state of a process under control, modify
+  control settings and manually override automatic control operations
+\item
+  ICS - Industrial Control System
+\item
+  IDS - Intrusion Detection System
+\item
+  IPS - Intrusion Prevention System
+\item
+  MTU - Master Terminal Unit
+\item
+  PLC - Programmable Logic Controller - a small industrial computer
+  designed to perform logic functions executed by electrical hardware
+\item
+  MTU - Master Terminal Unit
+\item
+  NIDS - Network Intrusion Detection System
+\item
+  RTU - Remote Terminal Unit - a field device that is a data acquisition
+  and control unit designed to support SCADA remote stations
+\item
+  SCADA - Supervisory Control and Data Acquisition
+\end{itemize}
+
+\thispagestyle{empty} \newpage
+\mbox{} \thispagestyle{empty}
+
+\clearpage
+\setcounter{page}{15} \pagenumbering{arabic}
 
 \section{Introduction}\label{introduction}
 
@@ -210,7 +255,7 @@ proprietary protocols, whose security relied predominantly on obscurity.
 As SCADA systems have moved towards open standards and have become more
 interconnected to traditional information technology systems, these
 critical systems have also become increasingly exposed and targeted to
-cyber attacks.{[}Zhu2010{]}{[}Zhu2011{]}
+cyber attacks.{[}Zhu2010{]}{[}Zhu2011{]}{[}1, 2{]}
 
 To secure SCADA systems, intrusion detection systems (IDS) are put into
 place with the purpose of observing, analyzing and detecting any
@@ -328,11 +373,11 @@ internal and external attacks.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-5-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-4-1} 
 
 }
 
-\caption{SCADA components [Zhu2010]}\label{fig:unnamed-chunk-5}
+\caption{SCADA components [Zhu2010]}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \subsection{Traffic characterization}\label{traffic-characterization}
@@ -363,19 +408,19 @@ Known as the Open System Interconnection (OSI) model, it was initially
 developed by the International Standards Organization (ISO) to define
 and characterizes the communication between computing systems. The OSI
 model, as shown in Figure 2
-(\href{https://engineering.linkedin.com/endorsements/geographic-trends-skills-using-linkedins-endorsement-feature}{OSI
-Model image source}) is represented as layers, each one expressed as a
-protocol. Each layer serves the layer above it, and the lowest one being
-closest to the physical medium carrying the communication. Figure OSI
-Model depicts each layer and its role and responsibilities.
+(\href{https://engineering.linkedin.com/endorsements/geographic-trends-skills-using-linkedins-endorsement-feature}{Image
+source}) is represented as layers, each one expressed as a protocol.
+Each layer serves the layer above it, and the lowest one being closest
+to the physical medium carrying the communication. Figure OSI Model
+depicts each layer and its role and responsibilities.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-6-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-5-1} 
 
 }
 
-\caption{OSI Model}\label{fig:unnamed-chunk-6}
+\caption{OSI Model}\label{fig:unnamed-chunk-5}
 \end{figure}
 
 \subsection{Protocols}\label{protocols}
@@ -399,9 +444,18 @@ of octets between applications running on hosts communicating over an IP
 network. A detailed illustration of the TCP and IP headers can be seen
 in Figures 3
 (\href{http://nmap.org/book/images/hdr/MJB-TCP-Header}{Image credit: Max
-Baxter}) and 4
+Baxter}) and Figure 4
 (\href{http://nmap.org/book/images/hdr/MJB-IP-Header}{Image credit: Max
 Baxter}).
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-6-1} 
+
+}
+
+\caption{TCP Header}\label{fig:unnamed-chunk-6}
+\end{figure}
 
 \begin{figure}
 
@@ -409,16 +463,7 @@ Baxter}).
 
 }
 
-\caption{TCP Header}\label{fig:unnamed-chunk-7}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-8-1} 
-
-}
-
-\caption{IPv4 Header}\label{fig:unnamed-chunk-8}
+\caption{IPv4 Header}\label{fig:unnamed-chunk-7}
 \end{figure}
 
 \subsubsection{MODBUS/TCP}\label{modbustcp}
@@ -433,11 +478,11 @@ gives an example architecture for MODBUS TCP communication.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-9-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-8-1} 
 
 }
 
-\caption{MODBUS TCP/IP Communication Architecture}\label{fig:unnamed-chunk-9}
+\caption{MODBUS TCP/IP Communication Architecture}\label{fig:unnamed-chunk-8}
 \end{figure}
 
 The master initiates a request and the slave sends a response containing
@@ -455,19 +500,28 @@ depicted in Figure 6.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-10-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-9-1} 
 
 }
 
-\caption{MODBUS/TCP Frame}\label{fig:unnamed-chunk-10}
+\caption{MODBUS/TCP Frame}\label{fig:unnamed-chunk-9}
 \end{figure}
 
-Included in the MODBUS Application Protocol (MBAP) are: - Transaction ID
-- 2 bytes - identifies request/response pairs - Protocol ID - 2 bytes -
-is always 00 00 for Modbus protocol - Length - 2 bytes - identifies the
-number of bytes in the following message - Unit ID - 1 byte - used to
-distinguish which slave is addressed when several slaves use the same IP
-address
+Included in the MODBUS Application Protocol (MBAP) are:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Transaction ID - 2 bytes - identifies request/response pairs
+\item
+  Protocol ID - 2 bytes - is always 00 00 for Modbus protocol
+\item
+  Length - 2 bytes - identifies the number of bytes in the following
+  message
+\item
+  Unit ID - 1 byte - used to distinguish which slave is addressed when
+  several slaves use the same IP address
+\end{itemize}
 
 The MODBUS/TCP transaction ID is reset to zero with each new TCP
 session. It is important to note that in identifying MODBUS
@@ -491,8 +545,7 @@ and best practices, and recommendations on how to best secure SCADA
 systems. However, cyber attacks continue to increase as SCADA systems
 become more exposed and as the attacks grow in sophistication. And
 specifically in regards to attacks on MODBUS TCP, little has been
-published, except for the work done by Digital Bond{[}\^{}1{]}.
-{[}\^{}1{]}: \url{http://digitalbond.com}
+published, except for the work done by Digital Bond\footnote{\url{http://www.digitalbond.com}}.
 
 Leveraging existing enterprise network infrastructure, SCADA systems are
 also at risk to the same threats that typical IT systems encounter. In
@@ -654,13 +707,15 @@ behaviour is analyzed by comparing the observed network traffic to the
 model. Any significant deviations are signaled and alerted. Figure 7
 models this process.
 
+TODO Table1 reference/figure ???
+
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-11-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-10-1} 
 
 }
 
-\caption{Functional Architecture of an A-NIDS [García2009]}\label{fig:unnamed-chunk-11}
+\caption{Functional Architecture of an A-NIDS [García2009]}\label{fig:unnamed-chunk-10}
 \end{figure}
 
 \pagebreak
@@ -724,11 +779,11 @@ results, that is how easily the results can be read and interpreted.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-12-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-11-1} 
 
 }
 
-\caption{Fundamentals of the A-NIDS Techniques}\label{fig:unnamed-chunk-12}
+\caption{Fundamentals of the A-NIDS Techniques}\label{fig:unnamed-chunk-11}
 \end{figure}
 
 \pagebreak
@@ -782,11 +837,15 @@ community, it provides various statistical and graphical creation
 capabilities available under most operating systems, and is extensible
 with numerous packages available.
 
-\subsection{C++}\label{c}
+\subsection{C/C++}\label{cc}
 
-\subsection{SQLite3}\label{sqlite3}
-
-\subsection{MongoDB/MySQL}\label{mongodbmysql}
+Originally developed by Dennis Ritchie at AT\&T Bell Labs in the late
+60s and early 70s, the C programming language is a low-level, general
+purpose computer programming language, that was initially designed for
+and implemented on the UNIX OS. A predecessor to the C programming
+language is C++, developed by Bjarne Stroustrup in the late 90s. It
+inherits most of C's syntax, as well as adds abstraction making it an
+object-oriented language.{[}Stroustrup2000{]}
 
 \pagebreak
 
@@ -800,7 +859,7 @@ different methods applied in anomaly detection.
 
 One of the only publicly available datasets containing network traffic
 data has been provided by the US Defense Advanced Research Projects
-Agency (DARPA). {[}DARPA1999{]} Network IDS analysis and studies have
+Agency (DARPA).{[}DARPA1999{]} Network IDS analysis and studies have
 commonly been carried out using the DARPA dataset. In this study, the
 analysis has been done using data acquired from a simulated testbed, the
 Virtual Scada Box.
@@ -871,12 +930,12 @@ The fields have the following meaning:
 
 \section{Exploratory Data Analysis}\label{exploratory-data-analysis}
 
-Originally championed by John Tukey{[}2{]}, Exploratory Data Analysis
-(EDA) is an initial approach to understanding a data set in order to get
-a ``feel'' for the data, to summarizing its essential characteristics
-and to studying patterns in the data. Moreover, exploratory data
-analysis frequently incorporates graphical representations beyond using
-quantitative techniques.
+Originally championed by John Tukey{[}Tukey1977{]}, Exploratory Data
+Analysis (EDA) is an initial approach to understanding a data set in
+order to get a ``feel'' for the data, to summarizing its essential
+characteristics and to studying patterns in the data. Moreover,
+exploratory data analysis frequently incorporates graphical
+representations beyond using quantitative techniques.
 
 Conducting EDA possibly gives further insight into the form and
 structure of the data set, in addition to extracting value from it,
@@ -970,15 +1029,16 @@ a given variable,however, the data is in categorized.
 
 An effective and graphical method for visualizing outliers is the
 boxplot. It displays the data in terms of interquartiles, where outliers
-are depicted as individual points. (Boxplot image source{[}3{]})
+are depicted as individual points. (Figure 9: Boxplot Image
+Source{[}Lafaye2013{]})
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-14-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-13-1} 
 
 }
 
-\caption{Boxplot}\label{fig:unnamed-chunk-14}
+\caption{Boxplot}\label{fig:unnamed-chunk-13}
 \end{figure}
 
 \subsubsection{Heat Map}\label{heat-map}
@@ -1004,27 +1064,44 @@ network traffic simulated over a virtual SCADA network under normal
 conditions (no attacks).
 
 \begin{longtable}[c]{@{}ll@{}}
-\toprule
-\textbf{capture\_sew\_20150617.pcap} &\tabularnewline
-\midrule
-\endhead
-\textbf{File} &\tabularnewline
-Length: & 5124210 bytes\tabularnewline
-Format: & Wireshark - pcapng\tabularnewline
-Encapsulation: & Ethernet\tabularnewline
-Packet size limit: & 65535\tabularnewline
-\textbf{Time} &\tabularnewline
-First packet: & 2015-07-21 15:16:56\tabularnewline
-Last packet: & 2015-07-21 15:29:54\tabularnewline
-Elapsed: & 00:12:58\tabularnewline
-\textbf{Traffic Captured} &\tabularnewline
-Packets & 51358\tabularnewline
-B/t first and last pkt & 778,118 sec\tabularnewline
-Avg. packets/sec & 66,003\tabularnewline
-Avg. packet size & 65,343 bytes\tabularnewline
-Bytes & 3355887\tabularnewline
-Avg. bytes/sec & 4312,826\tabularnewline
-Avg. Mit/sec & 0,035\tabularnewline
+\toprule\addlinespace
+\textbf{capture\_sew\_20150617.pcap} &
+\\\addlinespace
+\midrule\endhead
+\textbf{File} &
+\\\addlinespace
+Length: & 5124210 bytes
+\\\addlinespace
+Format: & Wireshark - pcapng
+\\\addlinespace
+Encapsulation: & Ethernet
+\\\addlinespace
+Packet size limit: & 65535
+\\\addlinespace
+\textbf{Time} &
+\\\addlinespace
+First packet: & 2015-07-21 15:16:56
+\\\addlinespace
+Last packet: & 2015-07-21 15:29:54
+\\\addlinespace
+Elapsed: & 00:12:58
+\\\addlinespace
+\textbf{Traffic Captured} &
+\\\addlinespace
+Packets & 51358
+\\\addlinespace
+B/t first and last pkt & 778,118 sec
+\\\addlinespace
+Avg. packets/sec & 66,003
+\\\addlinespace
+Avg. packet size & 65,343 bytes
+\\\addlinespace
+Bytes & 3355887
+\\\addlinespace
+Avg. bytes/sec & 4312,826
+\\\addlinespace
+Avg. Mit/sec & 0,035
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
@@ -1034,17 +1111,19 @@ comma delimited files in order to do further analysis. Exported files
 were created with TCP endpoints, TCP conversations, as well as the
 entire pcap file, each as a CSV file. (Appendix A)
 
+\newpage
+
 \subsubsection{Network Analysis}\label{network-analysis}
 
 \paragraph{Protocols}\label{protocols-1}
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-15-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-14-1} 
 
 }
 
-\caption{Pie Chart of Protocols}\label{fig:unnamed-chunk-15}
+\caption{Pie Chart of Protocols}\label{fig:unnamed-chunk-14}
 \end{figure}
 
 \begin{figure}
@@ -1055,6 +1134,8 @@ entire pcap file, each as a CSV file. (Appendix A)
 
 \caption{SCADA Network Graph}\label{fig:warning}
 \end{figure}
+
+\newpage
 
 Source / Destination / UnitID
 
@@ -1096,9 +1177,18 @@ Source / Function Code
 2: 192.168.12.252                      4 192.168.12.252/4
 \end{verbatim}
 
-\nopagebreak
+\newpage
 
 \subsubsection{Packet Analysis}\label{packet-analysis}
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-20-1} 
+
+}
+
+\caption{Source Packet Size Boxplot}\label{fig:unnamed-chunk-20}
+\end{figure}
 
 \begin{figure}
 
@@ -1106,19 +1196,8 @@ Source / Function Code
 
 }
 
-\caption{Source Packet Size Boxplot}\label{fig:unnamed-chunk-21}
+\caption{Bar Charts of Packet Counts}\label{fig:unnamed-chunk-21}
 \end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-22-1} 
-
-}
-
-\caption{Bar Charts Packets by Source}\label{fig:unnamed-chunk-22}
-\end{figure}
-
-\newpage
 
 \paragraph{MODBUS/TCP Request/Response Packet Statistics (Appendix
 C)}\label{modbustcp-requestresponse-packet-statistics-appendix-c}
@@ -1128,23 +1207,26 @@ C)}\label{modbustcp-requestresponse-packet-statistics-appendix-c}
 MODBUS/TCP \textbf{requests} are identified by packets having
 destination port number 502
 
-\nopagebreak
-
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-25-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-24-1} 
 
 }
 
-\caption{Boxplot of Request Packets}\label{fig:unnamed-chunk-25}
+\caption{Boxplot of Request Packets}\label{fig:unnamed-chunk-24}
 \end{figure}
-
-\nopagebreak
 
 MODBUS/TCP \textbf{responses} are identified by packets having source
 port number 502
 
-\nopagebreak
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-26-1} 
+
+}
+
+\caption{Boxplot of Response Packets}\label{fig:unnamed-chunk-26}
+\end{figure}
 
 \begin{figure}
 
@@ -1152,10 +1234,8 @@ port number 502
 
 }
 
-\caption{Boxplot of Response Packets}\label{fig:unnamed-chunk-27}
+\caption{Scatterplot of Time as a Function of Frame Number}\label{fig:unnamed-chunk-27}
 \end{figure}
-
-\newpage
 
 \begin{figure}
 
@@ -1163,18 +1243,7 @@ port number 502
 
 }
 
-\caption{Scatterplot of Time as a Function of Frame Number}\label{fig:unnamed-chunk-28}
-\end{figure}
-
-\nopagebreak
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-29-1} 
-
-}
-
-\caption{Boxplot of MODBUS/TCP Data Length}\label{fig:unnamed-chunk-29}
+\caption{Boxplot of MODBUS/TCP Data Length}\label{fig:unnamed-chunk-28}
 \end{figure}
 
 \subsubsection[MODBUS/TCP Data Analysis]{MODBUS/TCP Data\footnote{\url{https://www.wireshark.org/docs/dfref/m/mbtcp.html}}
@@ -1187,23 +1256,21 @@ converted from a hex to a decimal value. (Appendix D)
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-30-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-29-1} 
 
 }
 
-\caption{Graph of MODBUS Data Values over Time by MODBUS  Reference Number}\label{fig:unnamed-chunk-30}
+\caption{Graph of MODBUS Data Values over Time by MODBUS  Reference Number}\label{fig:unnamed-chunk-29}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-31-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-30-1} 
 
 }
 
-\caption{Graph of MODBUS Data Values over Time by Function Code}\label{fig:unnamed-chunk-31}
+\caption{Graph of MODBUS Data Values over Time by Function Code}\label{fig:unnamed-chunk-30}
 \end{figure}
-
-\pagebreak
 
 \subsubsection{MODBUS Data Value
 Statistics}\label{modbus-data-value-statistics}
@@ -1223,14 +1290,21 @@ Statistics}\label{modbus-data-value-statistics}
 
 \begin{figure}
 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-32-1} 
+
+}
+
+\caption{Bar Chart of MODBUS Reference Numbers by Function Code}\label{fig:unnamed-chunk-32}
+\end{figure}
+
+\begin{figure}
+
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-33-1} 
 
 }
 
-\caption{Bar Chart of MODBUS Reference Numbers by Function Code}\label{fig:unnamed-chunk-33}
+\caption{Boxplot of MODBUS Data Values by Function and Reference Number}\label{fig:unnamed-chunk-33}
 \end{figure}
-
-\newpage
 
 \begin{figure}
 
@@ -1238,10 +1312,8 @@ Statistics}\label{modbus-data-value-statistics}
 
 }
 
-\caption{Boxplot of MODBUS Data Values by Function and Reference Number}\label{fig:unnamed-chunk-34}
+\caption{Scatterplot Matrix of Pairs of Variables}\label{fig:unnamed-chunk-34}
 \end{figure}
-
-\nopagebreak
 
 \begin{figure}
 
@@ -1249,18 +1321,8 @@ Statistics}\label{modbus-data-value-statistics}
 
 }
 
-\caption{Scatterplot Matrix of Pairs of Variables}\label{fig:unnamed-chunk-35}
-\end{figure}
-
-\newpage
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-36-1} 
-
-}
-
-\caption{3D Scatterplot of MODBUUS Reference and Data Over Time of Function Code 4}\label{fig:unnamed-chunk-36}
+\caption{3D Scatterplot of MODBUS Reference Number
+ and Data Over Time for Function Code 4}\label{fig:unnamed-chunk-35}
 \end{figure}
 
 \pagebreak
@@ -1292,16 +1354,16 @@ possibility of attacks on it. The two approaches presented are:
   processes via virtualization
 \end{itemize}
 
-In Figure 9, an example is shown of the placement of the IDS and its
+In Figure 24, an example is shown of the placement of the IDS and its
 supporting DB, connected to other SCADA components.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-38-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-37-1} 
 
 }
 
-\caption{Technical Architecture}\label{fig:unnamed-chunk-38}
+\caption{Technical Architecture}\label{fig:unnamed-chunk-37}
 \end{figure}
 
 Based on the recommendations of {[}Chifflier2014{]}, in order to address
@@ -1313,7 +1375,8 @@ maintenance, updates are deposited in a dedicated area and then copied
 over to another reserved area that are either executed by a scheduled
 job or via a trigger. A Mirabox is used as the embedded system running
 the latest stable version of Debian and virtual private networks to
-communicate between the internal IDS and the supervisory system.
+communicate between the internal IDS and the supervisory system. (Figure
+25)
 
 {[}Diallo2014{]} advises the strategic placement of the monitoring
 devices throughout the SCADA system on a dedicated network for
@@ -1322,11 +1385,11 @@ or a distributed system.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-39-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-38-1} 
 
 }
 
-\caption{Architecture of secure IDS [Chifflier2014]}\label{fig:unnamed-chunk-39}
+\caption{Architecture of secure IDS [Chifflier2014]}\label{fig:unnamed-chunk-38}
 \end{figure}
 
 \subsubsection{Signature-based IDS}\label{signature-based-ids}
@@ -1386,26 +1449,27 @@ mode.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-40-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-39-1} 
 
 }
 
-\caption{Process}\label{fig:unnamed-chunk-40}
+\caption{Process}\label{fig:unnamed-chunk-39}
 \end{figure}
 
 \subsubsection{Statistical Processing}\label{statistical-processing}
 
 The statistical process was implemented using various components to
-handle specific steps. Each element used was initially selected to
-manage a particular task of the process according to its ease and
-efficiency of development, as well as its processing time. Once captured
-from the monitoring device on the IDS appliance, the packet capture file
-is sent to be processed offline. The entire procedure is handled by a
-bash script. Most statistical computations were done using using R
-scripts, however, part of the data pre-processing, including merging and
-transformations went through a C++ program. Configuration files are
-subsequently generated in JSON format, which are then uploaded to the
-IDS appliance. The components to the process can be found in Appendix E.
+handle specific steps (Figure 26). Each element used was initially
+selected to manage a particular task of the process according to its
+ease and efficiency of development, as well as its processing time. Once
+captured from the monitoring device on the IDS appliance, the packet
+capture file is sent to be processed offline. The entire procedure is
+handled by a bash script. Most statistical computations were done using
+using R scripts, however, part of the data pre-processing, including
+merging and transformations went through a C++ program. Configuration
+files are subsequently generated in JSON format, which are then uploaded
+to the IDS appliance. The components to the process can be found in
+Appendix E.
 
 \subsubsection{Modbus/TCP}\label{modbustcp-1}
 
@@ -1553,9 +1617,11 @@ intrusion in future versions of SCAD@COPS.
 
 \pagebreak
 
-\section*{Appendix A - Wireshark
-Exports}\label{appendix-a---wireshark-exports}
-\addcontentsline{toc}{section}{Appendix A - Wireshark Exports}
+\section*{Appendix A}\label{appendix-a}
+\addcontentsline{toc}{section}{Appendix A}
+
+\subsection*{Wireshark Exports}\label{wireshark-exports}
+\addcontentsline{toc}{subsection}{Wireshark Exports}
 
 Using the export facility in Wireshark, the following are a description
 of the exported files:
@@ -1563,68 +1629,100 @@ of the exported files:
 Entire pcap file exported in CSV format:
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule
-SCADA\_20150429\_042915.csv\tabularnewline
-\midrule
-\endhead
-Time\tabularnewline
-Source\tabularnewline
-Destination\tabularnewline
-Protocol\tabularnewline
-Length\tabularnewline
-Info\tabularnewline
+\toprule\addlinespace
+SCADA\_20150429\_042915.csv
+\\\addlinespace
+\midrule\endhead
+Time
+\\\addlinespace
+Source
+\\\addlinespace
+Destination
+\\\addlinespace
+Protocol
+\\\addlinespace
+Length
+\\\addlinespace
+Info
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 List of endpoints, the traffic to and from an IP address:
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule
-SCADA\_Security\_042915\_TCP\_Endpoints.csv\tabularnewline
-\midrule
-\endhead
-Address\tabularnewline
-Port\tabularnewline
-Packets\tabularnewline
-Bytes\tabularnewline
-Tx.Packets\tabularnewline
-Tx.Bytes\tabularnewline
-Rx.Packets\tabularnewline
-Rx.Bytes\tabularnewline
-Latitude\tabularnewline
-Longitude\tabularnewline
+\toprule\addlinespace
+SCADA\_Security\_042915\_TCP\_Endpoints.csv
+\\\addlinespace
+\midrule\endhead
+Address
+\\\addlinespace
+Port
+\\\addlinespace
+Packets
+\\\addlinespace
+Bytes
+\\\addlinespace
+Tx.Packets
+\\\addlinespace
+Tx.Bytes
+\\\addlinespace
+Rx.Packets
+\\\addlinespace
+Rx.Bytes
+\\\addlinespace
+Latitude
+\\\addlinespace
+Longitude
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 List of conversations, the traffic between two endpoints :
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule
-SCADA\_Security\_042915\_TCP\_Conversations.csv\tabularnewline
-\midrule
-\endhead
-Address.A\tabularnewline
-Port.A\tabularnewline
-Address.B\tabularnewline
-Port.B\tabularnewline
-Packets\tabularnewline
-Bytes\tabularnewline
-Packets.A.B\tabularnewline
-Bytes.A.B\tabularnewline
-Packets.A.B.1\tabularnewline
-Bytes.A.B.1\tabularnewline
-Rel.Start\tabularnewline
-Duration\tabularnewline
-bps.A.B\tabularnewline
-bps.A.B.1\tabularnewline
+\toprule\addlinespace
+SCADA\_Security\_042915\_TCP\_Conversations.csv
+\\\addlinespace
+\midrule\endhead
+Address.A
+\\\addlinespace
+Port.A
+\\\addlinespace
+Address.B
+\\\addlinespace
+Port.B
+\\\addlinespace
+Packets
+\\\addlinespace
+Bytes
+\\\addlinespace
+Packets.A.B
+\\\addlinespace
+Bytes.A.B
+\\\addlinespace
+Packets.A.B.1
+\\\addlinespace
+Bytes.A.B.1
+\\\addlinespace
+Rel.Start
+\\\addlinespace
+Duration
+\\\addlinespace
+bps.A.B
+\\\addlinespace
+bps.A.B.1
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
-\thispagestyle{empty} \pagebreak
+\pagebreak
 
-\section*{Appendix B - Configuration
-Files}\label{appendix-b---configuration-files}
-\addcontentsline{toc}{section}{Appendix B - Configuration Files}
+\section*{Appendix B}\label{appendix-b}
+\addcontentsline{toc}{section}{Appendix B}
+
+\subsection*{Configuration Files}\label{configuration-files}
+\addcontentsline{toc}{subsection}{Configuration Files}
 
 Configuration files generated from statistical processing.
 
@@ -1689,7 +1787,7 @@ Configuration files generated from statistical processing.
 }
 \end{verbatim}
 
-\thispagestyle{empty} \pagebreak
+\pagebreak
 
 \subsection{stats.db}\label{stats.db}
 
@@ -1770,12 +1868,15 @@ Configuration files generated from statistical processing.
 }
 \end{verbatim}
 
-\thispagestyle{empty} \pagebreak
+\newpage
 
-\section*{Appendix C - MODBUS/TCP Request/Response Packet
-Statistics}\label{appendix-c---modbustcp-requestresponse-packet-statistics}
-\addcontentsline{toc}{section}{Appendix C - MODBUS/TCP Request/Response
-Packet Statistics}
+\section*{Appendix C}\label{appendix-c}
+\addcontentsline{toc}{section}{Appendix C}
+
+\subsection*{MODBUS/TCP Request/Response Packet
+Statistics}\label{modbustcp-requestresponse-packet-statistics}
+\addcontentsline{toc}{subsection}{MODBUS/TCP Request/Response Packet
+Statistics}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1891,12 +1992,15 @@ Packet Statistics}
  (Other): 2887    
 \end{verbatim}
 
-\thispagestyle{empty} \pagebreak
+\newpage
 
-\section*{Appendix D - Merged Request/Response Packet
-Statistics}\label{appendix-d---merged-requestresponse-packet-statistics}
-\addcontentsline{toc}{section}{Appendix D - Merged Request/Response
-Packet Statistics}
+\section*{Appendix D}\label{appendix-d}
+\addcontentsline{toc}{section}{Appendix D}
+
+\subsection*{Merged Request/Response Packet
+Statistics}\label{merged-requestresponse-packet-statistics}
+\addcontentsline{toc}{subsection}{Merged Request/Response Packet
+Statistics}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1987,11 +2091,13 @@ Packet Statistics}
                                            
 \end{verbatim}
 
-\section*{Appendix E - Commands and
-Scripts}\label{appendix-e---commands-and-scripts}
-\addcontentsline{toc}{section}{Appendix E - Commands and Scripts}
+\section*{Appendix E}\label{appendix-e}
+\addcontentsline{toc}{section}{Appendix E}
 
-\subsection{TShark}\label{tshark}
+\subsection*{Commands and Scripts}\label{commands-and-scripts}
+\addcontentsline{toc}{subsection}{Commands and Scripts}
+
+\subsubsection{TShark}\label{tshark}
 
 Command used to extract various fields from the pcap file used for
 analysis.
@@ -2004,29 +2110,29 @@ mbtcp.trans\_id -e mbtcp.len -e mbtcp.modbus.func\_code -e
 mbtcp.modbus.reference\_num -e mbtcp.modbus.word\_cnt -e
 mbtcp.modbus.data \textgreater{} modbus.data
 
-\subsection{UNIX}\label{unix}
+\subsubsection{UNIX}\label{unix}
 
-\subsubsection{sed}\label{sed}
+\paragraph{sed}\label{sed}
 
 Command used to remove empty lines from the pcap data.
 
 sed '/\^{},,,,,.*\$/d' modbus.data \textgreater{} modbus.data
 
-\subsubsection{Shell script}\label{shell-script}
+\paragraph{Shell script}\label{shell-script}
 
 processScada.sh - Driver script for statistical computational process.
 
-\subsubsection{C/C++ script}\label{cc-script}
+\paragraph{C/C++ script}\label{cc-script}
 
 processMerge - C/C++ component for handling merge of MODBUS packets in
 data processing.
 
-\subsection{R}\label{r}
+\subsubsection{R}\label{r}
 
 install.R - Setup script to install required packages. sewModbus.R -
 Script for processing, analysing and visualizing modbus data.
 
-\thispagestyle{empty} \pagebreak
+\newpage
 
 \section*{Bibliography}\label{bibliography}
 \addcontentsline{toc}{section}{Bibliography}
@@ -2340,39 +2446,22 @@ Research 5, 2004
 Traffic for Intrusion Detection Purpose,'' ISI 2008, June 17-20, Taipei,
 2008
 
-\thispagestyle{empty} \pagebreak
+{[}Tukey1977{]} J.W. Tukey, (1977). Exploratory Data Analysis.
+Addison-Wesley. ISBN 0-201-07616-0
 
-\section*{Glossary}\label{glossary}
-\addcontentsline{toc}{section}{Glossary}
+{[}Lafaye2013{]} P. Lafaye de Micheaux et al., (2013). The R Software:
+Fundamentals of Programming and Statistical Analysis, Statistics and
+Computing. Springer New York. ISBN 978-1-4614-9019-7
 
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  ICS - Industrial Control System
-\item
-  IDS - Intrusion Detection System
-\item
-  IPS - Intrusion Prevention System
-\item
-  MTU - Master Terminal Unit
-\item
-  SCADA - Supervisory Control and Data Acquisition
-\item
-  PLC - Programmable Logic Controller - a small industrial computer
-  designed to perform logic functions executed by electrical hardware
-\item
-  MTU - Master Terminal Unit
-\item
-  RTU - Remote Terminal Unit - a field device that is a data acquisition
-  and control unit designed to support SCADA remote stations
-\item
-  HMI - Human-Machine Interface - a software and hardware designed for a
-  human operator to monitor the state of a process under control, modify
-  control settings and manually override automatic control operations
-\item
-  Hynesim - Hybrid Network Simulation
-\end{itemize}
+{[}Stroustrup2000{]} B. Stroustrup, The C++ programming language. 2000.
 
-\thispagestyle{empty} \pagebreak
+\pagebreak
+
+{[}1{]}C. Callegari, S. Vaton, and M. Pagano, ``A new statistical
+approach to network anomaly detection,'' pp. 441--447, 2008.
+
+{[}2{]}S. Cheung and K. Skinner, ``Using Model-based Intrusion Detection
+for SCADA Networks,'' \emph{Science And Technology}, vol. 329, no. 7461,
+pp. 1--12, 2006.
 
 \end{document}

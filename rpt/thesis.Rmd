@@ -12,6 +12,8 @@ output:
     number_sections: true
     keep_tex: yes
   word_document: default
+bibliography: thesis.bib
+csl: ieee.csl
 ---
 
 ```{r, echo=FALSE, message=FALSE}
@@ -33,25 +35,37 @@ require(rjson)
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 # Load data from save(sewTCPConvDT, sewEndPtsDT, file="sewConvEnd.Rda")
-load("/home/lisa/rDia/sewConvEnd.Rda")
+#load("/home/lisa/rDia/sewConvEnd.Rda")
+load("/Users/lstilo/rDia/sewConvEnd.Rda")
 
 # Load data from save(sewModbusDT file="sew.Rda")
-load("/home/lisa/rDia/sew.Rda")
+#load("/home/lisa/rDia/sew.Rda")
+load("/Users/lstilo/rDia/sew.Rda")
 
 # Load data from save(mergedSewDT, file="sewMerged.Rda")
-load("/home/lisa/rDia/sewMerged.Rda")
+#load("/home/lisa/rDia/sewMerged.Rda")
+load("/Users/lstilo/rDia/sewMerged.Rda")
+
+homeDir <- "/Users/lstilo/rDia/"
 ```
 
 
 ```{r, echo=FALSE, fig.height=8, fig.width=8}
-img <- readPNG("/home/lisa/rDia/imgs/wordle.png")
+#img <- readPNG("/home/lisa/rDia/imgs/wordle.png")
+#img <- readPNG("/Users/lstilo/rDia/imgs/wordle.png")
+img <- readPNG(paste(homeDir, "imgs/wordle.png", sep=''))
 grid.raster(img)
 ```
 
 
 \thispagestyle{empty}
-\clearpage
 
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+\clearpage
+\pagenumbering{roman}
 
 \begin{center}
 
@@ -100,49 +114,76 @@ grid.raster(img)
 
 \end{center}
 
-
 \thispagestyle{empty}
+\newpage
+\mbox{}
+\thispagestyle{empty}
+
+\newpage
+
+# Acknowledgements {-}
+
+\newpage
+\mbox{}
+\thispagestyle{empty}
+
+\clearpage
+
+# Abstract {-}
+
+\newpage
+\mbox{}
+\thispagestyle{empty}
+
+\clearpage
+
+# Résumé {-}
+
+\newpage
+\mbox{}
+\thispagestyle{empty}
+
 \clearpage
 
 \tableofcontents
 
-\thispagestyle{empty}
+\cleardoublepage
+
+\listoffigures
+
 \newpage
+\mbox{}
+\thispagestyle{empty}
 
+\clearpage
 
-# Acknowledgements {-}
+# Acronyms {-}
 
-In memory of my late mother, Pisamai Maliphol, if only she could have witnessed not only her latest grandchild, but to see me make it through the completion of this masters degree. In many ways, these two years were part of the healing process after her loss. She would have been extremely proud.
+* ANIDS - Anomoly-based Network Intrusion Detection System
+* HNS - Hybrid Network Simulation
+* HMI - Human-Machine Interface - a software and hardware designed for a human operator to monitor the state of a process under control, modify control settings and manually override automatic control operations
+* ICS - Industrial Control System
+* IDS - Intrusion Detection System
+* IPS - Intrusion Prevention System
+* MTU - Master Terminal Unit
+* PLC - Programmable Logic Controller - a small industrial computer designed to perform logic functions executed by electrical hardware
+* MTU - Master Terminal Unit
+* NIDS - Network Intrusion Detection System
+* RTU - Remote Terminal Unit - a field device that is a data acquisition and control unit designed to support SCADA remote stations
+* SCADA - Supervisory Control and Data Acquisition
 
-This work is also dedicated to my children, Mintra, Samya, and Lucien, may they never cease to continue and to have the motivation and curiosity to learn, no matter how late in life.
+\newpage
+\mbox{}
+\thispagestyle{empty}
 
-Not enough gratitude can be expressed to Nehme Boghdadi and Aimee Johansen. You both were there to encourage and to help along the journey, especially during difficult times. I would not have done this without you guys.
+\clearpage
+\setcounter{page}{15}
+\pagenumbering{arabic}
 
-Thank you to Guillaume Prigent and all the folks at Diateam for providing a convivial environment in which to work. Not only did I have much to learn there technically, but lessons in the French language and culture that I would not have found in the classrooms.
-
-Lastly, I would like to also thank Sandrine Vaton for agreeing to be my advisor and then encouraging me to take the next step.
-
-
-\pagebreak
-
-
-# Abstract {-}
-
-
-
-\pagebreak
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-require(grid)
-require(png)
-
-# http://rmarkdown.rstudio.com/authoring_basics.html
-# https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
-```
 
 # Introduction
 
-Supervisory control and data acquisition systems (SCADA) are one type of industrial control system (ICS) put in place for monitoring and controlling industrial processes, such as those in the energy or manufacturing sectors. Originally, these systems were isolated and used proprietary protocols, whose security relied predominantly on obscurity. As SCADA systems have moved towards open standards and have become more interconnected to traditional information technology systems, these critical systems have also become increasingly exposed and targeted to cyber attacks.[Zhu2010][Zhu2011]
+Supervisory control and data acquisition systems (SCADA) are one type of industrial control system (ICS) put in place for monitoring and controlling industrial processes, such as those in the energy or manufacturing sectors. Originally, these systems were isolated and used proprietary protocols, whose security relied predominantly on obscurity. As SCADA systems have moved towards open standards and have become more interconnected to traditional information technology systems, these critical systems have also become increasingly exposed and targeted to cyber attacks.[Zhu2010][Zhu2011][[@Callegari2008; @Cheung2006]]
 
 To secure SCADA systems, intrusion detection systems (IDS) are put into place with the purpose of observing, analyzing and detecting any malicious activity, which are then alerted to, and reviewed by, security analysts. Most IDSs found in the market-place are commonly network, signature-based IDSs. Anomaly-based detection systems are relatively immature, however, they provide a greater possibility of detecting unknown attacks. Signature-based systems can only detect known and identified signatures of attacks. 
 
@@ -192,8 +233,9 @@ Historically, SCADA systems resided on their own internal networks and were not 
 
 
 ```{r, echo=FALSE, fig.width=4, fig.height=5, fig.align='center', fig.cap="SCADA components [Zhu2010]"}
-setwd("~/rDia")
-img <- readPNG("imgs/SCADA_architecture.png")
+#setwd("~/rDia")
+img <- readPNG(paste(homeDir, "imgs/SCADA_architecture.png", sep=''))
+#img <- readPNG(paste(homeDir, "imgs/SCADA_architecture.png", sep=''))
 grid.raster(img)
 ```
 
@@ -213,12 +255,13 @@ In this section, a few fundamental networking terms are discussed. First, an out
 
 ## OSI
 
-Known as the Open System Interconnection (OSI) model, it was initially developed by the International Standards Organization (ISO) to define and characterizes the communication between computing systems. The OSI model, as shown in Figure 2 ([OSI Model image source](https://engineering.linkedin.com/endorsements/geographic-trends-skills-using-linkedins-endorsement-feature)) is represented as layers, each one expressed as a protocol. Each layer serves the layer above it, and the lowest one being closest to the physical medium carrying the communication. Figure OSI Model depicts each layer and its role and responsibilities.
+Known as the Open System Interconnection (OSI) model, it was initially developed by the International Standards Organization (ISO) to define and characterizes the communication between computing systems. The OSI model, as shown in Figure 2 ([Image source](https://engineering.linkedin.com/endorsements/geographic-trends-skills-using-linkedins-endorsement-feature)) is represented as layers, each one expressed as a protocol. Each layer serves the layer above it, and the lowest one being closest to the physical medium carrying the communication. Figure OSI Model depicts each layer and its role and responsibilities.
 
 
-```{r, echo=FALSE, fig.width=4, fig.height=5, fig.align='center', fig.cap="OSI Model"}
-setwd("~/rDia")
-img <- readPNG("imgs/osi-model.png")
+```{r, echo=FALSE, warning=FALSE, fig.width=4, fig.height=5, fig.align='center', fig.cap="OSI Model"}
+#setwd("~/rDia")
+#img <- readPNG("imgs/osi-model.png")
+img <- readPNG(paste(homeDir, "imgs/osi-model1.png", sep=''))
 grid.raster(img)
 ```
 
@@ -231,20 +274,22 @@ As SCADA systems have become increasingly interconnected to enterprise networks,
 
 Initially developed by the Defense Advanced Research Project Agency (DARPA) in the late 1960s, the Internet protocol suite was the result of the research and development of data transmission technologies in the United States that was used as a standard for military computer networking. 
 
-TCP/IP provides reliable, ordered and error-checked delivery of streams of octets between applications running on hosts communicating over an IP network. A detailed illustration of the TCP and IP headers can be seen in Figures 3 ([Image credit: Max Baxter](http://nmap.org/book/images/hdr/MJB-TCP-Header)) and 4 ([Image credit: Max Baxter](http://nmap.org/book/images/hdr/MJB-IP-Header)).
+TCP/IP provides reliable, ordered and error-checked delivery of streams of octets between applications running on hosts communicating over an IP network. A detailed illustration of the TCP and IP headers can be seen in Figures 3 ([Image credit: Max Baxter](http://nmap.org/book/images/hdr/MJB-TCP-Header)) and Figure 4 ([Image credit: Max Baxter](http://nmap.org/book/images/hdr/MJB-IP-Header)).
 
 
 
 ```{r, echo=FALSE, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="TCP Header"}
-setwd("~/rDia")
-img <- readPNG("imgs/MJB-TCP-Header.png")
+#setwd("~/rDia")
+#img <- readPNG("imgs/MJB-TCP-Header.png")
+img <- readPNG(paste(homeDir, "imgs/MJB-TCP-Header.png", sep=''))
 grid.raster(img)
 ```
 
 
 ```{r, echo=FALSE, fig.width=5, fig.height=4, fig.align='center', fig.cap="IPv4 Header"}
-setwd("~/rDia")
-img <- readPNG("imgs/MJB-IP-Header.png")
+#setwd("~/rDia")
+#img <- readPNG("imgs/MJB-IP-Header.png")
+img <- readPNG(paste(homeDir, "imgs/MJB-IP-Header.png", sep=''))
 grid.raster(img)
 ```
 
@@ -256,8 +301,9 @@ The MODBUS/TCP protocol is an open standard and popular network protocol used fo
 
 
 ```{r, echo=FALSE, fig.width=5.5, fig.width=4.5, fig.align='center', fig.cap="MODBUS TCP/IP Communication Architecture"}
-setwd("~/rDia")
-img <- readPNG("imgs/modbustcpCommArch.png")
+#setwd("~/rDia")
+#img <- readPNG("imgs/modbustcpCommArch.png")
+img <- readPNG(paste(homeDir, "imgs/modbustcpCommArch.png", sep=''))
 grid.raster(img)
 ```
 
@@ -267,17 +313,19 @@ Attached to the PDU is the application specific addressing and error checking, w
 
 
 ```{r, echo=FALSE, fig.width=4, fig.height=2.75, fig.align='center', fig.cap="MODBUS/TCP Frame"}
-setwd("~/rDia")
-img <- readPNG("imgs/modbusADU.png")
+#setwd("~/rDia")
+#img <- readPNG("imgs/modbusADU.png")
+img <- readPNG(paste(homeDir, "imgs/modbusADU.png", sep=''))
 grid.raster(img)
 ```
 
 
 Included in the MODBUS Application Protocol (MBAP) are:
-- Transaction ID - 2 bytes - identifies request/response pairs
-- Protocol ID - 2 bytes - is always 00 00 for Modbus protocol
-- Length - 2 bytes - identifies the number of bytes in the following message
-- Unit ID - 1 byte - used to distinguish which slave is addressed when several slaves use the same IP address
+
+-  Transaction ID - 2 bytes - identifies request/response pairs
+-  Protocol ID - 2 bytes - is always 00 00 for Modbus protocol
+-  Length - 2 bytes - identifies the number of bytes in the following message
+-  Unit ID - 1 byte - used to distinguish which slave is addressed when several slaves use the same IP address
 
 The MODBUS/TCP transaction ID is reset to zero with each new TCP session. It is important to note that in identifying MODBUS conversations, port 502 is reserved for MODBUS communication. MODBUS requests are initiated from port 502 and MODBUS responses terminate at port 502.
 
@@ -290,7 +338,8 @@ As a result of using the simple design of MODBUS and its reliance on the TCP lay
 # Common Attacks on SCADA
 
 [Hadziosmanovic2010][Krotofil2013][Lemay2013][Rodrigues2011][Stouffer2006] define threats and vulnerabilities, security issues, as well as policies and best practices, and recommendations on how to best secure SCADA systems. However, cyber attacks continue to increase as SCADA systems become more exposed and as the attacks grow in sophistication. And specifically in regards to attacks on MODBUS TCP, little has been published, except for the work done by Digital Bond[^1].
-[^1]: http://digitalbond.com
+
+[^1]: http://www.digitalbond.com
 
 Leveraging existing enterprise network infrastructure, SCADA systems are also at risk to the same threats that typical IT systems encounter. In addition, as SCADA systems are upgraded less frequently and continue to run on legacy systems, they are rendered even more vulnerable to various attacks that may be prevented by deploying upgrades that address newer and known threats. In [Zhu2011], outlines and describes in detail the various methods of cyber attacks on software and hardware and ways of compromising SCADA systems.
 
@@ -359,10 +408,12 @@ It is fairly recent to see security devices incorporate anomaly-based methods, t
 
 The initial (parameterization) phase of implementing an anomaly-based detection system is to create the baseline profile of the system characteristics and behaviour. Then a model is developed using the training set created using one of the methods outlined below during the training phase. A comparison of a subset of these methods is given (Table1).[García2009] In the final stage, detection of abnormal behaviour is analyzed by comparing the observed network traffic to the model. Any significant deviations are signaled and alerted. Figure 7 models this process.
 
+TODO Table1 reference/figure ???
 
 ```{r, echo=FALSE, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="Functional Architecture of an A-NIDS [García2009]"}
-setwd("~/rDia")
-img <- readPNG("imgs/anids_process.png")
+#setwd("~/rDia")
+#img <- readPNG("imgs/anids_process.png")
+img <- readPNG(paste(homeDir, "imgs/anids_process.png", sep=''))
 grid.raster(img)
 ```
 
@@ -389,8 +440,9 @@ Similarities and overlap can be seen between the techniques above as they have e
 
 
 ```{r, echo=FALSE,fig.align='center', fig.cap="Fundamentals of the A-NIDS Techniques"}
-setwd("~/rDia")
-img <- readPNG("imgs/anids_techniques_comparison.png")
+#setwd("~/rDia")
+#img <- readPNG("imgs/anids_techniques_comparison.png")
+img <- readPNG(paste(homeDir, "imgs/anids_techniques_comparison.png", sep=''))
 grid.raster(img)
 ```
 
@@ -425,11 +477,10 @@ R is an Open Source programming language and environment used for statistical co
 
 Maintained by the R Development Core Team and with an active and growing community, it provides various statistical and graphical creation capabilities available under most operating systems, and is extensible with numerous packages available.
 
-## C++
+## C/C++
 
-## SQLite3
+Originally developed by Dennis Ritchie at AT&T Bell Labs in the late 60s and early 70s, the C programming language is a low-level, general purpose computer programming language, that was  initially designed for and implemented on the UNIX OS. A predecessor to the C programming language is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most of C’s syntax, as well as adds abstraction making it an object-oriented language.[Stroustrup2000]
 
-## MongoDB/MySQL  
     
 
 \pagebreak
@@ -439,7 +490,7 @@ Maintained by the R Development Core Team and with an active and growing communi
 
 It is usual for network data to contain private and sensitive information, and therefore a limited number of datasets exist for testing.  Consequently, it is difficult to evaluate and assess the accuracy and validity, as well as to make comparisons across the different methods applied in anomaly detection.
 
-One of the only publicly available datasets containing network traffic data has been provided by the US Defense Advanced Research Projects Agency (DARPA). [DARPA1999] Network IDS analysis and studies have commonly been carried out using the DARPA dataset. In this study, the analysis has been done using data acquired from a simulated testbed, the Virtual Scada Box. 
+One of the only publicly available datasets containing network traffic data has been provided by the US Defense Advanced Research Projects Agency (DARPA).[DARPA1999] Network IDS analysis and studies have commonly been carried out using the DARPA dataset. In this study, the analysis has been done using data acquired from a simulated testbed, the Virtual Scada Box. 
 
 ## HNS and Virtual Scada Box
 
@@ -456,7 +507,7 @@ This section describes the format used for the packet capture file format of the
 
 \pagebreak
 
-```{r, warning=FALSE, echo=FALSE, comment='',fig.align='center', fig.cap="PCAP Block Structure"}
+```{r, warning=FALSE, echo=FALSE, comment='', fig.align='center', fig.cap="PCAP Block Structure"}
 cat("
 0                   1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -487,7 +538,7 @@ The fields have the following meaning:
 
 # Exploratory Data Analysis 
 
-Originally championed by John Tukey[2], Exploratory Data Analysis (EDA) is an initial approach to understanding a data set in order to get a “feel” for the data, to summarizing its essential characteristics and to studying patterns in the data. Moreover, exploratory data analysis frequently incorporates graphical representations beyond using quantitative techniques.
+Originally championed by John Tukey[Tukey1977], Exploratory Data Analysis (EDA) is an initial approach to understanding a data set in order to get a “feel” for the data, to summarizing its essential characteristics and to studying patterns in the data. Moreover, exploratory data analysis frequently incorporates graphical representations beyond using quantitative techniques.
 
 Conducting EDA possibly gives further insight into the form and structure of the data set, in addition to extracting value from it, visualizing it, and just as importantly, in communicating it. After a fairly exhaustive study of the state of the art of IDS and SCADA systems, an  initial phase of exploratory data analysis was conducted in order to better understand the data. This section presents a short list of statistical terminology, followed by the exploratory data analysis carried out on the network traffic data captured over the simulated SCADA network.   	
 
@@ -541,12 +592,13 @@ Similar to a histogram, a bar chart shows the distribution of values of a given 
 
 ### Boxplot
 
-An effective and graphical method for visualizing outliers is the boxplot. It displays the data in terms of interquartiles, where outliers are depicted as individual points. (Boxplot image source[3])
+An effective and graphical method for visualizing outliers is the boxplot. It displays the data in terms of interquartiles, where outliers are depicted as individual points. (Figure 9: Boxplot Image Source[Lafaye2013])
 
 
 ```{r, echo=FALSE, fig.width=3, fig.height=3, fig.align='center', fig.cap="Boxplot"}
-setwd("~/rDia")
-img <- readPNG("imgs/boxplot.png")
+#setwd("~/rDia")
+#img <- readPNG("imgs/boxplot.png")
+img <- readPNG(paste(homeDir, "imgs/boxplot.png", sep=''))
 grid.raster(img)
 ```
 
@@ -586,6 +638,7 @@ A packet capture file was created via Wireshark, which captured the network traf
 
 Once the network traffic was captured and saved in a pcap file, Wireshark provides the capability to export the raw data into various comma delimited files in order to do further analysis. Exported files were created with TCP endpoints, TCP conversations, as well as the entire pcap file, each as a CSV file. (Appendix A)
 
+\newpage
 
 ### Network Analysis
 
@@ -598,6 +651,7 @@ rm(protocol)
 invisible(dev.off())
 ```
 
+
 ```{r, echo=FALSE, message=FALSE, warning, fig.align='center', fig.cap="SCADA Network Graph"}
 g <- graph.data.frame(sewTCPConvDT[,.(Address.A, Address.B, Packets, Bytes, Duration)], directed=FALSE)
 gAdjMtx <- get.adjacency(g)  # adjacency mtx
@@ -606,10 +660,12 @@ V(gAdj)$size <- degree(gAdj)*40  # node size according to degree of centrality
 eW <- E(gAdj)$weight  # edge weights
 eW <- ceiling(eW/max(eW)*55)
 eW[eW>10] <- 10
-plot.igraph(gAdj, main="Graph of SCADA Network", edge.width=eW)
+plot.igraph(gAdj, edge.width=eW)
 rm(g, gAdjMtx, gAdj, eW)
 invisible(dev.off())
 ```
+
+\newpage
 
 Source / Destination / UnitID  
 ```{r, comment='', echo=FALSE, warning=FALSE, message=FALSE}
@@ -638,31 +694,30 @@ sewModbusDT[,.(src.func = paste(ip.src, mbtcp.modbus.func_code, sep="/"))
                        , by=.(ip.src, mbtcp.modbus.func_code)]
 ```
 
-\nopagebreak
+\newpage
 
 ### Packet Analysis
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=5, fig.align='center', fig.cap="Source Packet Size Boxplot"}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=5, fig.height=4.5, fig.align='center', fig.cap="Source Packet Size Boxplot"}
 ggplot(sewTCPConvDT, aes(x = factor(0), y = Bytes/1e6)) +
   geom_boxplot(fill="darkorchid3") + xlab("") + scale_x_discrete(breaks = NULL) +
   facet_grid(~Address.A) +
-  ggtitle("Boxplot of Packet Size by Source") +
   ylab("MBytes") +
   theme( plot.margin = unit(c(4,2,1,2), "cm") )
 
 invisible(dev.off())
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap="Bar Charts Packets by Source"}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap="Bar Charts of Packet Counts"}
 
 # Number of Packets by Source
 bc1 <- ggplot(sewModbusDT, aes(x=ip.src)) + geom_bar(stat="bin", fill="#FF9999", colour="black")
-bc1 <- bc1 + ggtitle("Bar Chart of Packets by Source") + ylab("Packet Count")
+bc1 <- bc1 + ylab("Packet Count") + ggtitle("Source")
 bc1 <- bc1 + theme(axis.text.x = element_text(angle=90),
                    plot.title = element_text(size=10))
 
 # Number of Packets by Destination
 bc2 <- ggplot(sewModbusDT, aes(x=ip.dst)) + geom_bar(stat="bin", fill="#56B4E9", colour="black")
-bc2 <- bc2 + ggtitle("Bar Chart of Packets by Destination") + ylab("Packet Count")
+bc2 <- bc2 + ggtitle("Destination") + ylab("Packet Count")
 bc2 <- bc2 + theme(axis.text.x = element_text(angle=90),
                    plot.title = element_text(size=10))
 
@@ -673,15 +728,12 @@ grid.arrange(bc1, bc2, ncol=2)
 rm(bc1, bc2)
 ```
 
-\newpage
-
 #### MODBUS/TCP Request/Response Packet Statistics (Appendix C)  
 
 \medskip
 
 MODBUS/TCP **requests** are identified by packets having destination port number 502  
 
-\nopagebreak
 
 ```{r, echo=FALSE}
 requests<-sewModbusDT[tcp.dstport=="502"]
@@ -707,11 +759,9 @@ grid.arrange(p1, p2, p3, p4, ncol=2, nrow=2)
 invisible(dev.off())
 ```
 
-\nopagebreak
 
 MODBUS/TCP **responses** are identified by packets having source port number 502
 
-\nopagebreak
 
 ```{r, echo=FALSE, warning=FALSE}
 responses<-sewModbusDT[tcp.srcport=="502"]
@@ -738,13 +788,12 @@ invisible(dev.off())
 rm(p1,p2,p3,p4)
 ```
 
-\newpage
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=5.5, fig.height=3.5, fig.align='center', fig.cap="Scatterplot of Time as a Function of Frame Number"}
 ggplot(sewModbusDT, aes(x=frame.number)) +
   geom_line(aes(y=frame.time_relative, color="frame.time_relative"))+
   geom_point(aes(y=mbtcp.len, color="mbtcp.len")) +
-  ggtitle("Scatterplot of Time Recorded \nFunction of Frame Number") +
+#  ggtitle("Scatterplot of Time Recorded \nFunction of Frame Number") +
   theme(axis.text = element_text(size = 13),
 #        plot.title = element_text(face="bold"),
         plot.margin = unit(c(1, 0, 1, 0), "cm")) +
@@ -755,12 +804,11 @@ ggplot(sewModbusDT, aes(x=frame.number)) +
 invisible(dev.off())
 ```
 
-\nopagebreak
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=3.5, fig.width=3.5, fig.align='center', fig.cap="Boxplot of MODBUS/TCP Data Length"}
 ggplot(sewModbusDT,  aes(x=factor(0), y=mbtcp.len)) + geom_violin() +
   xlab("") + scale_x_discrete(breaks = NULL) + coord_flip() +
-  ggtitle("Boxplot of MODBUS/TCP Data Length") +
+#  ggtitle("Boxplot of MODBUS/TCP Data Length") +
   theme(#plot.title = element_text(face="bold"),
         plot.margin = unit(c(0, 0, 2, 0), "cm"))
 
@@ -779,7 +827,7 @@ field "d" is the data field "resp.data" converted from a hex to a decimal value.
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center', fig.cap="Graph of MODBUS Data Values over Time by MODBUS  Reference Number"}
 ggplot(mergedSewDT, aes(x=frame.time_relative, y=d, color=mbtcp.modbus.reference_num)) +
   geom_point() + facet_grid(mbtcp.modbus.reference_num~resp.func.code) +
-  ggtitle("MODBUS Data Values \nOver Time by Reference Number") + 
+#  ggtitle("MODBUS Data Values \nOver Time by Reference Number") + 
   scale_fill_brewer(palette="Spectral") +
   theme(#plot.title = element_text(face="bold"),
         plot.margin = unit(c(0, 0, 2, 0), "cm"),
@@ -791,14 +839,13 @@ invisible(dev.off())
 ggplot(mergedSewDT, aes(resp.time.rel, d, color=mbtcp.modbus.reference_num)) +
   geom_point() + facet_grid(~resp.func.code) +
   scale_fill_brewer(palette="Set1") +
-  ggtitle("MODBUS Data Value Over Time by Function Code") +
+#  ggtitle("MODBUS Data Value Over Time by Function Code") +
   theme(#plot.title = element_text(face="bold"),
         plot.margin = unit(c(0, 0, 2, 0), "cm"),
         legend.position = "top", legend.title = element_text(size=10))
 invisible(dev.off())
 ```
 
-\pagebreak
 
 ### MODBUS Data Value Statistics
 ```{r, comment='', echo=FALSE, warning=FALSE, message=FALSE}
@@ -814,41 +861,38 @@ mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
 ggplot(sewModbusDT, aes(x=mbtcp.modbus.reference_num, fill=mbtcp.modbus.reference_num)) +
   geom_bar(stat="bin") +
   facet_grid(~mbtcp.modbus.func_code) +
-  ggtitle("Bar Chart of Reference Numbers by Function Code") +
+#  ggtitle("Bar Chart of Reference Numbers by Function Code") +
   scale_fill_brewer(palette="Set1")
 
 invisible(dev.off())
 ```
 
-\newpage
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3.5, fig.align='center', fig.cap="Boxplot of MODBUS Data Values by Function and Reference Number"}
 ggplot(mergedSewDT, aes(x = factor(0), y = d)) +
   geom_boxplot(fill="lightpink4") +
   facet_grid(mbtcp.modbus.func_code~mbtcp.modbus.reference_num) +
   xlab("") + scale_x_discrete(breaks = NULL) +
-  theme( plot.title = element_text(size=10)) +
+  theme( plot.title = element_text(size=10))
 #  theme(plot.margin = unit(c(0, 1, 5, 1), "cm")  +
-  ggtitle("Boxplot of MODBUS Data Values\n by Function/Reference Number")
+#  ggtitle("Boxplot of MODBUS Data Values\n by Function/Reference Number")
 
 invisible(dev.off())
 ```
 
-\nopagebreak
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3.75, fig.align='center', fig.cap="Scatterplot Matrix of Pairs of Variables"}
 pairs(mergedSewDT[,.(mbtcp.len, mbtcp.modbus.func_code=as.numeric(mbtcp.modbus.func_code),
                      mbtcp.modbus.reference_num=as.numeric(mbtcp.modbus.reference_num) , d)])
 ```
 
-\newpage
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="3D Scatterplot of MODBUUS Reference and Data Over Time of Function Code 4"}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="3D Scatterplot of MODBUS Reference Number\n and Data Over Time for Function Code 4"}
 cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = mergedSewDT[resp.func.code=="4"],
       col.point = mergedSewDT$mbtcp.modbus.reference_num, pch= 19,
       xlab = "d", ylab = "refNum", zlab = "resp.time.rel",
       panel.aspect = 0.7,
-      main="3D Scatterplot \nReference Number, Data Value Over Time for Function Code 4",
+#      main="3D Scatterplot \nReference Number, Data Value Over Time for Function Code 4",
       key = list(points = list(pch = 19, col = seq_along(levels(mergedSewDT$mbtcp.modbus.reference_num))), 
                  text = list(levels(mergedSewDT$mbtcp.modbus.reference_num)), space = 'top',
                  columns = nlevels(mergedSewDT$mbtcp.modbus.reference_num)))
@@ -876,22 +920,23 @@ Network IDSs are used for security monitoring, but are themselves also vulnerabl
 - reinforce software security- reduce the area of attack, remove unused applications and services, and reduce permissions and privileges of important processes
 - isolate system components- partition and separation between users and processes via virtualization
 
-In Figure 9, an example is shown of the placement of the IDS and its supporting DB, connected to other SCADA components.
+In Figure 24, an example is shown of the placement of the IDS and its supporting DB, connected to other SCADA components.
 
 ```{r, echo=FALSE, fig.align='center', fig.cap="Technical Architecture"}
-setwd("~/rDia")
-img <- readPNG("imgs/techArchitecture.png")
+#setwd("~/rDia")
+#img <- readPNG("imgs/techArchitecture.png")
+img <- readPNG(paste(homeDir, "imgs/techArchitecture.png", sep=''))
 grid.raster(img)
 ```
 
-Based on the recommendations of [Chifflier2014], in order to address the security concerns of the IDS appliance itself, the architecture contains a partition of the various components and isolates each IDS instance from one another, as can be seen in Figure 10. All resources are set to read-only mode, with limited authorized access.  For maintenance, updates are deposited in a dedicated area and then copied over to another reserved area that are either executed by a scheduled job or via a trigger. A Mirabox is used as the embedded system running the latest stable version of Debian and virtual private networks to communicate between the internal IDS and the supervisory system.
+Based on the recommendations of [Chifflier2014], in order to address the security concerns of the IDS appliance itself, the architecture contains a partition of the various components and isolates each IDS instance from one another, as can be seen in Figure 10. All resources are set to read-only mode, with limited authorized access.  For maintenance, updates are deposited in a dedicated area and then copied over to another reserved area that are either executed by a scheduled job or via a trigger. A Mirabox is used as the embedded system running the latest stable version of Debian and virtual private networks to communicate between the internal IDS and the supervisory system. (Figure 25)
 
 [Diallo2014] advises the strategic placement of the monitoring devices throughout the SCADA system on a dedicated network for supervision, and presents the two different approaches of a centralized or a distributed system.
 
 
 ```{r, echo=FALSE, fig.align='center', fig.cap="Architecture of secure IDS [Chifflier2014]"}
 setwd("~/rDia")
-img <- readPNG("imgs/arch_sys_detect.png")
+img <- readPNG(paste(homeDir, "imgs/arch_sys_detect.png", sep=''))
 grid.raster(img)
 ```
 
@@ -925,13 +970,13 @@ Figure 11 shows the steps involved in the entire process from acquiring the data
 
 ```{r, echo=FALSE, fig.width=5, fig.height=3, fig.align='center', fig.cap="Process"}
 setwd("~/rDia")
-img <- readPNG("imgs/process.png")
+img <- readPNG(paste(homeDir, "imgs/process.png", sep=''))
 grid.raster(img)
 ```
 
 ### Statistical Processing
 
-The statistical process was implemented using various components to handle specific steps. Each element used was initially selected to manage a particular task of the process according to its ease and efficiency of development, as well as its processing time. Once captured from the monitoring device on the IDS appliance, the packet capture file is sent to be processed offline. The entire procedure is handled by a bash script. Most statistical computations were done using using R scripts, however, part of the data pre-processing, including merging and transformations went through a C++ program. Configuration files are subsequently generated in JSON format, which are then uploaded to the IDS appliance. The components to the process can be found in Appendix E.
+The statistical process was implemented using various components to handle specific steps (Figure 26). Each element used was initially selected to manage a particular task of the process according to its ease and efficiency of development, as well as its processing time. Once captured from the monitoring device on the IDS appliance, the packet capture file is sent to be processed offline. The entire procedure is handled by a bash script. Most statistical computations were done using using R scripts, however, part of the data pre-processing, including merging and transformations went through a C++ program. Configuration files are subsequently generated in JSON format, which are then uploaded to the IDS appliance. The components to the process can be found in Appendix E.
 
 ### Modbus/TCP
 
@@ -1007,7 +1052,9 @@ Although the first implementation of the SCAD\@COPS NIDS prototype uses statisti
 \pagebreak
 
 
-# Appendix A - Wireshark Exports {-}
+# Appendix A {-}
+
+## Wireshark Exports {-}
 
 Using the export facility in Wireshark, the following are a description of the exported files:
 
@@ -1057,12 +1104,11 @@ List of conversations, the traffic between two endpoints :
  bps.A.B    
  bps.A.B.1   
  
-
-\thispagestyle{empty}
 \pagebreak
 
+# Appendix B {-}
 
-# Appendix B - Configuration Files {-}
+## Configuration Files {-}
 
 Configuration files generated from statistical processing.
 
@@ -1127,7 +1173,6 @@ Configuration files generated from statistical processing.
 }
 ~~~~~~
 
-\thispagestyle{empty}
 \pagebreak
 
 ## stats.db
@@ -1210,10 +1255,11 @@ Configuration files generated from statistical processing.
 ~~~~~~
 
 
-\thispagestyle{empty}
-\pagebreak
+\newpage
 
-# Appendix C - MODBUS/TCP Request/Response Packet Statistics {-}
+# Appendix C {-}
+
+## MODBUS/TCP Request/Response Packet Statistics {-}
 
 ```{r, comment='', warning=FALSE}
 summary(requests)
@@ -1227,10 +1273,11 @@ summary(responses)
 rm(responses, requests)
 ```
 
-\thispagestyle{empty}
-\pagebreak
+\newpage
 
-# Appendix D - Merged Request/Response Packet Statistics {-}
+# Appendix D {-}
+
+## Merged Request/Response Packet Statistics {-}
 
 ```{r, comment='', warning=FALSE}
 summary(mergedSewDT)
@@ -1240,9 +1287,11 @@ summary(mergedSewDT)
 rm(mergedSewDT)
 ```
 
-# Appendix E - Commands and Scripts {-}
+# Appendix E {-}
 
-## TShark
+## Commands and Scripts {-}
+
+### TShark
 
 Command used to extract various fields from the pcap file used for analysis.
 
@@ -1253,29 +1302,27 @@ tshark -r modbus.pcap -T fields -E separator=, -t r -E header=y
 -e mbtcp.trans_id -e mbtcp.len -e mbtcp.modbus.func_code -e mbtcp.modbus.reference_num 
 -e mbtcp.modbus.word_cnt -e mbtcp.modbus.data > modbus.data
 
-## UNIX
+### UNIX
 
-### sed
+#### sed
 Command used to remove empty lines from the pcap data.
 
 sed '/^,,,,,.*$/d' modbus.data > modbus.data
 
-### Shell script
+#### Shell script
 processScada.sh - Driver script for statistical computational process.
 
-### C/C++ script
+#### C/C++ script
 processMerge - C/C++ component for handling merge of MODBUS packets in data 
 processing.
 
-## R
+### R
 install.R - Setup script to install required packages.
 sewModbus.R - Script for processing, analysing and visualizing modbus data.
 
 
-\thispagestyle{empty}
-\pagebreak
-
-
+\newpage
+  
 # Bibliography {-}
   
 [Zhu2010] B. Zhu and S. Sastry. Scada-specific intrusion detection/prevention systems: A survey and taxonomy. In Proceedings of the First Workshop on Secure Control Systems (SCS’10), Stockholm, Sweden, 2010.
@@ -1433,25 +1480,11 @@ Patcha2007] A. Patcha and J. M. Park, “An overview of anomaly detection techni
 
 [Ma2009] Wanli Ma, “A Study on the Feature Selection of Network Traffic for Intrusion Detection Purpose,” ISI 2008, June 17-20, Taipei, 2008
 
+[Tukey1977] J.W. Tukey, (1977). Exploratory Data Analysis. Addison-Wesley. ISBN 0-201-07616-0
 
-\thispagestyle{empty}
-\pagebreak
-  
+[Lafaye2013] P. Lafaye de Micheaux et al.,  (2013). The R Software: Fundamentals of Programming and Statistical Analysis, Statistics and Computing. Springer New York. ISBN 978-1-4614-9019-7
 
-# Glossary {-}
+[Stroustrup2000] B. Stroustrup, The C++ programming language. 2000.
 
-* ICS - Industrial Control System
-* IDS - Intrusion Detection System
-* IPS - Intrusion Prevention System
-* MTU - Master Terminal Unit
-* SCADA - Supervisory Control and Data Acquisition
-* PLC - Programmable Logic Controller - a small industrial computer designed to perform logic functions executed by electrical hardware
-* MTU - Master Terminal Unit
-* RTU - Remote Terminal Unit - a field device that is a data acquisition and control unit designed to support SCADA remote stations
-* HMI - Human-Machine Interface - a software and hardware designed for a human operator to monitor the state of a process under control, modify control settings and manually override automatic control operations
-* Hynesim - Hybrid Network Simulation
-
-
-\thispagestyle{empty}
 \pagebreak
 

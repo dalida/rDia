@@ -15,37 +15,18 @@ output:
 bibliography: thesis.bib
 ---
 
-```{r, echo=FALSE, message=FALSE}
-require(TRSbook)
-require(data.table)
-require(igraph)
-require(ggplot2)
-require(gplots)
-require(lattice)
-require(dplyr)
-require(plyr)
-require(reshape2)
-require(RColorBrewer)
-require(png)
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 require(grid)
-require(gridExtra)
-require(rjson)
+require(png)
+
+# http://rmarkdown.rstudio.com/authoring_basics.html
+# https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
 ```
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-# Load data from save(sewTCPConvDT, sewEndPtsDT, file="sewConvEnd.Rda")
-load("/home/lisa/rDia/sewConvEnd.Rda")
-
-# Load data from save(sewModbusDT file="sew.Rda")
-load("/home/lisa/rDia/sew.Rda")
-
-# Load data from save(mergedSewDT, file="sewMerged.Rda")
-load("/home/lisa/rDia/sewMerged.Rda")
-```
 
 
 ```{r, echo=FALSE, fig.height=8, fig.width=8}
-img <- readPNG("/home/lisa/rDia/imgs/wordle.png")
+img <- readPNG("/Users/lstilo/rDia/imgs/wordle.png")
 grid.raster(img)
 ```
 
@@ -132,14 +113,6 @@ Lastly, I would like to also thank Sandrine Vaton for agreeing to be my advisor 
 
 
 \pagebreak
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-require(grid)
-require(png)
-
-# http://rmarkdown.rstudio.com/authoring_basics.html
-# https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
-```
 
 # Introduction
 
@@ -290,11 +263,7 @@ As a result of using the simple design of MODBUS and its reliance on the TCP lay
 
 # Common Attacks on SCADA
 
-## TShark
-[^3]: https://www.wireshark.org/docs/man-pages/tshark.html
-
-[Hadziosmanovic2010][Krotofil2013][Lemay2013][Rodrigues2011][Stouffer2006] define threats and vulnerabilities, security issues, as well as policies and best practices, and recommendations on how to best secure SCADA systems. However, cyber attacks continue to increase as SCADA systems become more exposed and as the attacks grow in sophistication. And specifically in regards to attacks on MODBUS TCP, little has been published, except for the work done by Digital Bond.[^1]
-[^1]: http://digitalbond.com
+[Hadziosmanovic2010][Krotofil2013][Lemay2013][Rodrigues2011][Stouffer2006] define threats and vulnerabilities, security issues, as well as policies and best practices, and recommendations on how to best secure SCADA systems. However, cyber attacks continue to increase as SCADA systems become more exposed and as the attacks grow in sophistication. And specifically in regards to attacks on MODBUS TCP, little has been published, except for the work done by Digital Bond.
 
 Leveraging existing enterprise network infrastructure, SCADA systems are also at risk to the same threats that typical IT systems encounter. In addition, as SCADA systems are upgraded less frequently and continue to run on legacy systems, they are rendered even more vulnerable to various attacks that may be prevented by deploying upgrades that address newer and known threats. In [Zhu2011], outlines and describes in detail the various methods of cyber attacks on software and hardware and ways of compromising SCADA systems.
 

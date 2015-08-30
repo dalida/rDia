@@ -14,7 +14,7 @@ install.packages("gplots")
 install.packages("igraph")
 install.packages("tcltk")
 install.packages("rgl")
-install.packages("ape");)
+install.packages("ape")
 
 install.packages("knitr")
 install.packages("png")
@@ -31,6 +31,9 @@ install.packages("xts")
 install.packages("jsonlite")
 
 install.packages("microbenchmark")
+install.packages("dplyr")
+install.packages("gridExtra")
+install.packages("rjson")
 
 library(data.table)
 library(tidyr)
