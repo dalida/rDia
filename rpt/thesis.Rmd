@@ -177,9 +177,9 @@ grid.raster(img)
 \thispagestyle{empty}
 
 \clearpage
-\setcounter{page}{15}
 \pagenumbering{arabic}
 
+\setcounter{page}{17}
 
 # Introduction
 
@@ -202,7 +202,7 @@ This work is divided into the following major sections:
 *  Section 5 discuss intrusion detection systems
 *  Section 6 summarizes different approaches for detecting network intrusions
 *  Section 7 lists the tools utilized in this work
-*  Section 8 describes the data source used in this work
+*  Section 8 describes the data source analyzed
 *  Section 9 gives an overview of the exploratory data analysis
 *  Section 10 describes the prototype architecture and implementation
 *  Section 11 outlines the statistical measures and features used
@@ -459,12 +459,10 @@ Developed in 1997 by Gerald Combs originally named Ethereal, Wireshark is now an
 
 Captured network packets are saved in the pcap file format and can be dissected and parsed by Wireshark in order to analyze its contents.  An important aspect of Wireshark is that of its passive/monitoring nature and so does not send, manipulate, or modify the data passing over the network.
 
-An initial packet capture file was created over simulated network traffic using Wireshark. Using its export facilities, various files were created for further analysis, with information such as TCP endpoints, conversations, etc.
-
 ## TShark[^3]
 [^3]: https://www.wireshark.org/docs/man-pages/tshark.html
 
-Another tool from the Wireshark suite is the command-line tool similar to tcpdump is tshark, a network protocol analyzer. In addition to capturing packet data over a live network, it is also capable of analyzing packets from an existing capture file. TShark was used to parse out various pertinent variables pertaining to the Modbus/TCP application protocol enclosed in the packet data.
+Another tool from the Wireshark suite is the command-line tool similar to tcpdump is tshark, a network protocol analyzer. In addition to capturing packet data over a live network, it is also capable of analyzing packets from an existing capture file.  data.
 
 
 ## UNIX Utilities
@@ -479,7 +477,7 @@ Maintained by the R Development Core Team and with an active and growing communi
 
 ## C/C++
 
-Originally developed by Dennis Ritchie at AT&T Bell Labs in the late 60s and early 70s, the C programming language is a low-level, general purpose computer programming language, that was  initially designed for and implemented on the UNIX OS. A predecessor to the C programming language is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most of C’s syntax, as well as adds abstraction making it an object-oriented language.[Stroustrup2000]
+Originally developed by Dennis Ritchie at AT&T Bell Labs in the late 60s and early 70s, the C programming language is a low-level, general purpose computer programming language, that was  initially designed for and implemented on the UNIX OS. A sucessor to the C programming language is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most of C’s syntax, as well as adds abstraction making it an object-oriented language.[Stroustrup2000]
 
     
 
@@ -955,28 +953,38 @@ In the scope of the SCAD\@COPS project, the anomaly-based component will be deri
 
 ## Implementation
 
-### Process
+### Process Flow
 
-Figure 11 shows the steps involved in the entire process from acquiring the data, computation and analysis, to setting the IDS to detection mode.
+Figure 26 shows the steps involved in the entire process from acquiring the data, computation and analysis, to setting the IDS to detection mode.
 
 * Step 1: Data Acquisition During Normal Activity - From the IDS appliance, 
         sniff the network traffic, extract and store data in a database.
-* Step 2: Statistical Analysis
+* Step 2: Statistical Process and Analysis
     + 2.1 - Process data - Perform any transformation, filtering and data
             cleansing necessary.
     + 2.2 - Calculate and determine statistical measures.
     + 2.3 - Configure appliance with statistical parameters.
 * Step 3: Detection Mode - Appliance is set to detection mode.
 
-```{r, echo=FALSE, fig.width=5, fig.height=3, fig.align='center', fig.cap="Process"}
+```{r, echo=FALSE, fig.width=5, fig.height=3, fig.align='center', fig.cap="Process Flow"}
 setwd("~/rDia")
 img <- readPNG(paste(homeDir, "imgs/process.png", sep=''))
 grid.raster(img)
 ```
 
-### Statistical Processing
+#### Data Acquisition
 
-The statistical process was implemented using various components to handle specific steps (Figure 26). Each element used was initially selected to manage a particular task of the process according to its ease and efficiency of development, as well as its processing time. Once captured from the monitoring device on the IDS appliance, the packet capture file is sent to be processed offline. The entire procedure is handled by a bash script. Most statistical computations were done using using R scripts, however, part of the data pre-processing, including merging and transformations went through a C++ program. Configuration files are subsequently generated in JSON format, which are then uploaded to the IDS appliance. The components to the process can be found in Appendix E.
+TODO
+
+Wireshark -
+An initial packet capture file was created over simulated network traffic using Wireshark. Using its export facilities, various files were created for further analysis, with information such as TCP endpoints, conversations, etc.
+
+Tshark -
+TShark was used to parse out various pertinent variables pertaining to the Modbus/TCP application protocol enclosed in the packet
+
+#### Statistical Processing
+
+The statistical process was implemented using various components to handle specific steps (Figure 26). Each element used was initially selected to manage a particular task of the process according to its ease and efficiency of development, as well as its processing time. Once captured from the monitoring device on the IDS appliance, the packet capture file is sent to be processed offline. The entire procedure is handled by a bash script. Most statistical computations were done using R scripts, however, part of the data pre-processing, including merging and transformations went through a C++ program. Configuration files are subsequently generated in JSON format, which are then uploaded to the IDS appliance. The components to the process can be found in Appendix E.
 
 ### Modbus/TCP
 

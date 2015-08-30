@@ -239,11 +239,13 @@
   SCADA - Supervisory Control and Data Acquisition
 \end{itemize}
 
-\thispagestyle{empty} \newpage
+\newpage
 \mbox{} \thispagestyle{empty}
 
 \clearpage
-\setcounter{page}{15} \pagenumbering{arabic}
+\pagenumbering{arabic}
+
+\setcounter{page}{17}
 
 \section{Introduction}\label{introduction}
 
@@ -302,7 +304,7 @@ This work is divided into the following major sections:
 \item
   Section 7 lists the tools utilized in this work
 \item
-  Section 8 describes the data source used in this work
+  Section 8 describes the data source analyzed
 \item
   Section 9 gives an overview of the exploratory data analysis
 \item
@@ -1418,9 +1420,9 @@ measures and features.
 
 \subsection{Implementation}\label{implementation}
 
-\subsubsection{Process}\label{process}
+\subsubsection{Process Flow}\label{process-flow}
 
-Figure 11 shows the steps involved in the entire process from acquiring
+Figure 26 shows the steps involved in the entire process from acquiring
 the data, computation and analysis, to setting the IDS to detection
 mode.
 
@@ -1431,7 +1433,7 @@ mode.
   appliance, sniff the network traffic, extract and store data in a
   database.
 \item
-  Step 2: Statistical Analysis
+  Step 2: Statistical Process and Analysis
 
   \begin{itemize}
   \itemsep1pt\parskip0pt\parsep0pt
@@ -1453,10 +1455,14 @@ mode.
 
 }
 
-\caption{Process}\label{fig:unnamed-chunk-39}
+\caption{Process Flow}\label{fig:unnamed-chunk-39}
 \end{figure}
 
-\subsubsection{Statistical Processing}\label{statistical-processing}
+\paragraph{Data Acquisition}\label{data-acquisition}
+
+TODO
+
+\paragraph{Statistical Processing}\label{statistical-processing}
 
 The statistical process was implemented using various components to
 handle specific steps (Figure 26). Each element used was initially
@@ -1465,11 +1471,10 @@ ease and efficiency of development, as well as its processing time. Once
 captured from the monitoring device on the IDS appliance, the packet
 capture file is sent to be processed offline. The entire procedure is
 handled by a bash script. Most statistical computations were done using
-using R scripts, however, part of the data pre-processing, including
-merging and transformations went through a C++ program. Configuration
-files are subsequently generated in JSON format, which are then uploaded
-to the IDS appliance. The components to the process can be found in
-Appendix E.
+R scripts, however, part of the data pre-processing, including merging
+and transformations went through a C++ program. Configuration files are
+subsequently generated in JSON format, which are then uploaded to the
+IDS appliance. The components to the process can be found in Appendix E.
 
 \subsubsection{Modbus/TCP}\label{modbustcp-1}
 
