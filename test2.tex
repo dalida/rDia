@@ -1,13 +1,10 @@
 \documentclass[12pt,]{article}
-\usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
-% Set line spacing
-% use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
 \else % if luatex or xelatex
   \ifxetex
@@ -19,9 +16,23 @@
   \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
   \newcommand{\euro}{€}
 \fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
-\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
 \usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -44,8 +55,20 @@
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \setcounter{secnumdepth}{5}
 
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
 %%% Change title format to be more compact
 \usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
 \setlength{\droptitle}{-2em}
   \title{Diateam\\SCAD@COPS\\A Hybrid Network Intrusion Detection System}
   \pretitle{\vspace{\droptitle}\centering\huge}
@@ -58,11 +81,12 @@
 
 
 
-
 \begin{document}
 
 \maketitle
 
+
+\includegraphics{test2_files/figure-latex/unnamed-chunk-2-1.pdf}
 
 \thispagestyle{empty} \clearpage
 
@@ -162,7 +186,7 @@ proprietary protocols, whose security relied predominantly on obscurity.
 As SCADA systems have moved towards open standards and have become more
 interconnected to traditional information technology systems, these
 critical systems have also become increasingly exposed and targeted to
-cyber attacks.{[}Zhu2010{]}{[}Zhu2011{]}{[}@Callegari2008{]}
+cyber attacks.{[}\textbf{???}, \textbf{???}--2{]}
 
 To secure SCADA systems, intrusion detection systems (IDS) are put into
 place with the purpose of observing, analyzing and detecting any
@@ -280,11 +304,11 @@ internal and external attacks.
 
 \begin{figure}
 
-{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-2-1} 
+{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-3-1} 
 
 }
 
-\caption{SCADA components [Zhu2010]}\label{fig:unnamed-chunk-2}
+\caption{SCADA components [Zhu2010]}\label{fig:unnamed-chunk-3}
 \end{figure}
 
 \subsection{Traffic characterization}\label{traffic-characterization}
@@ -321,18 +345,13 @@ protocol. Each layer serves the layer above it, and the lowest one being
 closest to the physical medium carrying the communication. Figure OSI
 Model depicts each layer and its role and responsibilities.
 
-\begin{verbatim}
-## Warning in readPNG("imgs/osi-model.png"): libpng warning: iCCP: known
-## incorrect sRGB profile
-\end{verbatim}
-
 \begin{figure}
 
-{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-3-1} 
+{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-4-1} 
 
 }
 
-\caption{OSI Model}\label{fig:unnamed-chunk-3}
+\caption{OSI Model}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \subsection{Protocols}\label{protocols}
@@ -362,20 +381,20 @@ Baxter}).
 
 \begin{figure}
 
-{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-4-1} 
-
-}
-
-\caption{TCP Header}\label{fig:unnamed-chunk-4}
-\end{figure}
-
-\begin{figure}
-
 {\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-5-1} 
 
 }
 
-\caption{IPv4 Header}\label{fig:unnamed-chunk-5}
+\caption{TCP Header}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-6-1} 
+
+}
+
+\caption{IPv4 Header}\label{fig:unnamed-chunk-6}
 \end{figure}
 
 \subsubsection{MODBUS/TCP}\label{modbustcp}
@@ -390,11 +409,11 @@ gives an example architecture for MODBUS TCP communication.
 
 \begin{figure}
 
-{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-6-1} 
+{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-7-1} 
 
 }
 
-\caption{MODBUS TCP/IP Communication Architecture}\label{fig:unnamed-chunk-6}
+\caption{MODBUS TCP/IP Communication Architecture}\label{fig:unnamed-chunk-7}
 \end{figure}
 
 The master initiates a request and the slave sends a response containing
@@ -412,11 +431,11 @@ depicted in Figure 6.
 
 \begin{figure}
 
-{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-7-1} 
+{\centering \includegraphics{test2_files/figure-latex/unnamed-chunk-8-1} 
 
 }
 
-\caption{MODBUS/TCP Frame}\label{fig:unnamed-chunk-7}
+\caption{MODBUS/TCP Frame}\label{fig:unnamed-chunk-8}
 \end{figure}
 
 Included in the MODBUS Application Protocol (MBAP) are: - Transaction ID
@@ -442,14 +461,12 @@ message content legitimacy, or confidentiality.
 
 \section{Common Attacks on SCADA}\label{common-attacks-on-scada}
 
-{[}Hadziosmanovic2010{]}{[}Krotofil2013{]}{[}Lemay2013{]}{[}Rodrigues2011{]}{[}Stouffer2006{]}
-define threats and vulnerabilities, security issues, as well as policies
-and best practices, and recommendations on how to best secure SCADA
-systems. However, cyber attacks continue to increase as SCADA systems
-become more exposed and as the attacks grow in sophistication. And
-specifically in regards to attacks on MODBUS TCP, little has been
-published, except for the work done by Digital Bond.{[}\^{}1{]}
-{[}\^{}1{]}: \url{http://digitalbond.com}
+{[}3, 4{]} define threats and vulnerabilities, security issues, as well
+as policies and best practices, and recommendations on how to best
+secure SCADA systems. However, cyber attacks continue to increase as
+SCADA systems become more exposed and as the attacks grow in
+sophistication. And specifically in regards to attacks on MODBUS TCP,
+little has been published, except for the work done by Digital Bond.
 
 Leveraging existing enterprise network infrastructure, SCADA systems are
 also at risk to the same threats that typical IT systems encounter. In
@@ -578,5 +595,30 @@ with numerous packages available.
 \subsection{SQLite3}\label{sqlite3}
 
 \subsection{MongoDB/MySQL}\label{mongodbmysql}
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+{[}1{]}B. Zhu, ``SCADA-specific Intrusion Detection/Prevention Systems:
+A Survey and Taxonomy,'' \emph{Network}, pp. 1--16, 2010 {[}Online{]}.
+Available:
+\url{http://www.cse.psu.edu/~smclaugh/cse598e-f11/papers/zhu.pdf}
+
+{[}2{]}B. Zhu, A. Joseph, and S. Sastry, ``A taxonomy of cyber attacks
+on SCADA systems,'' \emph{Proceedings - 2011 IEEE International
+Conferences on Internet of Things and Cyber, Physical and Social
+Computing, iThings/CPSCom 2011}, pp. 380--388, 2011.
+
+{[}3{]}B. Hadžiosmanović D and P. Hartel, ``Through the eye of the
+PLC,'' \emph{Proceedings of the 30th Annual Computer Security
+Applications Conference on - ACSAC '14}, pp. 126--135, 2014
+{[}Online{]}. Available:
+\url{http://dl.acm.org/citation.cfm?id=2664243.2664277}
+
+{[}4{]}M. Krotofil and D. Gollmann, ``Industrial control systems
+security: What is happening?'' \emph{2013 11th IEEE International
+Conference on Industrial Informatics (INDIN)}, pp. 664--669, 2013
+{[}Online{]}. Available:
+\url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6622963}
 
 \end{document}

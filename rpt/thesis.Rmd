@@ -13,7 +13,7 @@ output:
     keep_tex: yes
   word_document: default
 bibliography: thesis.bib
-csl: ieee.csl
+csl: ieee-with-url.csl
 ---
 
 ```{r, echo=FALSE, message=FALSE}
@@ -35,18 +35,19 @@ require(rjson)
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 # Load data from save(sewTCPConvDT, sewEndPtsDT, file="sewConvEnd.Rda")
-#load("/home/lisa/rDia/sewConvEnd.Rda")
-load("/Users/lstilo/rDia/sewConvEnd.Rda")
+load("/home/lisa/rDia/sewConvEnd.Rda")
+#load("/Users/lstilo/rDia/sewConvEnd.Rda")
 
 # Load data from save(sewModbusDT file="sew.Rda")
-#load("/home/lisa/rDia/sew.Rda")
-load("/Users/lstilo/rDia/sew.Rda")
+load("/home/lisa/rDia/sew.Rda")
+#load("/Users/lstilo/rDia/sew.Rda")
 
 # Load data from save(mergedSewDT, file="sewMerged.Rda")
-#load("/home/lisa/rDia/sewMerged.Rda")
-load("/Users/lstilo/rDia/sewMerged.Rda")
+load("/home/lisa/rDia/sewMerged.Rda")
+#load("/Users/lstilo/rDia/sewMerged.Rda")
 
-homeDir <- "/Users/lstilo/rDia/"
+#homeDir <- "/Users/lstilo/rDia/"
+homeDir <- "/home/lisa/rDia/"
 ```
 
 
@@ -99,6 +100,11 @@ grid.raster(img)
 \textbf{\textit{\Large Télécom Bretagne}}\\
 
 \vspace{10mm}
+
+\textit{Corporate Advisor:}\\
+\medskip
+\textit{Guillaume Prigent}\\
+\bigskip
 
 \textit{Academic Advisors:}\\
 \medskip
@@ -183,13 +189,13 @@ grid.raster(img)
 
 # Introduction
 
-Supervisory control and data acquisition systems (SCADA) are one type of industrial control system (ICS) put in place for monitoring and controlling industrial processes, such as those in the energy or manufacturing sectors. Originally, these systems were isolated and used proprietary protocols, whose security relied predominantly on obscurity. As SCADA systems have moved towards open standards and have become more interconnected to traditional information technology systems, these critical systems have also become increasingly exposed and targeted to cyber attacks.[Zhu2010][Zhu2011][[@Callegari2008; @Cheung2006]]
+Supervisory control and data acquisition systems (SCADA) are one type of industrial control system (ICS) put in place for monitoring and controlling industrial processes, such as those in the energy or manufacturing sectors. Originally, these systems were isolated and used proprietary protocols, whose security relied predominantly on obscurity. As SCADA systems have moved towards open standards and have become more interconnected to traditional information technology systems, these critical systems have also become increasingly exposed and targeted to cyber attacks.[[@Zhu2010; @Zhu2011]]
 
 To secure SCADA systems, intrusion detection systems (IDS) are put into place with the purpose of observing, analyzing and detecting any malicious activity, which are then alerted to, and reviewed by, security analysts. Most IDSs found in the market-place are commonly network, signature-based IDSs. Anomaly-based detection systems are relatively immature, however, they provide a greater possibility of detecting unknown attacks. Signature-based systems can only detect known and identified signatures of attacks. 
 
 The trade-off between the two types of systems, signature-based and anomaly-based, are predominantly in the the accuracy with which they can detect a real attack, or anomaly. Although signature-based systems that have been properly configured rarely raise false alarms, unlike anomaly-based systems, they are less capable in detecting novel attacks. Additionally, these intrusion detection systems themselves are also exposed to the same security issues as the systems they are trying to secure. 
 
-Diateam has proposed an architecture and implemented a prototype of a hybrid IDS under the project SCAD\@COPS. Based on the contributions of [Chifflier2014] and [Diallo2014], the prototype integrates the architectural and signature-based aspects as described in their work, and where the following constraints were taken into consideration in the design of SCAD\@COPS:
+Diateam has proposed an architecture and implemented a prototype of a hybrid IDS under the project SCAD\@COPS. Based on the contributions of [[@Chifflier2014]] and [[@Diallo2014]], the prototype integrates the architectural and signature-based aspects as described in their work, and where the following constraints were taken into consideration in the design of SCAD\@COPS:
 network-based
 passive only; the IDS should not interfere with, nor modify the SCADA system
 only TCP/IP and Ethernet data are analyzed.
@@ -205,7 +211,7 @@ This work is divided into the following major sections:
 *  Section 8 describes the data source analyzed
 *  Section 9 gives an overview of the exploratory data analysis
 *  Section 10 describes the prototype architecture and implementation
-*  Section 11 outlines the statistical measures and features used
+*  Section 11 outlines the statistical measures and features applied
 *  Section 12 describes the testing and evaluation process
 *  Section 13 summarizes and concludes
 
@@ -225,14 +231,16 @@ Typically industrial control systems are continuously operational and commonly s
 
 ## SCADA
 
-A Supervisory Control and Data Acquisition (SCADA) system is an industrial control system (ICS) used for monitoring equipment and controlling processes in industries such as electrical, water, and oil, as . The administration over a geographically widely distributed process can be directed from a central location at the master terminal unit (MTU) in SCADA systems. Changes to process controllers, the opening and closing of valves and switches, the monitoring and the measurement of information is administered from the MTU to remote terminal units (RTU). Due to their economy, versatility, flexibility, and configurability, programmable logic controllers, which are small industrial computers are widely used as RTUs.[Stouffer2006] The various components of a SCADA system is shown (Figure 1).
+A Supervisory Control and Data Acquisition (SCADA) system is an industrial control system (ICS) used for monitoring equipment and controlling processes in industries such as electrical, water, and oil, as . The administration over a geographically widely distributed process can be directed from a central location at the master terminal unit (MTU) in SCADA systems. Changes to process controllers, the opening and closing of valves and switches, the monitoring and the measurement of information is administered from the MTU to remote terminal units (RTU). Due to their economy, versatility, flexibility, and configurability, programmable logic controllers, which are small industrial computers are widely used as RTUs.[[@Stouffer2006]] The various components of a SCADA system is shown (Figure 1)[[@Zhu2010]].
 
-These systems have differing constraints and properties from those of traditional IT systems, the most prominent being that they are hard real-time systems that must always be available and run continuously without outage. Once the field devices have been put into place, they are normally left untouched, i.e., not rebooted and left running for years. This creates the problem of the systems being more susceptible to buffer overflow due to the accumulation of fragmentation.[Zhu2011]
+A SCADA system is normally comprised of Programmable Logic Controllers (PLCs),  small industrial computers made to perform logic functions executed by electrical hardware,  which control sensors and actuators. Human operators modify control settings, override automatic processes manually, and monitor the state of the processes under control via an Human Interface Control (HMI). It is from these HMIs that the PLCs are managed.
 
-Historically, SCADA systems resided on their own internal networks and were not connected to other networks. They used proprietary protocols, and were, therefore, less vulnerable to network attacks. However, over time as these systems adopted open standards and leveraged traditional enterprise systems to lower costs, to increase functionality and productivity, SCADA systems are also now increasingly exposed to internal and external attacks.
+These systems have differing constraints and properties from those of traditional IT systems, the most prominent being that they are real-time operational systems that must always be available and run continuously without outage. Once the field devices have been put into place, they are normally left untouched, i.e., not rebooted and left running for years. This creates the problem of the systems being more susceptible to buffer overflow due to the accumulation of fragmentation.[[@Zhu2011]]
+
+Historically, SCADA systems resided on their own internal networks and were not connected to other networks. They implemented proprietary protocols, and were, therefore, less vulnerable to network attacks. However, over time as these systems adopted open standards and leveraged traditional enterprise systems to lower costs, to increase functionality and productivity, SCADA systems are also now increasingly exposed to internal and external attacks.
 
 
-```{r, echo=FALSE, fig.width=4, fig.height=5, fig.align='center', fig.cap="SCADA components [Zhu2010]"}
+```{r, echo=FALSE, fig.width=4, fig.height=5, fig.align='center', fig.cap="SCADA components"}
 #setwd("~/rDia")
 img <- readPNG(paste(homeDir, "imgs/SCADA_architecture.png", sep=''))
 #img <- readPNG(paste(homeDir, "imgs/SCADA_architecture.png", sep=''))
@@ -242,7 +250,7 @@ grid.raster(img)
 
 ## Traffic characterization  
 
-As seen in the comparative analysis done in [Barbosa2012-1], it is shown how the traffic greatly differs between SCADA and traditional networks. Most traffic is generated by automated processes in SCADA networks as opposed to human-generated traffic predominant in traditional networks. The traffic pattern generated in SCADA networks have been found to be fairly static and repetitive, with its network topology unchanging, or rarely modified. Also seen [Cheung2006] are a limited number of applications and protocols that run on industrial systems. Markedly seen over MODBUS traffic, the messages exchanged between PLCs are recurrent giving it a fixed pattern and relatively stationary process.[Goldenberg2013][Barbosa2012-2,3]
+As seen in the comparative analysis done in [[@Barbosa2012]], it is shown how the traffic greatly differs between SCADA and traditional networks. Most traffic is generated by automated processes in SCADA networks as opposed to human-generated traffic predominant in traditional networks. The traffic pattern generated in SCADA networks have been found to be fairly static and repetitive, with its network topology unchanging, or rarely modified. Also seen [[@Cheung2006]] are a limited number of applications and protocols that run on industrial systems. Markedly seen over MODBUS traffic, the messages exchanged between PLCs are recurrent giving it a fixed pattern and relatively stationary process.[[@Goldenberg2013; @Barbosa2012a; @Barbosa2012b]]
 
 
 \pagebreak
@@ -272,7 +280,7 @@ As SCADA systems have become increasingly interconnected to enterprise networks,
 
 ### Transmission Control Protocol/Internet Protocol (TCP/IP)
 
-Initially developed by the Defense Advanced Research Project Agency (DARPA) in the late 1960s, the Internet protocol suite was the result of the research and development of data transmission technologies in the United States that was used as a standard for military computer networking. 
+Initially developed by the Defense Advanced Research Project Agency (DARPA) in the late 1960s, the Internet protocol suite was the result of the research and development of data transmission technologies in the United States that was utilized as a standard for military computer networking. 
 
 TCP/IP provides reliable, ordered and error-checked delivery of streams of octets between applications running on hosts communicating over an IP network. A detailed illustration of the TCP and IP headers can be seen in Figures 3 ([Image credit: Max Baxter](http://nmap.org/book/images/hdr/MJB-TCP-Header)) and Figure 4 ([Image credit: Max Baxter](http://nmap.org/book/images/hdr/MJB-IP-Header)).
 
@@ -337,13 +345,13 @@ As a result of using the simple design of MODBUS and its reliance on the TCP lay
 
 # Common Attacks on SCADA
 
-[Hadziosmanovic2010][Krotofil2013][Lemay2013][Rodrigues2011][Stouffer2006] define threats and vulnerabilities, security issues, as well as policies and best practices, and recommendations on how to best secure SCADA systems. However, cyber attacks continue to increase as SCADA systems become more exposed and as the attacks grow in sophistication. And specifically in regards to attacks on MODBUS TCP, little has been published, except for the work done by Digital Bond[^1].
+[[@Hadziosmanovic2010; @Krotofil2013; @Lemay2013; @Rodrigues2011; @Stouffer2006]] define threats and vulnerabilities, security issues, as well as policies and best practices, and recommendations on how to best secure SCADA systems. However, cyber attacks continue to increase as SCADA systems become more exposed and as the attacks grow in sophistication. And specifically in regards to attacks on MODBUS TCP, little has been published, except for the work done by Digital Bond[^1].
 
 [^1]: http://www.digitalbond.com
 
-Leveraging existing enterprise network infrastructure, SCADA systems are also at risk to the same threats that typical IT systems encounter. In addition, as SCADA systems are upgraded less frequently and continue to run on legacy systems, they are rendered even more vulnerable to various attacks that may be prevented by deploying upgrades that address newer and known threats. In [Zhu2011], outlines and describes in detail the various methods of cyber attacks on software and hardware and ways of compromising SCADA systems.
+Leveraging existing enterprise network infrastructure, SCADA systems are also at risk to the same threats that typical IT systems encounter. In addition, as SCADA systems are upgraded less frequently and continue to run on legacy systems, they are rendered even more vulnerable to various attacks that may be prevented by deploying upgrades that address newer and known threats. In [[@Zhu2011]], outlines and describes in detail the various methods of cyber attacks on software and hardware and ways of compromising SCADA systems.
 
-The following provides an overview of common attacks that have been exploited against SCADA systems [Morris2013].
+The following provides an overview of common attacks that have been exploited against SCADA systems [[@Morris2013]].
 
 ## Command Injection
 
@@ -361,11 +369,11 @@ In an attempt to render services unavailable and stop the proper functioning of 
 
 ## Reconnaissance
 
-In a reconnaissance attack there is unauthorized reading of data, where this type of attack generally surveys a network and identifies connected devices in order to ascertain the network architecture and topology. Once the network is accessed by the perpetrator, they may carry out different levels of scanning over the network, such as address, port and points scanning. In the case of SCADA systems, with the MODBUS/TCP being the prevailing protocol used for ICS devices, function scanning is also done.
+In a reconnaissance attack there is unauthorized reading of data, where this type of attack generally surveys a network and identifies connected devices in order to ascertain the network architecture and topology. Once the network is accessed by the perpetrator, they may carry out different levels of scanning over the network, such as address, port and points scanning. In the case of SCADA systems, with the MODBUS/TCP being the prevailing protocol implemented in ICS devices, function scanning is also done.
 
 ## Zero-day Attacks
 
-Attacks that exploit previously unknown vulnerabilities and security holes before a vendor can react and correct them via a patch are known as zero-day attacks. As deploying upgrades and patches to ICSs are relatively slow and infrequent, ICSs are highly susceptible to the weakness discovered in software or hardware before they are corrected. A well-known malware meant to target industrial PLCs, Stuxnet was designed to exploit an assortment of zero-day flaws.[Karnouskos2011]
+Attacks that exploit previously unknown vulnerabilities and security holes before a vendor can react and correct them via a patch are known as zero-day attacks. As deploying upgrades and patches to ICSs are relatively slow and infrequent, ICSs are highly susceptible to the weakness discovered in software or hardware before they are corrected. A well-known malware meant to target industrial PLCs, Stuxnet was designed to exploit an assortment of zero-day flaws.[[@Karnouskos2011]]
 
 
 \pagebreak
@@ -374,9 +382,9 @@ Attacks that exploit previously unknown vulnerabilities and security holes befor
 
 An intrusion detection system (IDS) is a security mechanism put into place in order to monitor activity and whose purpose is to identify and detect any suspicious or unauthorized access or actions to resources and data. An IDS may act in a passive or reactive manner, the prior in which unusual activity is logged and an alert is sent to a monitoring system and the latter where the IDS actively responds to suspicious activity.
 
-Until fairly recently, the application of IDSs to SCADA systems was not prevalent, however there has been increasing interest and different approaches and implementations can be seen in the literature.[García2009][Yasakethu2013] [Wang2011][Valdes2009][Sayegh2014]
+Until fairly recently, the application of IDSs to SCADA systems was not prevalent, however there has been increasing interest and different approaches and implementations can be seen in the literature.[[@Yasakethu2013; @Garcia2009; @Wang2011; @Valdes2009; @Sayegh2014]]
 
-The initial model for intrusion detection systems was presented by [Denning1987], where she described the framework for the design and implementation of a general-purpose intrusion detection system. The ideal detection system should contain the following characteristics and have these capabilities [Bishop2003]:
+The initial model for intrusion detection systems was presented by [[@Denning1987]], where she described the framework for the design and implementation of a general-purpose intrusion detection system. The ideal detection system should contain the following characteristics and have these capabilities [[@Bishop2003]]:
 
 *  detect a broad variety of intrusions
 *  provide detection of intrusions in a  timely manner
@@ -404,13 +412,13 @@ The data captured by the NIDS is examined and compared to an existing signature 
 
 In an anomaly-based NIDS (A-NIDS), any deviation from “normal” activity is flagged as an alarm. An initial (normal) profile of the system is first created where normal activity is observed. Once established, the A-NIDS collects data from network events and based on different measures, looks for activity that differs significantly from the normal profile and raises an alarm. The advantage of an A-NIDS is that no a priori knowledge is required of previous known attacks and can be used to define signatures for malicious behaviour, however it cannot determine a specific attack and has a greater number of false alarms (false positives) than signature-based IDS.
 
-It is fairly recent to see security devices incorporate anomaly-based methods, therefore there has been growing research in the methods used in anomaly detection that try to deal with minimizing the rate of false positives. The primary methods of anomaly detection are statistical, data mining, and machine learning, which generally follow through the stages and are briefly described below.[García2009][Yasakethu2013][Wang2011]
+It is fairly recent to see security devices incorporate anomaly-based methods, therefore there has been growing research in the methods used in anomaly detection that try to deal with minimizing the rate of false positives. The primary methods of anomaly detection are statistical, data mining, and machine learning, which generally follow through the stages and are briefly described below.[[@Yasakethu2013; @Garcia2009, @Wang2011]]
 
-The initial (parameterization) phase of implementing an anomaly-based detection system is to create the baseline profile of the system characteristics and behaviour. Then a model is developed using the training set created using one of the methods outlined below during the training phase. A comparison of a subset of these methods is given (Table1).[García2009] In the final stage, detection of abnormal behaviour is analyzed by comparing the observed network traffic to the model. Any significant deviations are signaled and alerted. Figure 7 models this process.
+The initial (parameterization) phase of implementing an anomaly-based detection system is to create the baseline profile of the system characteristics and behaviour. Then a model is developed using the training set created using one of the methods outlined below during the training phase. A comparison of a subset of these methods is given (Table1).[[Garcia2009]] In the final stage, detection of abnormal behaviour is analyzed by comparing the observed network traffic to the model. Any significant deviations are signaled and alerted. Figure 7 [[@Garcia2009]] models this process.
 
-TODO Table1 reference/figure ???
+TODO Table1 reference/figure
 
-```{r, echo=FALSE, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="Functional Architecture of an A-NIDS [García2009]"}
+```{r, echo=FALSE, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="Functional Architecture of an A-NIDS"}
 #setwd("~/rDia")
 #img <- readPNG("imgs/anids_process.png")
 img <- readPNG(paste(homeDir, "imgs/anids_process.png", sep=''))
@@ -422,19 +430,19 @@ grid.raster(img)
 
 # Techniques of Network Intrusion Detection
 
-Numerous anomaly-based methods and techniques have been studied and implemented in detecting network intrusions. These include statistical, data mining and machine learning.[García2009][Yasakethu2013][Wang2011][Sousan2011][Cheung2007][Cunningham2003][Fovino2010][Kim2013][Leandro2014][Patcha2007][Pathan2014][Yang2005][Verba2009][Verwoerd2002][Wang2004][Wang2006][Mantere2013][Yang2014][Yu2012][Zhou2015] Figure 8 provides a brief summary of these techniques.
+Numerous anomaly-based methods and techniques have been studied and implemented in detecting network intrusions. These include statistical, data mining and machine learning.[[@Garcia2009, @Malagras2014; @Wang2004; @Wang2011; @Sousan2011@ Cheung2006; @Cunningham2003; @Fovino2010; @Kim2013; @Patcha2007; @Pathan2014; @Yang2005; @Verba2009; @Verwoerd2002; @Wang2006; @Mantere2013; @Yang2014; @Yu2012; @Zhou2015]] Figure 8 provides a brief summary of these techniques.
 
 ## Statistical
 
-Statistical approaches are based on either setting thresholds and applying them to specific variables, or are based on changes in distributions over a period of time observed. In the first case, an upper and lower bound are established to define an appropriate range of values for the individual variables measured. Earlier methods began by using the univariate model where single variables are analyzed, and later, multivariate models were applied, in which highly correlated metrics were used, as they were considered to be more effective at distinguishing anomalies. In the second case, considered as a time-series model, a window of data is used to compute the mean of its distribution in order to determine the thresholds.[Callegari2008][Marchette2003][Marchette2004][Meza2009] [Wang2009][Wang2011]
+Statistical approaches are based on either setting thresholds and applying them to specific variables, or are based on changes in distributions over a period of time observed. In the first case, an upper and lower bound are established to define an appropriate range of values for the individual variables measured. Earlier methods began by using the univariate model where single variables are analyzed, and later, multivariate models were applied, in which highly correlated metrics were used, as they were considered to be more effective at distinguishing anomalies. In the second case, considered as a time-series model, a window of data is used to compute the mean of its distribution in order to determine the thresholds.[[@Callegari2008; @Marchette2003; @Marchette2004; @Meza2009; @Wang2009; @Wang2011]]
 
 ## Data Mining
 
-Data mining, also known as knowledge discovery in databases (KDD), is the the process of extracting information and detecting interesting patterns from data. A good deal of work is involved prior to the mining process in understanding and preparing the data for the mining process and analysis. Some data mining techniques include, but are not limited to association rules, language processing, and decision trees and consist of such algorithms as Apriori, K-Means, and K-Medoids to mention a few. [Dipali2013][Jayasimhan2012][Joshi2013][Lee1999][Lee2001][Mara2011] [Miao2010][Morkhade2013][Munz2007][Nader2014][Niaping2010][Singh2013][Shukla2014][Syarif2012][Zhao2010]
+Data mining, also known as knowledge discovery in databases (KDD), is the the process of extracting information and detecting interesting patterns from data. A good deal of work is involved prior to the mining process in understanding and preparing the data for the mining process and analysis. Some data mining techniques include, but are not limited to association rules, language processing, and decision trees and consist of such algorithms as Apriori, K-Means, and K-Medoids to mention a few. [[@Dipali2013; @Jayasimhan2012; @Lee2001; @Joshi2013; @Lee1999; @Mara2011; @Miao2010; @Morkhade2013; @Munz2007; @Nader2014; @Naiping2010; @Singh2013; @Shukla2014; @Syarif2012; @Zhao2010]]
 
 ## Machine Learning
 
-In the machine learning approach an algorithm is trained to learn against a set of data that has been previously identified, or labeled, and as more data becomes available, the greater the accuracy of the model. Prominent methods of machine learning are Bayesian and Neural Networks, SVM, kNN, clustering and outlier detection.[Gao2010][Golmah2014][Jiang2013][Khan2007][Linda2009] [Maglaras2014][Mantere2012][Meza2009][Mukkamala2006]
+In the machine learning approach an algorithm is trained to learn against a set of data that has been previously identified, or labeled, and as more data becomes available, the greater the accuracy of the model. Prominent methods of machine learning are Bayesian and Neural Networks, SVM, kNN, clustering and outlier detection.[[@Gao2010; @Golmah2014; @Jiang2013; @Khan2007; @Linda2009; @Maglaras2014; @Mantere2012; @Meza2009; @Mukkamala2006]]
 
 Similarities and overlap can be seen between the techniques above as they have evolved and originated from, and are intersections of, the fields of computer science, statistics, artificial intelligence, and database systems. Each of these methods presents its advantages and drawbacks, and in evaluating them, it will be important to consider the time and complexity in the processing and analysis of data, the availability of previously identified data, as well as the legibility of results, that is how easily the results can be read and interpreted.
 
@@ -447,10 +455,11 @@ grid.raster(img)
 ```
 
 
-\pagebreak
-
+\clearpage
 
 # Tools
+
+All software and tools applied and implemented in the SCAD@COPS project are free and open source. A great deal of work is typically involved in preparing the raw data for analysis and depending on the initial state of the data, various pre-processing and transformations may be required. The following tools were employed in the exploratory phase of data analysis in order to capture, transform and analyze the data, as well as for implementing the statistical analytical process.
 
 ## Wireshark[^2] - Network Traffic Analysis Tool
 [^2]: https://www.wireshark.org/docs/wsug_html_chunked
@@ -462,11 +471,10 @@ Captured network packets are saved in the pcap file format and can be dissected 
 ## TShark[^3]
 [^3]: https://www.wireshark.org/docs/man-pages/tshark.html
 
-Another tool from the Wireshark suite is the command-line tool similar to tcpdump is tshark, a network protocol analyzer. In addition to capturing packet data over a live network, it is also capable of analyzing packets from an existing capture file.  data.
-
+Another tool from the Wireshark suite is the command-line tool similar to tcpdump is tshark, a network protocol analyzer. In addition to capturing packet data over a live network, it is also capable of analyzing packets from an existing capture file.
 
 ## UNIX Utilities
-In order to further parse and transform the data, the UNIX utility tool sed, which supports the use of regular expressions, was also used.
+There are a myriad of UNIX utilities that are used for administration, scripting, text processing, etc. [[@Troy1990]] In the data parsing and transformation process, the UNIX tools employedused were bash, sed, and, awk, which supports the use of regular expressions.
 
 ## R - Statistical Tool[^4]
 [^4]: http://www.r-project.org/
@@ -477,7 +485,7 @@ Maintained by the R Development Core Team and with an active and growing communi
 
 ## C/C++
 
-Originally developed by Dennis Ritchie at AT&T Bell Labs in the late 60s and early 70s, the C programming language is a low-level, general purpose computer programming language, that was  initially designed for and implemented on the UNIX OS. A sucessor to the C programming language is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most of C’s syntax, as well as adds abstraction making it an object-oriented language.[Stroustrup2000]
+Originally developed by Dennis Ritchie at AT&T Bell Labs in the late 60s and early 70s, the C programming language is a low-level, general purpose computer programming language, that was  initially designed for and implemented on the UNIX OS. A sucessor to the C programming language is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most of C’s syntax, as well as adds abstraction making it an object-oriented language.[[@Stroustrup2000]]
 
     
 
@@ -488,15 +496,15 @@ Originally developed by Dennis Ritchie at AT&T Bell Labs in the late 60s and ear
 
 It is usual for network data to contain private and sensitive information, and therefore a limited number of datasets exist for testing.  Consequently, it is difficult to evaluate and assess the accuracy and validity, as well as to make comparisons across the different methods applied in anomaly detection.
 
-One of the only publicly available datasets containing network traffic data has been provided by the US Defense Advanced Research Projects Agency (DARPA).[DARPA1999] Network IDS analysis and studies have commonly been carried out using the DARPA dataset. In this study, the analysis has been done using data acquired from a simulated testbed, the Virtual Scada Box. 
+One of the only publicly available datasets containing network traffic data has been provided by the US Defense Advanced Research Projects Agency (DARPA).[[@DARPA1999]] Network IDS analysis and studies have commonly been carried out using the DARPA dataset. In this study, the analysis has been done using data acquired from a simulated testbed, the Virtual Scada Box. 
 
 ## HNS and Virtual Scada Box
 
 Diateam has developed a system, Hynesim (HNS), that is a distributed platform used in simulating complex information and network systems. With its ergonomic graphical user interface, Hynesim has a distributed architecture and modular system, which allows for the inter-connection between real, as well as virtual systems.
 
-Incorporated into Virtual Scada Box, Hynesim is used to create a virtual system that simulates a water treatment plant. Virtual Scada Box includes components such as the PLCs, HMIs, and a virtual water pump that have been connected over a TCP/IP network.
+Incorporated into Virtual Scada Box, Hynesim is the principal component where there is a virtual system that simulates a water treatment plant. Virtual Scada Box includes components such as the PLCs, HMIs, and a virtual water pump that have been connected over a TCP/IP network.
 
-Data from the simulated network running on the Virtual Scada Box was used in the analysis. A packet capture file was created via Wireshark, which captured the network traffic simulated over a virtual SCADA network. Once the network traffic was captured and saved in a pcap file, Wireshark provides the capability to export the raw data into various comma delimited files in order to do further analysis. Exported files were created with TCP endpoints, TCP conversations, as well as the entire pcap file, each as a CSV file. (Appendix A)
+The data analyzed was derived from a simulated network running on the Virtual Scada Box. A packet capture file was created via Wireshark, which captured the network traffic simulated over a virtual SCADA network. Once the network traffic was captured and saved in a pcap file, Wireshark provides the capability to export the raw data into various comma delimited files in order to do further analysis. Exported files were created with TCP endpoints, TCP conversations, as well as the entire pcap file, each as a CSV file. (Appendix A)
 
 ## PCAP[^5]
 [^5]: https://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html
@@ -536,7 +544,7 @@ The fields have the following meaning:
 
 # Exploratory Data Analysis 
 
-Originally championed by John Tukey[Tukey1977], Exploratory Data Analysis (EDA) is an initial approach to understanding a data set in order to get a “feel” for the data, to summarizing its essential characteristics and to studying patterns in the data. Moreover, exploratory data analysis frequently incorporates graphical representations beyond using quantitative techniques.
+Originally championed by John Tukey[[@Tukey1977]], Exploratory Data Analysis (EDA) is an initial approach to understanding a data set in order to get a “feel” for the data, to summarizing its essential characteristics and to studying patterns in the data. Moreover, exploratory data analysis frequently incorporates graphical representations beyond using quantitative techniques.
 
 Conducting EDA possibly gives further insight into the form and structure of the data set, in addition to extracting value from it, visualizing it, and just as importantly, in communicating it. After a fairly exhaustive study of the state of the art of IDS and SCADA systems, an  initial phase of exploratory data analysis was conducted in order to better understand the data. This section presents a short list of statistical terminology, followed by the exploratory data analysis carried out on the network traffic data captured over the simulated SCADA network.   	
 
@@ -590,7 +598,7 @@ Similar to a histogram, a bar chart shows the distribution of values of a given 
 
 ### Boxplot
 
-An effective and graphical method for visualizing outliers is the boxplot. It displays the data in terms of interquartiles, where outliers are depicted as individual points. (Figure 9: Boxplot Image Source[Lafaye2013])
+An effective and graphical method for visualizing outliers is the boxplot. It displays the data in terms of interquartiles, where outliers are depicted as individual points. (Figure 9: Boxplot Image Source[[@Lafaye2013]])
 
 
 ```{r, echo=FALSE, fig.width=3, fig.height=3, fig.align='center', fig.cap="Boxplot"}
@@ -603,11 +611,11 @@ grid.raster(img)
 
 ### Heat Map
 
-A heat map displays data in a matrix where the values are represented by a range of colors. Typically displayed in 2D, larger values are usually shown in darker colors and smaller values in lighter colors on a heat map. They can also be accompanied by a dendrogram, a tree diagram used to illustrate clusters.
+A heat map displays data in a matrix where the values are represented by a range of colors. Typically displayed in 2D, larger values are usually shown in darker colors and smaller values in lighter colors on a heat map. They can also be accompanied by a dendrogram, a tree diagram that illustrates clusters.
 
 ### Network Graph
 
-Used to model relations between objects, another mathematical structure is the graph, comprised of nodes, or vertices, and edges. Depending on the nature of the relationship, a graph may be either cyclic or acyclic, directed or undirected. Attributes of a node or edge may be reflected in the graph as well.
+Modeling the relations between objects, another mathematical structure is the graph, comprised of nodes, or vertices, and edges. Depending on the nature of the relationship, a graph may be either cyclic or acyclic, directed or undirected. Attributes of a node or edge may be reflected in the graph as well.
 
 
 ## Data Analysis
@@ -636,34 +644,11 @@ A packet capture file was created via Wireshark, which captured the network traf
 
 Once the network traffic was captured and saved in a pcap file, Wireshark provides the capability to export the raw data into various comma delimited files in order to do further analysis. Exported files were created with TCP endpoints, TCP conversations, as well as the entire pcap file, each as a CSV file. (Appendix A)
 
-\newpage
+\clearpage
 
-### Network Analysis
+## Network Analysis
 
-#### Protocols
-
-```{r, echo=FALSE, message=FALSE, fig.align='center', fig.cap="Pie Chart of Protocols"}
-protocol <- sewModbusDT$ip.proto
-camembert(protocol)
-rm(protocol)
-invisible(dev.off())
-```
-
-
-```{r, echo=FALSE, message=FALSE, warning, fig.align='center', fig.cap="SCADA Network Graph"}
-g <- graph.data.frame(sewTCPConvDT[,.(Address.A, Address.B, Packets, Bytes, Duration)], directed=FALSE)
-gAdjMtx <- get.adjacency(g)  # adjacency mtx
-gAdj <- graph.adjacency(gAdjMtx, mode="undirected", weighted=TRUE)
-V(gAdj)$size <- degree(gAdj)*40  # node size according to degree of centrality
-eW <- E(gAdj)$weight  # edge weights
-eW <- ceiling(eW/max(eW)*55)
-eW[eW>10] <- 10
-plot.igraph(gAdj, edge.width=eW)
-rm(g, gAdjMtx, gAdj, eW)
-invisible(dev.off())
-```
-
-\newpage
+### Network Graph and Topology
 
 Source / Destination / UnitID  
 ```{r, comment='', echo=FALSE, warning=FALSE, message=FALSE}
@@ -692,9 +677,28 @@ sewModbusDT[,.(src.func = paste(ip.src, mbtcp.modbus.func_code, sep="/"))
                        , by=.(ip.src, mbtcp.modbus.func_code)]
 ```
 
-\newpage
+\clearpage
 
-### Packet Analysis
+Figure 10 depicts the network topology of the components and end points on the simulated network.
+
+
+```{r, echo=FALSE, message=FALSE, warning, fig.height=4, fig.width=5, fig.align='center', fig.cap="SCADA Network Graph"}
+g <- graph.data.frame(sewTCPConvDT[,.(Address.A, Address.B, Packets, Bytes, Duration)], directed=FALSE)
+gAdjMtx <- get.adjacency(g)  # adjacency mtx
+gAdj <- graph.adjacency(gAdjMtx, mode="undirected", weighted=TRUE)
+V(gAdj)$size <- degree(gAdj)*40  # node size according to degree of centrality
+eW <- E(gAdj)$weight  # edge weights
+eW <- ceiling(eW/max(eW)*55)
+eW[eW>10] <- 10
+plot.igraph(gAdj, edge.width=eW)
+rm(g, gAdjMtx, gAdj, eW)
+invisible(dev.off())
+```
+
+## Packet Analysis
+
+Figure 11 depicts a boxplot indicating packet size.
+
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=5, fig.height=4.5, fig.align='center', fig.cap="Source Packet Size Boxplot"}
 ggplot(sewTCPConvDT, aes(x = factor(0), y = Bytes/1e6)) +
   geom_boxplot(fill="darkorchid3") + xlab("") + scale_x_discrete(breaks = NULL) +
@@ -704,6 +708,8 @@ ggplot(sewTCPConvDT, aes(x = factor(0), y = Bytes/1e6)) +
 
 invisible(dev.off())
 ```
+
+\clearpage
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap="Bar Charts of Packet Counts"}
 
@@ -726,18 +732,18 @@ grid.arrange(bc1, bc2, ncol=2)
 rm(bc1, bc2)
 ```
 
-#### MODBUS/TCP Request/Response Packet Statistics (Appendix C)  
+\clearpage
 
-\medskip
+### MODBUS/TCP Request/Response Packet Statistics (Appendix C)  
 
-MODBUS/TCP **requests** are identified by packets having destination port number 502  
+MODBUS/TCP **requests** are identified by packets having destination port number 502
+(Figure 13)
 
+\nobreak
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=5.5, fig.height=4.25, fig.align='center', fig.cap="Boxplot of Request Packets"}
 requests<-sewModbusDT[tcp.dstport=="502"]
-```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=5, fig.height=3.5, fig.align='center', fig.cap="Boxplot of Request Packets"}
 p1 <- ggplot(requests, aes(x=factor(0))) +
   geom_boxplot(aes(y=frame.time_relative), fill="aquamarine4") + xlab("") +
   scale_x_discrete(breaks = NULL)
@@ -757,15 +763,16 @@ grid.arrange(p1, p2, p3, p4, ncol=2, nrow=2)
 invisible(dev.off())
 ```
 
+\nobreak
 
 MODBUS/TCP **responses** are identified by packets having source port number 502
+(Figure 14)
 
+\nobreak
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=5.5, fig.height=4.25, fig.align='center', fig.cap="Boxplot of Response Packets"}
 responses<-sewModbusDT[tcp.srcport=="502"]
-```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=5, fig.height=3.5, fig.align='center', fig.cap="Boxplot of Response Packets"}
 p1 <- ggplot(responses, aes(x=factor(0))) +
   geom_boxplot(aes(y=frame.time_relative), fill="steelblue2") + xlab("") +
   scale_x_discrete(breaks = NULL)
@@ -786,6 +793,7 @@ invisible(dev.off())
 rm(p1,p2,p3,p4)
 ```
 
+\clearpage
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=5.5, fig.height=3.5, fig.align='center', fig.cap="Scatterplot of Time as a Function of Frame Number"}
 ggplot(sewModbusDT, aes(x=frame.number)) +
@@ -812,6 +820,8 @@ ggplot(sewModbusDT,  aes(x=factor(0), y=mbtcp.len)) + geom_violin() +
 
 invisible(dev.off())
 ```
+
+\clearpage
 
 ### MODBUS/TCP Data[^6] Analysis 
 [^6]: https://www.wireshark.org/docs/dfref/m/mbtcp.html
@@ -909,16 +919,16 @@ rm(cor.test.2.sample)
 
 # Prototype
 
-The SCAD\@COPS prototype incorporates the methods as outlined in [Chifflier2014][Diallo2014], which define the architectural and signature-based detection system, and the last component being the anomaly-based detection system. The signature-based IDS component has been implemented and configured using Suricata. The initial prototype will contain an anomaly-based IDS using statistical methods.
+The SCAD\@COPS prototype incorporates the methods as outlined in [[@Chifflier2014; @Diallo2014]], which define the architectural and signature-based detection system, and the last component being the anomaly-based detection system. The signature-based IDS component has been implemented and configured using Suricata. The initial prototype will contain an anomaly-based IDS using statistical methods.
 
 ## 10.1 Architecture Overview
 
-Network IDSs are used for security monitoring, but are themselves also vulnerable and exposed to attacks. [Chifflier2014] proposes an architecture for the IDS sensor devices and software to minimize the possibility of attacks on it. The two approaches presented are: 
+Network IDSs are utilized for security monitoring, but are themselves also vulnerable and exposed to attacks. [[@Chifflier2014]] proposes an architecture for the IDS sensor devices and software to minimize the possibility of attacks on it. The two approaches presented are: 
 
 - reinforce software security- reduce the area of attack, remove unused applications and services, and reduce permissions and privileges of important processes
 - isolate system components- partition and separation between users and processes via virtualization
 
-In Figure 24, an example is shown of the placement of the IDS and its supporting DB, connected to other SCADA components.
+In Figure 23, an example is shown of the placement of the IDS and its supporting DB, connected to other SCADA components.
 
 ```{r, echo=FALSE, fig.align='center', fig.cap="Technical Architecture"}
 #setwd("~/rDia")
@@ -927,12 +937,12 @@ img <- readPNG(paste(homeDir, "imgs/techArchitecture.png", sep=''))
 grid.raster(img)
 ```
 
-Based on the recommendations of [Chifflier2014], in order to address the security concerns of the IDS appliance itself, the architecture contains a partition of the various components and isolates each IDS instance from one another, as can be seen in Figure 10. All resources are set to read-only mode, with limited authorized access.  For maintenance, updates are deposited in a dedicated area and then copied over to another reserved area that are either executed by a scheduled job or via a trigger. A Mirabox is used as the embedded system running the latest stable version of Debian and virtual private networks to communicate between the internal IDS and the supervisory system. (Figure 25)
+Based on the recommendations of [[@Chifflier2014]], in order to address the security concerns of the IDS appliance itself, the architecture contains a partition of the various components and isolates each IDS instance from one another, as can be seen in Figure 24. All resources are set to read-only mode, with limited authorized access.  For maintenance, updates are deposited in a dedicated area and then copied over to another reserved area that are either executed by a scheduled job or via a trigger. A Mirabox is used as the embedded system running the latest stable version of Debian and virtual private networks to communicate between the internal IDS and the supervisory system. (Figure 25) [[@Chifflier2014]]
 
 [Diallo2014] advises the strategic placement of the monitoring devices throughout the SCADA system on a dedicated network for supervision, and presents the two different approaches of a centralized or a distributed system.
 
 
-```{r, echo=FALSE, fig.align='center', fig.cap="Architecture of secure IDS [Chifflier2014]"}
+```{r, echo=FALSE, fig.align='center', fig.cap="Architecture of secure IDS "}
 setwd("~/rDia")
 img <- readPNG(paste(homeDir, "imgs/arch_sys_detect.png", sep=''))
 grid.raster(img)
@@ -940,7 +950,7 @@ grid.raster(img)
 
 ### Signature-based IDS
 
-In  [Chifflier2014] and [Diallo2014], the signature based IDS is described and the use of the Suricata IDS software with Modbus protocol are proposed. Rules are configured that conform to, and verify the correct and normal behaviour of a SCADA system.
+In  [[@Chifflier2014]] and [[@Diallo2014]], the signature based IDS is described and the use of the Suricata IDS software with Modbus protocol are proposed. Rules are configured that conform to, and verify the correct and normal behaviour of a SCADA system.
 
 #### Suricata[^7]
 [^7]: http://suricata-ids.org/
@@ -955,7 +965,7 @@ In the scope of the SCAD\@COPS project, the anomaly-based component will be deri
 
 ### Process Flow
 
-Figure 26 shows the steps involved in the entire process from acquiring the data, computation and analysis, to setting the IDS to detection mode.
+Figure 25 shows the steps involved in the entire process from acquiring the data, computation and analysis, to setting the IDS to detection mode.
 
 * Step 1: Data Acquisition During Normal Activity - From the IDS appliance, 
         sniff the network traffic, extract and store data in a database.
@@ -975,16 +985,17 @@ grid.raster(img)
 #### Data Acquisition
 
 TODO
+The data was acquired
 
 Wireshark -
 An initial packet capture file was created over simulated network traffic using Wireshark. Using its export facilities, various files were created for further analysis, with information such as TCP endpoints, conversations, etc.
 
 Tshark -
-TShark was used to parse out various pertinent variables pertaining to the Modbus/TCP application protocol enclosed in the packet
+The pertinent variables pertaining to the MODBUS/TCP application protocol enclosed in the packet data were parsed by TShark.
 
-#### Statistical Processing
+#### Statistical Analysis and Processing
 
-The statistical process was implemented using various components to handle specific steps (Figure 26). Each element used was initially selected to manage a particular task of the process according to its ease and efficiency of development, as well as its processing time. Once captured from the monitoring device on the IDS appliance, the packet capture file is sent to be processed offline. The entire procedure is handled by a bash script. Most statistical computations were done using R scripts, however, part of the data pre-processing, including merging and transformations went through a C++ program. Configuration files are subsequently generated in JSON format, which are then uploaded to the IDS appliance. The components to the process can be found in Appendix E.
+The statistical process was implemented using various components to handle specific steps (Figure 25). Each element used was initially selected to manage a particular task of the process according to its ease and efficiency of development, as well as its processing time. Once captured from the monitoring device on the IDS appliance, the packet capture file is sent to be processed offline. The entire procedure is handled by a bash script. Most statistical computations were done using R scripts, however, part of the data pre-processing, including merging and transformations went through a C++ program. Configuration files are subsequently generated in JSON format, which are then uploaded to the IDS appliance. The components to the process can be found in Appendix E.
 
 ### Modbus/TCP
 
@@ -1023,13 +1034,13 @@ response: trans:    20; unit:   1, func:   4: Read input registers
 # Statistical Measures and Features  
 
 
-Regardless of the predictive method or technique chosen, the predictive accuracy and performance of any model is influenced by the features selected, and is therefore important to take into consideration. Feature selection is the reduction of the input variables. Whether it be in the field of statistics, data mining, or machine learning, massive amounts of data that are handled can greatly benefit from the careful selection of relevant features. In addition, removing redundancies also improves the efficiency and having both allows for further increased accuracy and reduction in complexity. However, there should be an appropriate selection of features so as to prevent any loss of information.[Guyon2003][Yu2004]
+Regardless of the predictive method or technique chosen, the predictive accuracy and performance of any model is influenced by the features selected, and is therefore important to take into consideration. Feature selection is the reduction of the input variables. Whether it be in the field of statistics, data mining, or machine learning, massive amounts of data that are handled can greatly benefit from the careful selection of relevant features. In addition, removing redundancies also improves the efficiency and having both allows for further increased accuracy and reduction in complexity. However, there should be an appropriate selection of features so as to prevent any loss of information.[[@Guyon2003; @Yu2004]]
 
 Depending on the size of the dataset and the number of features, or variables, the selection process may simply be done by a domain expert who has been trained in a particular field and has the expertise to determine which features are deemed as important. Although this may be sufficient in some cases, enormous amounts of data and variables make the process more complex, and less effective and efficient. More sophisticated methods go through a learning process in order to detect patterns with less human intervention.
 
 An example of applying feature selection is in the area of text mining where unstructured data can be comprised of millions of words. Using such techniques as stop word elimination and stemming, the dimensionality is notably reduced.
 
-Network based intrusion detection has been studied for some time and can be implemented by using conventional network variables. [Ma2008][Marchette2004] In [Mantere2012] [Mantere2012][Mantere2013], the challenges of feature selection in the context of anomaly detection in industrial systems are discussed. The prediction model’s performance is highly dependent on the selection of pertinent variables amongst all available variables, and the feature set selection detecting any anomalies may be done either manually by one with knowledge and experience in a domain, or by using other feature selection techniques not involving humans.
+Network based intrusion detection has been studied for some time and can be implemented by using conventional network variables. [[@Ma2008; @Marchette2004]] In [[@Mantere2012; @Mantere2013]], the challenges of feature selection in the context of anomaly detection in industrial systems are discussed. The prediction model’s performance is highly dependent on the selection of pertinent variables amongst all available variables, and the feature set selection detecting any anomalies may be done either manually by one with knowledge and experience in a domain, or by using other feature selection techniques not involving humans.
 
 The first version of the SCAD\@COPS network intrusion detection device for industrial systems is based on simple statistical variables that have been chosen by an expert in the domain of cyber security experience in SCADA systems. An example configuration file generated from the statistical process as outlined in Section 10.2.2 (Appendix B) are used as the parameters in the prototype.
 
@@ -1332,167 +1343,4 @@ sewModbus.R - Script for processing, analysing and visualizing modbus data.
 \newpage
   
 # Bibliography {-}
-  
-[Zhu2010] B. Zhu and S. Sastry. Scada-specific intrusion detection/prevention systems: A survey and taxonomy. In Proceedings of the First Workshop on Secure Control Systems (SCS’10), Stockholm, Sweden, 2010.
-
-[Zhu2011] Bonnie Zhu, Anthony Joseph, and Shankar Sastry. 2011. A Taxonomy of Cyber Attacks on SCADA Systems. In Proceedings of the 2011 International Conference on Internet of Things and 4th International Conference on Cyber, Physical and Social Computing (ITHINGSCPSCOM '11). IEEE Computer Society, Washington, DC, USA, 380-388.
-
-[Boyer2004] S. a. Boyer, “SCADA - Supervisory And Data Acquisition.” The Instrumentation, Systems, and Automation Society, 2004.
-
-[Chifflier2014] P. Chifflier and A. Fontaine. Architecture système sécurisée de sonde IDS réseau. C&ESAR 2014.
-
-[Diallo2014] David Diallo and M. Feuillet. Détection d’intrusion dans les systèmes industriels : Suricata et le cas Modbus.  C&ESAR 2014.
-
-[Barbosa2012-1] R. R. R. Barbosa, R. Sadre, and A. Pras, “Difficulties in modeling SCADA traffic: A comparative analysis,” Lect. Notes Comput. Sci. (including Subser. Lect. Notes Artif. Intell. Lect. Notes Bioinformatics), vol. 7192 LNCS, pp. 126–135, 2012.
-
-[Barbosa2012-2] R. R. R. Barbosa, R. Sadre, and A. Pras, “A first look into SCADA network traffic,” Proc. 2012 IEEE Netw. Oper. Manag. Symp. NOMS 2012, pp. 518–521, 2012.
-
-[Barbosa2013] R. R. R. Barbosa, R. Sadre, and A. Pras, “Towards periodicity based anomaly detection in SCADA networks,” IEEE Int. Conf. Emerg. Technol. Fact. Autom. ETFA, 2012.
-
-[García2009] P. García-Teodoro, J. Díaz-Verdejo, G. Maciá-Fernández, and E. Vázquez. 2009. Anomaly-based network intrusion detection: Techniques, systems and challenges. Comput. Secur. 28, 1-2 (February 2009), 18-28.
-
-[Yasakethu2013] Jiang Yasakethu, Intrusion Detection via Machine Learning for SCADA System Protection. Proceedings of the 1st  International Symposium for ICS & SCADA Cyber Security Research, 2013.
-
-[Wang2011] Chengwei Wang; Viswanathan, K.; Choudur, L.; Talwar, V.; Satterfield, W.; Schwan, K., "Statistical techniques for online anomaly detection in data centers,"Integrated Network Management (IM), 2011 IFIP/IEEE International Symposium on , vol., no., pp.385,392, 23-27, May 2011.
-
-[Marchette2004] D.J. Marchette, Network Intrusion Detection, in Handbook of Computational Statistics: Concepts and Methods, Gentle, Hardle and Mori, editors, 2004, 1029-1051, 2004.
-
-[Yang2005] D. Yang, A. Usynin, and J. Hines, “Anomaly-based intrusion detection for SCADA systems,” 5th Intl. Top. Meet. Nucl. Plant Instrumentation, Control Hum. Mach. Interface Technol. (NPIC&HMIT 05), pp. 12–16, 2005.
-
-[Callegari2008] C. Callegari, S. Vaton, and M. Pagano, “A new statistical approach to network anomaly detection,” pp. 441–447, 2008.
-
-[Cheung2007] Cheung, S., Dutertre, B., Fong, M., Lindqvist, U., Skinner, K., & Valdes, A. (2007, January). Using model-based intrusion detection for SCADA networks. InProceedings of the SCADA security scientific symposium (Vol. 46, pp. 1-12), 2007.
-
-[Cunningham2003] R. K. Cunningham, S. Cheung, M. Fong, U. Lindqvist, D. M. Nicol, R. Pawlowski, E. Robinson, W. H. Sanders, S. Singh, A. Valdes, B. Woodworth, and M. Zhivich, “Securing Process Control Systems of Today and Tomorrow *,” Sci. Technol., no. 2003, pp. 1–24.
-
-[Dipali2013] Dipali, “Network Traffic Intrusion Detection System using Decision Tree & K-Means Clustering Algorithm,” vol. 2, no. 5, pp. 218–220, 2013.
-
-[Fovino2010] I. N. Fovino, A. Carcano, T. De Lacheze Murel, A. Trombetta, and M. Masera, “Modbus/DNP3 state-based intrusion detection system,” Proc. - Int. Conf. Adv. Inf. Netw. Appl. AINA, pp. 729–736, 2010.
-
-[Gao2010] W. Gao, T. Morris, B. Reaves, and D. Richey, “On SCADA control system command and response injection and intrusion detection,” Gen. Members Meet. eCrime Res. Summit, eCrime 2010, 2010.
-
-[Goldenberg2013] N. Goldenberg and A. Wool, “Accurate modeling of Modbus/TCP for intrusion detection in SCADA systems,” Int. J. Crit. Infrastruct. Prot., vol. 6, no. 2, pp. 63–75, 2013.
-
-[Golmah2014] V. Golmah, “An Efficient Hybrid Intrusion Detection System based on C5. 0 and SVM.,” Int. J. Database Theory Appl., vol. 7, no. 2, pp. 59–70, 2014.
-
-[Hadziosmanovic2010] D. Hadˇ, D. Bolzoni, P. H. Hartel, and D. Hadžiosmanović, “Towards securing SCADA systems against process-related threats,” System, pp. 1–10, 2010.
-
-[Jayasimhan2012] A. Jayasimhan and J. Gadge, “Anomaly Detection using a Clustering Technique,” Int. J. Appl. Inf. Syst., vol. 2, no. 8, pp. 5–9, 2012.
-
-[Jiang2013] J. Jiang, “Intrusion Detection via Machine Learning for SCADA System Protection,” pp. 101–105, 2013.
-
-[Joshi2013] S. a Joshi and V. S. Pimprale, “Network Intrusion Detection System ( NIDS ) based on Data Mining,” Int. J. Eng. Sci. Innov. Technol., vol. 2, no. 1, pp. 95–98, 2013.
-
-[Karnouskos2011] S. Karnouskos, “Stuxnet worm impact on industrial cyber-physical system security,” IECON Proc. (Industrial Electron. Conf., pp. 4490–4494, 2011.
-
-[Khan2007] L. Khan, M. Awad, and B. Thuraisingham, “A new intrusion detection system using support vector machines and hierarchical clustering,” VLDB J., vol. 16, no. 4, pp. 507–521, 2007.
-
-[Kim2013] S. J. Kim, B. H. Kim, S. S. Yeo, and D. E. Cho, “Network anomaly detection for m-connected SCADA networks,” Proc. - 2013 8th Int. Conf. Broadband, Wirel. Comput. Commun. Appl. BWCCA 2013, pp. 351–354, 2013.
-[Krotofil2013] M. Krotofil and D. Gollmann, “Industrial control systems security: What is happening?,” 2013 11th IEEE Int. Conf. Ind. Informatics, pp. 664–669, 2013.
-
-[Lee1999] W. Lee, S. J. Stolfo, and K. W. Mok, “A Data Mining Framework for Building Intrusion Detection Models,” {IEEE} Symp. Secur. Priv., pp. 120–132, 1999.
-
-[Lee2001] W. L. W. Lee, S. J. Stolfo, P. K. Chan, E. Eskin, W. F. W. Fan, M. Miller, S. Hershkop, and J. Z. J. Zhang, “Real time data mining-based intrusion detection,” Proc. DARPA Inf. Surviv. Conf. Expo. II. DISCEX’01, vol. 1, 2001.
-
-[Lemay2013] A. Lemay, “Defending the Scada Network Controlling the Electrical Grid From Advanced Persistent Threats,” 2013.
-
-[Linda2009] O. Linda, T. Vollmer, and M. Manic, “Neural Network Based Intrusion Detection System for Critical Infrastructures Neural Networks Neural Network Based Intrusion Detection System for Critical Infrastructures,” Neural Networks, 2009.
-
-[Leandro2014] Leandro A. Maglaras and J. Jiang, “OCSVM model combined with K-means recursive clustering for intrusion detection in SCADA systems,” vol. 1, pp. 5–6.
-
-[Maglaras2014] L. A. Maglaras and J. Jiang, “Intrusion Detection in SCADA systems using Machine Learning Techniques,” 2014.
-
-[Mantere2012] “Feature Selection for Machine Learning Based Anomaly Detection in Industrial Control System Networks”. Mantere, 2012
-
-[Mantere2012] M. Mantere, M. Sailio, and S. Noponen, “Feature Selection for Machine Learning Based Anomaly Detection in Industrial Control System Networks,” 2012 IEEE Int. Conf. Green Comput. Commun., pp. 771–774, 2012.
-
-[Mantere2013] M. Mantere, M. Sailio, and S. Noponen, “Network Traffic Features for Anomaly Detection in Specific Industrial Control System Network,” pp. 460–473, 2013.
-
-[Mara2011] T. Mara, “The Integration of SNORT with K-Means Clustering Algorithm to Detect New Attack,” 2011.
-
-[Meza2009] J. Meza, S. Campbell, and D. Bailey, “LBNL Mathematical and Statistical Opportunities in Cyber Security,” pp. 1–11, 2009.
-
-[Miao2010] C. Miao and W. Chen, “A study of intrusion detection system based on data mining,” 2010 IEEE Int. Conf. Inf. Theory Inf. Secur., pp. 186–189, 2010.
-
-[Morkhade2013] M. Morkhade and M. Bartere, “Survey on Data Mining based Intrusion Detection Systems,” Ijaiem.Org, vol. 2, no. 3, pp. 338–343, 2013.
-
-[Morris2013] T. Morris and W. Gao, “Industrial Control System Cyber Attacks,” … Int. Symp. ICS SCADA Cyber …, pp. 22–29, 2013.
-
-[Munz2007] C. Miao and W. Chen, “A study of intrusion detection system based on data mining,” 2010 IEEE Int. Conf. Inf. Theory Inf. Secur., pp. 186–189, 2010.
-
-[Nader2014] P. Nader, P. Honeine, and P. Beauseroy, “-norms in One-Class Classification for Intrusion Detection in SCADA Systems,” vol. 10, no. 4, pp. 2308–2317, 2014.
-
-[Niaping2010] S. N. S. Naiping and Z. G. Z. Genyuan, “A Study on Intrusion Detection Based on Data Mining,” Inf. Sci. Manag. Eng. (ISME), 2010 Int. Conf., vol. 1, 2010.
-
-[Pathan2014] A. Pathan, “The State of the Art in Intrusion Prevention and Detection,” Auerbach, 2014.
-
-[Yang2014] Y. Yang, K. Mclaughlin, S. Sezer, T. Littler, E. G. Im, B. Pranggono, H. F. Wang, and S. Member, “Multiattribute SCADA -Specific intrusion detection system for power networks,” IEEE Trans. Power Deliv., vol. 29, no. 3, pp. 1092–1102, 2014.
-
-[Yang2014] Y. Yang, K. Mclaughlin, S. Sezer, Y. B. Yuan, and W. Huang, “Stateful Intrusion Detection for IEC 60870-5-104 SCADA Security,” vol. 1, pp. 5–9, 2014.
-
-[Yu2012] Y. Yu, “A survey of anomaly intrusion detection techniques,” J. Comput. Sci. Coll., pp. 9–17, 2012.
-
-[Verba2009] J. Verba, “Idaho national laboratory supervisory control and data acquisition intrusion detection system (SCADA IDS),” Int. Conf. Technol. Homel. Secur., no. 208, pp. 469–473, 2008.
-
-[Verwoerd2002] T. Verwoerd and R. Hunt, “Intrusion detection techniques and approaches,” vol. 25, pp. 1356–1365, 2002.
-
-[Wang2006] J. Wang and Z. Wang, “Intrusion Alert Analysis Based on PCA and the LVQ Neural Network,” pp. 217–224, 2006.
-
-[Wang2004] K. Wang and S. Stolfo, “Anomalous payload-based network intrusion detection,” Recent Adv. Intrusion Detect., pp. 203–222, 2004.
-
-[Zhao2010] D. Z. D. Zhao, Q. X. Q. Xu, and Z. F. Z. Feng, “Analysis and Design for Intrusion Detection System Based on Data Mining,” Educ. Technol. Comput. Sci. (ETCS), 2010 Second Int. Work., vol. 2, 2010.
-
-[Zhou2015] C. Zhou, S. Huang, N. Xiong, S. Yang, H. Li, Y. Qin, and X. Li, “Design and Analysis of Multimodel-Based Anomaly Intrusion Detection Systems in Industrial Process Automation,” pp. 1–16, 2015.
-
-[Stouffer2006] K. Stouffer, J. Falco, and K. Kent, “Guide to supervisory control and data acquisition (SCADA) and industrial control systems security,” NIST Spec. Publ. SP800-82, pp. 800–82, 2006.
-
-[Rodrigues2011] A. Rodrigues, T. Best, and R. Pendse, “SCADA security device: design and implementation,” Proc. Seventh Annu. Work. Cyber Secur. Inf. Intell. Res., pp. 25:1–25:1, 2011.
-
-[Denning1987] Denning, D.E., "An Intrusion-Detection Model," Software Engineering, IEEE Transactions on , vol.SE-13, no.2, pp.222,232, Feb. 1987.
-
-[Bishop2003] M. Bishop, Computer security: art and science. Boston: Addison-Wesley, 2003.
-
-[Sayegh2014] N. Sayegh, I. H. Elhajj, A. Kayssi, and A. Chehab, “SCADA Intrusion Detection System based on temporal behavior of frequent patterns,” MELECON 2014 - 2014 17th IEEE Mediterr. Electrotech. Conf., no. April, pp. 432–438, 2014.
-
-[Valdes2009] A. Valdes and S. Cheung, “Communication pattern anomaly detection in process control systems,” 2009 IEEE Conf. Technol. Homel. Secur. HST 2009, pp. 22–29, 2009.
-
-[Singh2013] S. Singh and M. Bansal, “A Survey on Intrusion Detection System in Data Mining 1 1,2,” vol. 1, no. 2, pp. 2190–2194, 2013.
-
-[Syarif2012] I. Syarif, A. Prugel-bennett, and G. Wills, “Unsupervised clustering approach for network anomaly detection,” Springer, pp. 135-145, 2012.
-
-[Sousan2011] W. Sousan, R. Gandhi, Q. Zhu, and W. Mahoney, “Using anomalous event patterns in control systems for tamper detection,” Proc. Seventh Annu. Work. Cyber Secur. Inf. Intell. Res. - CSIIRW ’11, p. 1, 2011.
-
-[Shukla2014] D. B. Shukla and G. S. Chandel, “An Implementation Of Network Traffic Classification Technique Based On K-Medoids,” vol. 4, no. 4, pp. 41–46, 2014.
-
-[Marchette2003] D. J. Marchette, “Statistical opportunities in network security,” in 35th Symposium on the interface, 2003.
-
-[Wang2009] Wang, Y., Statistical Techniques for Network Security: Modern Statistically-Based Intrusion Detection and Protection, Information Science reference, 2009
-
-[Meza2009] Juan Meza, Scott Campbell, David Bailey, “Mathematical and Statistical Opportunities in Cyber Security,” arXiv preprint arXiv:0904.1616, 2009.
-
-[Mukkamala2006] S. Mukkamala, D. Xu, and A. H. Sung, “Intrusion Detection Based on Behavior Mining and Machine Learning Techniques,” pp. 619–628, 2006.
-
-Patcha2007] A. Patcha and J. M. Park, “An overview of anomaly detection techniques: Existing solutions and latest technological trends,” Comput. Networks, vol. 51, no. 12, pp. 3448–3470, 2007.
-
-[Modbus2012] Modbus application protocol specification v1. 1b3. North Grafton, Massachusetts (www. modbus. org/specs. php), 2012.
-
-[Troy1990] Computing fundamentals UNIX systems, Douglas A. Troy, Addison-Wesley, 1990.
-
-[Stroustrup1997] Bjarne Stroustrup, The C++ programming language,  Addison-Wesley (Third ed.)., 1997.
-
-[DARPA1999] DARPA. DARPA Intrusion Detection Evaluation Data Sets, 1999.
-
-[Guyon2003] Isabelle Guyon, André Elisseeff, “An Introduction to Variable and Feature Selection”, Journal of Machine Learning Research, March 2003
-
-[Yu2004] Lei Yu, Huan Liu, “Efficient Feature Selection via Analysis of Relevance and Redundancy”, Journal of Machine Learning Research 5, 2004
-
-[Ma2009] Wanli Ma, “A Study on the Feature Selection of Network Traffic for Intrusion Detection Purpose,” ISI 2008, June 17-20, Taipei, 2008
-
-[Tukey1977] J.W. Tukey, (1977). Exploratory Data Analysis. Addison-Wesley. ISBN 0-201-07616-0
-
-[Lafaye2013] P. Lafaye de Micheaux et al.,  (2013). The R Software: Fundamentals of Programming and Statistical Analysis, Statistics and Computing. Springer New York. ISBN 978-1-4614-9019-7
-
-[Stroustrup2000] B. Stroustrup, The C++ programming language. 2000.
-
-\pagebreak
 
