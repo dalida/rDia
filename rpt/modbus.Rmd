@@ -332,6 +332,8 @@ rm(responses, requests)
 summary(mergedSewDT)
 ```
 
+\pagebreak
+
 # Appendix 3 - Commands and Scripts
 
 ## TShark

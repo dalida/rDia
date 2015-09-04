@@ -4,11 +4,13 @@ install.packages("tm")
 install.packages("wordcloud")
 install.packages("SnowballC")
 
-library(tm)
-library(wordcloud)
-library(SnowballC)
+require(NLP)
+require(RColorBrewer)
+require(tm)
+require(wordcloud)
+require(SnowballC)
 
-paper<- Corpus(DirSource("wc"))
+paper<- Corpus(DirSource("/home/lisa/rDia/rpt/wc"))
 
 inspect(paper)
 

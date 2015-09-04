@@ -31,6 +31,7 @@ require(png)
 require(grid)
 require(gridExtra)
 require(rjson)
+require(knitr)
 ```
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
@@ -101,22 +102,22 @@ grid.raster(img)
 
 \vspace{10mm}
 
-\textit{Corporate Advisor:}\\
+Corporate Advisor:\\
 \medskip
-\textit{Guillaume Prigent}\\
+Guillaume Prigent\\
 \bigskip
 
-\textit{Academic Advisors:}\\
+Academic Advisors:\\
 \medskip
-\textit{Professor Yannis Haralambous}\\
+Professor Yannis Haralambous\\
 \medskip
-\textit{Professor Sandrine Vaton}\\
+Professor Sandrine Vaton\\
 
 \vspace{15mm}
 
-\textit{September 2015}\\
+September 2015\\
 \medskip
-\textit{Plouzane, FRANCE}\\
+Plouzané, FRANCE\\
 
 \end{center}
 
@@ -165,17 +166,17 @@ grid.raster(img)
 
 # Acronyms {-}
 
-* ANIDS - Anomoly-based Network Intrusion Detection System
+* ANIDS - Anomaly-based Network Intrusion Detection System
 * HNS - Hybrid Network Simulation
-* HMI - Human-Machine Interface - a software and hardware designed for a human operator to monitor the state of a process under control, modify control settings and manually override automatic control operations
+* HMI - Human-Machine Interface
 * ICS - Industrial Control System
 * IDS - Intrusion Detection System
 * IPS - Intrusion Prevention System
 * MTU - Master Terminal Unit
-* PLC - Programmable Logic Controller - a small industrial computer designed to perform logic functions executed by electrical hardware
+* PLC - Programmable Logic Controller
 * MTU - Master Terminal Unit
 * NIDS - Network Intrusion Detection System
-* RTU - Remote Terminal Unit - a field device that is a data acquisition and control unit designed to support SCADA remote stations
+* RTU - Remote Terminal Unit
 * SCADA - Supervisory Control and Data Acquisition
 
 \newpage
@@ -202,6 +203,7 @@ only TCP/IP and Ethernet data are analyzed.
 
 This work is divided into the following major sections: 
 
+*  Section 1 gives an introction to this work, and outlines its organization
 *  Section 2 provides an overview of SCADA systems
 *  Section 3 provides some basic networking principles
 *  Section 4 briefly considers a few common cyber attacks
@@ -231,9 +233,9 @@ Typically industrial control systems are continuously operational and commonly s
 
 ## SCADA
 
-A Supervisory Control and Data Acquisition (SCADA) system is an industrial control system (ICS) used for monitoring equipment and controlling processes in industries such as electrical, water, and oil, as . The administration over a geographically widely distributed process can be directed from a central location at the master terminal unit (MTU) in SCADA systems. Changes to process controllers, the opening and closing of valves and switches, the monitoring and the measurement of information is administered from the MTU to remote terminal units (RTU). Due to their economy, versatility, flexibility, and configurability, programmable logic controllers, which are small industrial computers are widely used as RTUs.[[@Stouffer2006]] The various components of a SCADA system is shown (Figure 1)[[@Zhu2010]].
+A Supervisory Control and Data Acquisition (SCADA) system is an industrial control system (ICS) used for monitoring equipment and controlling processes in industries such as electrical, water, and oil, as . The administration over a geographically widely distributed process can be directed from a central location at the master terminal unit (MTU) in SCADA systems. Changes to process controllers, the opening and closing of valves and switches, the monitoring and the measurement of information is administered from the MTU to remote terminal units (RTU). Due to their economy, versatility, flexibility, and configurability, programmable logic controllers, which are small industrial field devices that are widely used as RTUs.[[@Stouffer2006]] The various components of a SCADA system is shown (Figure 1)[[@Zhu2010]].
 
-A SCADA system is normally comprised of Programmable Logic Controllers (PLCs),  small industrial computers made to perform logic functions executed by electrical hardware,  which control sensors and actuators. Human operators modify control settings, override automatic processes manually, and monitor the state of the processes under control via an Human Interface Control (HMI). It is from these HMIs that the PLCs are managed.
+A SCADA system is normally comprised of Programmable Logic Controllers (PLCs), small industrial computers made to perform logic functions executed by electrical hardware,  which control sensors and actuators. Human operators modify control settings, override automatic processes manually, and monitor the state of the processes under control via an Human Interface Control (HMI). It is from these HMIs that the PLCs are managed.
 
 These systems have differing constraints and properties from those of traditional IT systems, the most prominent being that they are real-time operational systems that must always be available and run continuously without outage. Once the field devices have been put into place, they are normally left untouched, i.e., not rebooted and left running for years. This creates the problem of the systems being more susceptible to buffer overflow due to the accumulation of fragmentation.[[@Zhu2011]]
 
@@ -250,7 +252,7 @@ grid.raster(img)
 
 ## Traffic characterization  
 
-As seen in the comparative analysis done in [[@Barbosa2012]], it is shown how the traffic greatly differs between SCADA and traditional networks. Most traffic is generated by automated processes in SCADA networks as opposed to human-generated traffic predominant in traditional networks. The traffic pattern generated in SCADA networks have been found to be fairly static and repetitive, with its network topology unchanging, or rarely modified. Also seen [[@Cheung2006]] are a limited number of applications and protocols that run on industrial systems. Markedly seen over MODBUS traffic, the messages exchanged between PLCs are recurrent giving it a fixed pattern and relatively stationary process.[[@Goldenberg2013; @Barbosa2012a; @Barbosa2012b]]
+As seen in the comparative analysis done in [[@Barbosa2012]], it is shown how the traffic greatly differs between SCADA and traditional networks. Most traffic is generated by automated processes in SCADA networks as opposed to human-generated traffic predominant in traditional networks. The traffic pattern generated in SCADA networks have been found to be fairly static and repetitive, with its network topology unchanging, or rarely modified. Likewise, it is usual for there to be a limited nuber of applications and protocols that run on industrial systems. [[@Cheung2006]] Considerably seen over MODBUS traffic, the messages exchanged between PLCs are recurrent giving it a fixed pattern and relatively stationary process.[[@Goldenberg2013; @Barbosa2012a; @Barbosa2012b]]
 
 
 \pagebreak
@@ -305,7 +307,7 @@ grid.raster(img)
 
 ### MODBUS/TCP
 
-The MODBUS/TCP protocol is an open standard and popular network protocol used for ICS devices. It is a messaging protocol located at the application layer that was designed to communicate with PLCs in industrial systems. However, due to the limited resources the PLCs have,  it was created to be a simple protocol that provides no security against unauthorized commands or interception of data.[Modbus2012] Figure 5 gives an example architecture for MODBUS TCP communication.
+The MODBUS/TCP protocol is an open standard and popular network protocol used for ICS devices. It is a messaging protocol located at the application layer that was designed to communicate with PLCs in industrial systems. However, due to the limited resources the PLCs have,  it was created to be a simple protocol that provides no security against unauthorized commands or interception of data.[[@Modbus2012]] Figure 5 gives an example architecture for MODBUS TCP communication.
 
 
 ```{r, echo=FALSE, fig.width=5.5, fig.width=4.5, fig.align='center', fig.cap="MODBUS TCP/IP Communication Architecture"}
@@ -369,7 +371,7 @@ In an attempt to render services unavailable and stop the proper functioning of 
 
 ## Reconnaissance
 
-In a reconnaissance attack there is unauthorized reading of data, where this type of attack generally surveys a network and identifies connected devices in order to ascertain the network architecture and topology. Once the network is accessed by the perpetrator, they may carry out different levels of scanning over the network, such as address, port and points scanning. In the case of SCADA systems, with the MODBUS/TCP being the prevailing protocol implemented in ICS devices, function scanning is also done.
+In a reconnaissance attack there is unauthorized reading of data, where this type of attack generally surveys a network and identifies connected devices in order to ascertain the network architecture and topology. Once the network is accessed by the perpetrator, they may carry out different levels of scanning over the network, such as address, port and points scanning. In the case of SCADA systems, with the MODBUS/TCP being the prevailing protocol implemented in ICS devices, function scanning is also attempted.
 
 ## Zero-day Attacks
 
@@ -420,8 +422,8 @@ TODO Table1 reference/figure
 
 ```{r, echo=FALSE, fig.width=4.5, fig.height=4.5, fig.align='center', fig.cap="Functional Architecture of an A-NIDS"}
 #setwd("~/rDia")
-#img <- readPNG("imgs/anids_process.png")
-img <- readPNG(paste(homeDir, "imgs/anids_process.png", sep=''))
+#img <- readPNG("imgs/anids_process_funct_archit.png")
+img <- readPNG(paste(homeDir, "imgs/anids_process_funct_archit.png", sep=''))
 grid.raster(img)
 ```
 
@@ -444,13 +446,13 @@ Data mining, also known as knowledge discovery in databases (KDD), is the the pr
 
 In the machine learning approach an algorithm is trained to learn against a set of data that has been previously identified, or labeled, and as more data becomes available, the greater the accuracy of the model. Prominent methods of machine learning are Bayesian and Neural Networks, SVM, kNN, clustering and outlier detection.[[@Gao2010; @Golmah2014; @Jiang2013; @Khan2007; @Linda2009; @Maglaras2014; @Mantere2012; @Meza2009; @Mukkamala2006]]
 
-Similarities and overlap can be seen between the techniques above as they have evolved and originated from, and are intersections of, the fields of computer science, statistics, artificial intelligence, and database systems. Each of these methods presents its advantages and drawbacks, and in evaluating them, it will be important to consider the time and complexity in the processing and analysis of data, the availability of previously identified data, as well as the legibility of results, that is how easily the results can be read and interpreted.
+Similarities and overlap can be seen between the techniques above as they have evolved and originated from, and are intersections of, the fields of computer science, statistics, artificial intelligence, and database systems. Each of these methods presents its advantages and drawbacks, and in evaluating them, it will be important to consider the time and complexity in the processing and analysis of data, the availability of previously identified data, as well as the legibility of results, that is, how easily the results can be read and interpreted.
 
 
 ```{r, echo=FALSE,fig.align='center', fig.cap="Fundamentals of the A-NIDS Techniques"}
 #setwd("~/rDia")
-#img <- readPNG("imgs/anids_techniques_comparison.png")
-img <- readPNG(paste(homeDir, "imgs/anids_techniques_comparison.png", sep=''))
+#img <- readPNG("imgs/anids_tech_comp.png")
+img <- readPNG(paste(homeDir, "imgs/anids_tech_comp.png", sep=''))
 grid.raster(img)
 ```
 
@@ -459,7 +461,7 @@ grid.raster(img)
 
 # Tools
 
-All software and tools applied and implemented in the SCAD@COPS project are free and open source. A great deal of work is typically involved in preparing the raw data for analysis and depending on the initial state of the data, various pre-processing and transformations may be required. The following tools were employed in the exploratory phase of data analysis in order to capture, transform and analyze the data, as well as for implementing the statistical analytical process.
+All software and tools applied and implemented in the SCAD\@COPS project are free and open source. A great deal of work is typically involved in preparing the raw data for analysis and depending on the initial state of the data, various pre-processing and transformations may be required. The following tools were employed in the exploratory phase of data analysis in order to capture, transform and analyze the data, as well as for implementing the statistical analytical process.
 
 ## Wireshark[^2] - Network Traffic Analysis Tool
 [^2]: https://www.wireshark.org/docs/wsug_html_chunked
@@ -474,20 +476,33 @@ Captured network packets are saved in the pcap file format and can be dissected 
 Another tool from the Wireshark suite is the command-line tool similar to tcpdump is tshark, a network protocol analyzer. In addition to capturing packet data over a live network, it is also capable of analyzing packets from an existing capture file.
 
 ## UNIX Utilities
-There are a myriad of UNIX utilities that are used for administration, scripting, text processing, etc. [[@Troy1990]] In the data parsing and transformation process, the UNIX tools employedused were bash, sed, and, awk, which supports the use of regular expressions.
+There are a myriad of UNIX utilities that are used for administration, scripting, text processing, etc.[[@Troy1990]] In the data parsing and transformation process, the UNIX tools employedused were bash, sed, and, awk, which supports the use of regular expressions.
 
 ## R - Statistical Tool[^4]
 [^4]: http://www.r-project.org/
 
 R is an Open Source programming language and environment used for statistical computing and graphics. Initially developed by John Chambers at Bell Labs as the S language in 1993, R was created as a freely available version under the GNU project by  Ross Ihaka and Robert Gentleman at the University of Auckland, New Zealand.
 
-Maintained by the R Development Core Team and with an active and growing community, it provides various statistical and graphical creation capabilities available under most operating systems, and is extensible with numerous packages available.
+Maintained by the R Development Core Team and with an active and growing community, it provides various statistical and graphical creation capabilities available under most operating systems, and is extensible with numerous packages available. Its major limitation is that there must be sufficient RAM to hold the data in memory.
 
 ## C/C++
 
-Originally developed by Dennis Ritchie at AT&T Bell Labs in the late 60s and early 70s, the C programming language is a low-level, general purpose computer programming language, that was  initially designed for and implemented on the UNIX OS. A sucessor to the C programming language is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most of C’s syntax, as well as adds abstraction making it an object-oriented language.[[@Stroustrup2000]]
+Originally developed by Dennis Ritchie at AT&T Bell Labs in the late 60s and early 70s, the C programming language is a low-level, general purpose computer programming language, that was  initially designed for and implemented on the UNIX OS. A sucessor to the C programming language is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most of C’s syntax, as well as adds abstraction lending itself to be an object-oriented language.[[@Stroustrup2000]]
 
-    
+## Suricata[^5]
+[^5]: http://www.suricata-ids.org
+
+A widely used network intrusion detection system is Snort.[^6] It is open source, and although highly effective and proven, its limitation is that it is single-threaded. A newer generation NIDS that has grown fairly popular is Suricata, developed by the Open Information Security Foundation (OISF) and partly funded by the US Department Homeland Security’s Directorate for Science and Technology. 
+
+Suricata is a high performing NIDS, IPS, and network security monitoring engine, that is based on signatures, however, unlike Snort it has a multithreaded architecture. The advanced techniques embedded in the engine uses an HTTP normalizer and parser in order to process HTTP streams which allow it to comprehend traffic at the application layer of the OSI model.
+
+[^6]: http://www.snort.org
+
+## Metasploit[^7]
+
+[^7]: http://www.metasploit.com/index.jsp
+
+The open source network security tool was Metsaploit, created in 2003 by H.D.Moore, that is used to test weaknesses in computer systems, including breaking into systems that are remote. In addition to legitimate activities, Metasploit can be utilized to take unauthorized actions. One of its major advantages as a modular framework is that it allows for combinations of any exploit with any payload, allowing it to simulate real-world attacks.
 
 \pagebreak
 
@@ -500,14 +515,14 @@ One of the only publicly available datasets containing network traffic data has 
 
 ## HNS and Virtual Scada Box
 
-Diateam has developed a system, Hynesim (HNS), that is a distributed platform used in simulating complex information and network systems. With its ergonomic graphical user interface, Hynesim has a distributed architecture and modular system, which allows for the inter-connection between real, as well as virtual systems.
+Diateam has developed a system, hynesim (HNS), that is a distributed platform used in simulating complex information and network systems. With its ergonomic graphical user interface, hynesim has a distributed architecture and modular system, which allows for the inter-connection between real, as well as virtual systems.
 
-Incorporated into Virtual Scada Box, Hynesim is the principal component where there is a virtual system that simulates a water treatment plant. Virtual Scada Box includes components such as the PLCs, HMIs, and a virtual water pump that have been connected over a TCP/IP network.
+Incorporated into Virtual Scada Box, hynesim is the principal component where there is a virtual system that simulates a water treatment plant. Virtual Scada Box includes components such as the PLCs, HMIs, and a virtual water pump that have been connected over a TCP/IP network.
 
 The data analyzed was derived from a simulated network running on the Virtual Scada Box. A packet capture file was created via Wireshark, which captured the network traffic simulated over a virtual SCADA network. Once the network traffic was captured and saved in a pcap file, Wireshark provides the capability to export the raw data into various comma delimited files in order to do further analysis. Exported files were created with TCP endpoints, TCP conversations, as well as the entire pcap file, each as a CSV file. (Appendix A)
 
-## PCAP[^5]
-[^5]: https://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html
+## PCAP[^8]
+[^8]: https://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html
 
 This section describes the format used for the packet capture file format of the dumped packets. The general structure is in a block format as shown below.
 
@@ -566,21 +581,22 @@ $$ var[X] = E[(X - E[X])^2] $$
 
 ### Standard Deviation
 
-The standard deviation is a measure of dispersion, or how spread out a random variable is around its mean. It is calculated as the square root of the variance and is, unlike the variance, expressed in the same terms as the data.
+The standard deviation is a measure of dispersion, or how spread out a random variable is around its mean. It is calculated as the square root of the variance and is, unlike the variance, expressed in the same terms (unit) as the data.
 
-$$ std[X] = \sqrt(var[X]) $$
+$$ \sigma = \sqrt(var[X]) $$
 
 ### Covariance
 
 A measure of how closely two variables change, or vary together is the covariance. Random random variables whose covariance is 0 is said to be uncorrelated.
 
-$$ cov[X,Y] = E[(X - E[X])(Y-E[Y])] $$
+$$ \sigma(X, Y) = E[(X - E[X])(Y-E[Y])] $$
 
 ### Correlation
 
 Correlation is the strength between the relationship of, or dependence between, two variables whose value is typically bounded between the values of -1 and 1, that is to say, that the value has been normalized. It describes the magnitude and the direction of the relationship. If the correlation is positive, their values increase together, and if it is negative, one value decreases as the other value increases.
 
-$$ corr[X,Y] = cov[X,Y] / (std[X]std[Y]) $$
+$$ \rho(X, Y) = \sigma(X, Y) / (\sigma [X] \sigma [Y]) $$
+
 
 ## Visual Representations
 
@@ -590,7 +606,7 @@ A pie chart is a circular diagram representing numerical proportions as slices o
 
 ### Histogram
 
-A graphical representation which shows the distribution of continuous numerical values is a histogram and can be representative of a probability distribution. A frequency histogram is a univariate graphical way to show frequency counts of a value depicted with bars of different heights.
+A graphical representation which shows the distribution of continuous numerical values is a histogram and can be representative of a probability distribution. A frequency histogram is a univariate graphical way to show frequency counts of a value showing bars of different heights.
 
 ### Bar chart
 
@@ -736,7 +752,7 @@ rm(bc1, bc2)
 
 ### MODBUS/TCP Request/Response Packet Statistics (Appendix C)  
 
-MODBUS/TCP **requests** are identified by packets having destination port number 502
+MODBUS/TCP **requests** are identified by packets having destination port number 502 \\
 (Figure 13)
 
 \nobreak
@@ -765,7 +781,7 @@ invisible(dev.off())
 
 \nobreak
 
-MODBUS/TCP **responses** are identified by packets having source port number 502
+MODBUS/TCP **responses** are identified by packets having source port number 502 \\
 (Figure 14)
 
 \nobreak
@@ -823,8 +839,8 @@ invisible(dev.off())
 
 \clearpage
 
-### MODBUS/TCP Data[^6] Analysis 
-[^6]: https://www.wireshark.org/docs/dfref/m/mbtcp.html
+### MODBUS/TCP Data[^9] Analysis 
+[^9]: https://www.wireshark.org/docs/dfref/m/mbtcp.html
 
 The following analysis was done over the previous dataset that has been processed
 to merge response packet to the request packet of the same transaction. An additional
@@ -921,7 +937,7 @@ rm(cor.test.2.sample)
 
 The SCAD\@COPS prototype incorporates the methods as outlined in [[@Chifflier2014; @Diallo2014]], which define the architectural and signature-based detection system, and the last component being the anomaly-based detection system. The signature-based IDS component has been implemented and configured using Suricata. The initial prototype will contain an anomaly-based IDS using statistical methods.
 
-## 10.1 Architecture Overview
+## Architecture Overview
 
 Network IDSs are utilized for security monitoring, but are themselves also vulnerable and exposed to attacks. [[@Chifflier2014]] proposes an architecture for the IDS sensor devices and software to minimize the possibility of attacks on it. The two approaches presented are: 
 
@@ -937,7 +953,7 @@ img <- readPNG(paste(homeDir, "imgs/techArchitecture.png", sep=''))
 grid.raster(img)
 ```
 
-Based on the recommendations of [[@Chifflier2014]], in order to address the security concerns of the IDS appliance itself, the architecture contains a partition of the various components and isolates each IDS instance from one another, as can be seen in Figure 24. All resources are set to read-only mode, with limited authorized access.  For maintenance, updates are deposited in a dedicated area and then copied over to another reserved area that are either executed by a scheduled job or via a trigger. A Mirabox is used as the embedded system running the latest stable version of Debian and virtual private networks to communicate between the internal IDS and the supervisory system. (Figure 25) [[@Chifflier2014]]
+Based on the recommendations of [[@Chifflier2014]], in order to address the security concerns of the IDS appliance itself, the architecture contains a partition of the various components and isolates each IDS instance from one another, as can be seen in Figure 24. All resources are set to read-only mode, with limited authorized access.  For maintenance, updates are deposited in a dedicated area and then copied over to another reserved area that are either executed by a scheduled job or via a trigger. A Mirabox is used as the embedded system running the latest stable version of Debian and virtual private networks to communicate between the internal IDS and the supervisory system. (Figure 24) [[@Chifflier2014]]
 
 [Diallo2014] advises the strategic placement of the monitoring devices throughout the SCADA system on a dedicated network for supervision, and presents the two different approaches of a centralized or a distributed system.
 
@@ -951,11 +967,6 @@ grid.raster(img)
 ### Signature-based IDS
 
 In  [[@Chifflier2014]] and [[@Diallo2014]], the signature based IDS is described and the use of the Suricata IDS software with Modbus protocol are proposed. Rules are configured that conform to, and verify the correct and normal behaviour of a SCADA system.
-
-#### Suricata[^7]
-[^7]: http://suricata-ids.org/
-
-Essentially the next generation version of Snort, well known and widely implemented, Suricata is a high performing NIDS, IPS, and network security monitoring engine. It is based on signatures, however, unlike Snort has a multithreaded architecture. The advanced techniques embedded in the engine uses an HTTP normalizer and parser in order to process HTTP streams which allow it to comprehend traffic at the application layer of the OSI model.
 
 ### Anomaly-based IDS
 
@@ -984,14 +995,10 @@ grid.raster(img)
 
 #### Data Acquisition
 
-TODO
-The data was acquired
+As illustrated in Section 10.1,  Figure 24, the data is acquired by one of the components of the NIDS, which has been configured to only monitor network traffic:
 
-Wireshark -
-An initial packet capture file was created over simulated network traffic using Wireshark. Using its export facilities, various files were created for further analysis, with information such as TCP endpoints, conversations, etc.
-
-Tshark -
-The pertinent variables pertaining to the MODBUS/TCP application protocol enclosed in the packet data were parsed by TShark.
+*  Wireshark - An initial packet capture file was created over the simulated network traffic using Wireshark. Using its export facilities, various files were created for further analysis, with information such as TCP endpoints, conversations, etc.
+*  Tshark - The pertinent variables pertaining to the MODBUS/TCP application protocol enclosed in the packet data were parsed by TShark.
 
 #### Statistical Analysis and Processing
 
@@ -1040,9 +1047,9 @@ Depending on the size of the dataset and the number of features, or variables, t
 
 An example of applying feature selection is in the area of text mining where unstructured data can be comprised of millions of words. Using such techniques as stop word elimination and stemming, the dimensionality is notably reduced.
 
-Network based intrusion detection has been studied for some time and can be implemented by using conventional network variables. [[@Ma2008; @Marchette2004]] In [[@Mantere2012; @Mantere2013]], the challenges of feature selection in the context of anomaly detection in industrial systems are discussed. The prediction model’s performance is highly dependent on the selection of pertinent variables amongst all available variables, and the feature set selection detecting any anomalies may be done either manually by one with knowledge and experience in a domain, or by using other feature selection techniques not involving humans.
+Network based intrusion detection has been studied for some time and can be implemented by using conventional network variables.[[@Ma2008; @Marchette2004]] In [[@Mantere2012; @Mantere2013]], the challenges of feature selection in the context of anomaly detection in industrial systems are discussed. The prediction model’s performance is highly dependent on the selection of pertinent variables amongst all available variables, and the feature set selection detecting any anomalies may be done either manually by one with knowledge and experience in a domain, or by using other feature selection techniques not involving humans.
 
-The first version of the SCAD\@COPS network intrusion detection device for industrial systems is based on simple statistical variables that have been chosen by an expert in the domain of cyber security experience in SCADA systems. An example configuration file generated from the statistical process as outlined in Section 10.2.2 (Appendix B) are used as the parameters in the prototype.
+The first version of the SCAD\@COPS network intrusion detection device for industrial systems is based on simple statistical variables that have been chosen by an expert in the domain of cyber security experience in SCADA systems. An example configuration file generated from the statistical process as outlined in Section 10.2.2 (Appendix B) have been used as the parameters in the prototype.
 
 
 \pagebreak
@@ -1310,35 +1317,113 @@ rm(mergedSewDT)
 
 ## Commands and Scripts {-}
 
-### TShark
+#### Bash scripts
 
-Command used to extract various fields from the pcap file used for analysis.
-
-tshark -r modbus.pcap -T fields -E separator=, -t r -E header=y 
--e frame.number -e frame.time_relative -e frame.time_delta -e frame.len 
--e ip.proto -e ip.version -e ip.src -e eth.src -e ip.dst -e eth.dst
--e mbtcp.modbus.unit_id -e tcp.srcport -e tcp.dstport -e mbtcp.prot_id
--e mbtcp.trans_id -e mbtcp.len -e mbtcp.modbus.func_code -e mbtcp.modbus.reference_num 
--e mbtcp.modbus.word_cnt -e mbtcp.modbus.data > modbus.data
-
-### UNIX
-
-#### sed
-Command used to remove empty lines from the pcap data.
-
-sed '/^,,,,,.*$/d' modbus.data > modbus.data
-
-#### Shell script
-processScada.sh - Driver script for statistical computational process.
+*  processScada.sh - Driver script for statistical computational process.
+*  sew.sh - Script to execute extract data from pcap file via Tshark command
 
 #### C/C++ script
-processMerge - C/C++ component for handling merge of MODBUS packets in data 
+
+*  processMerge.cpp - C/C++ component for handling merge of MODBUS packets in data 
 processing.
 
 ### R
-install.R - Setup script to install required packages.
-sewModbus.R - Script for processing, analysing and visualizing modbus data.
 
+*  install.R - Setup script to install required packages.
+*  sewModbus.R - Script to process normal state packet capture file.
+*  modbus.Rmd - Script for processing, analysing and visualizing modbus data.
+*  attack.R - Script to process attack state packet capture file.
+
+
+\newpage
+
+# Appendix F {-}
+
+## Metasploit attack commands.
+
+```
+def init
+payload = "\x00\x5a\x00\x02"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x01\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x0a\x00" + 'T' * 0xf9
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x03\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x03\x04"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x04"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x01\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x0a\x00"
+(0..0xf9).each { |x| payload += [x].pack("c") }
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x04"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x04"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x13\x00\x00\x00\x00\x00\x64\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x13\x00\x64\x00\x00\x00\x9c\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x14\x00\x00\x00\x00\x00\x64\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x14\x00\x64\x00\x00\x00\xf6\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x14\x00\x5a\x01\x00\x00\xf6\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x14\x00\x5a\x02\x00\x00\xf6\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x14\x00\x46\x03\x00\x00\xf6\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x14\x00\x3c\x04\x00\x00\xf6\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x14\x00\x32\x05\x00\x00\xf6\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x14\x00\x28\x06\x00\x00\x0c\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x13\x00\x00\x00\x00\x00\x64\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x20\x00\x13\x00\x64\x00\x00\x00\x9c\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x10\x43\x4c\x00\x00\x0f"
+payload += "USER-714E74F21B" # Yep, really
+#payload += "META-SPLOITMETA"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x04"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x50\x15\x00\x01\x0b"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x50\x15\x00\x01\x07"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x12"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x04"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x12"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x04"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x02"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x58\x01\x00\x00\x00\x00\xff\xff\x00\x70"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x58\x07\x01\x80\x00\x00\x00\x00\xfb\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x04"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x00\x58\x07\x01\x80\x00\x00\x00\x00\xfb\x00"
+sendframe(makeframe(payload))
+end
+
+def stop
+payload = "\x00\x5a\x01\x41\xff\x00"
+sendframe(makeframe(payload))
+payload = "\x00\x5a\x01\x04"
+sendframe(makeframe(payload))
+```
 
 \newpage
   
