@@ -5,13 +5,14 @@ date: "26/08/2015"
 output:
   pdf_document:
     toc_depth: 3
-    fig_caption: true
+    fig_caption: false
 ---
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 require(png)
 require(grid)
 load("/home/lisa/rDia/sewMerged.Rda")
+homeDir <- "/home/lisa/rDia/"
 
 ```
 
@@ -32,7 +33,7 @@ grid.raster(img)
 {\Huge Diateam: SCAD@COPS}\\
 \bigskip
 {\Huge A Hybrid Network Intrusion Detection System}\\
-\vspace{15mm}
+\vspace{25mm}
 {\Large by}\\
 
 \vspace{18mm}
@@ -56,19 +57,48 @@ grid.raster(img)
 \medskip
 \textbf{\textit{\Large Télécom Bretagne}}\\
 
-\vspace{10mm}
+\vspace{25mm}
 
-\textit{Academic Advisors:}\\
+Corporate Advisor:\\
+\smallskip
+Guillaume Prigent\\
+\bigskip
 \medskip
-\textit{Professor Yannis Haralambous}\\
-\medskip
-\textit{Professor Sandrine Vaton}\\
+Academic Advisors:\\
+\smallskip
+Professor Yannis Haralambous\\
+Professor Sandrine Vaton\\
 
 \vspace{15mm}
 
 \textit{September 2015}\\
 \medskip
-\textit{Plouzane, FRANCE}\\
+\textit{Plouzané, FRANCE}\\
+
+\end{center}
+
+\thispagestyle{empty}
+\newpage
+\mbox{}
+\thispagestyle{empty}
+
+\newpage
+
+\begin{center}
+
+\vspace{30mm}
+
+{\Huge Diateam: SCAD@COPS}\\
+\bigskip
+{\Huge Un système de détection d’intrusion de réseau hybride}\\
+
+\vspace{30mm}
+{\huge Lisa MALIPHOL}\\
+
+\vspace{75mm}
+\textit{septembre 2015}\\
+\medskip
+\textit{Plouzané, FRANCE}\\
 
 \end{center}
 
@@ -81,7 +111,28 @@ grid.raster(img)
 \thispagestyle{empty}
 \newpage
 
+-----------------------------------
 
+
+# Résumé {-}
+
+\textbf{Mots-clés: }détéction d’intrusion réseau, détéction d’intrusion basée des anomalies, systèmes industriels, MODBUS/TCP
+
+\newpage
+\mbox{}
+\thispagestyle{empty}
+
+\clearpage
+
+# Abstract {-}
+
+\textbf{Keywords: }Network Intrusion Detection, Anomaly Intrusion Detection, SCADA Systems, MODBUS/TCP
+
+\newpage
+\mbox{}
+\thispagestyle{empty}
+
+\clearpage
 # section 1
 ```{r, comment=''}
 str(mergedSewDT)
@@ -153,3 +204,28 @@ Another measure of central tendency is the median, however, in this case, the me
 The variance is the expected value of the squared differences between the random variables and its mean that is always positive. It gives an indication of how far apart the values are from the mean and each other.
 
 $$ var[X] = E[(X - E[X])^2] $$
+
+\newpage
+
+
+### MODBUS/TCP
+
+The MODBUS/TCP protocol is an open standard and popular network protocol used for ICS devices. It is a messaging protocol located at the application layer that was designed to communicate with PLCs in industrial systems. However, due to the limited resources the PLCs have,  it was created to be a simple protocol that provides no security against unauthorized commands or interception of data.[[@Modbus2012]] Figure 5 gives an example architecture for MODBUS TCP communication.
+
+```{r, echo=FALSE, fig.pos='middle', fig.width=5.5, fig.width=4.5, fig.align='center', fig.cap="MODBUS TCP/IP Communication Architecture"}
+#setwd("~/rDia")
+#img <- readPNG("imgs/modbustcpCommArch.png")
+img <- readPNG(paste(homeDir, "imgs/modbustcpCommArch.png", sep=''))
+grid.raster(img)
+```
+
+The master initiates a request and the slave sends a response containing either data or error. The common implementations of MODBUS are over Ethernet networks (MODBUS/TCP) or Serial busses (MODBUS/RTU). Both forms of MODBUS contain the packet data unit (PDU),  the component consisting of a function code and data.
+
+Attached to the PDU is the application specific addressing and error checking, which together comprise the application data unit (ADU). Specific to MODBUS/TCP, the ADU is encapsulated in the TCP packet. Thereby eliminating the need to include error checking in the MODBUS/TCP layer, it is left out from the MODBUS/TCP ADU. The MODBUS/TCP frame is depicted in Figure 6.
+
+```{r, echo=FALSE, fig.width=4, fig.height=2.75, fig.align='center', fig.cap="MODBUS/TCP Frame"}
+#setwd("~/rDia")
+#img <- readPNG("imgs/modbusADU.png")
+img <- readPNG(paste(homeDir, "imgs/modbusADU.png", sep=''))
+grid.raster(img)
+```

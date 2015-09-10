@@ -8,6 +8,8 @@ output:
     toc_depth: 3
     number_sections: true
     keep_tex: yes
+    includes:
+      in_header: header.tex
   word_document: default
 ---
 
@@ -17,6 +19,7 @@ require(knitr)
 require(data.table)
 #install.packages("xtable")
 require(xtable)
+
 
 # import datafile
 load("normal.Rda")
@@ -207,15 +210,15 @@ attackSrcFuncRefFreq <- attackReqs[,.(frequency=.N),
 
 #badSrcFuncFreq <- attackSrcFuncFreq[!srcFuncFreq]
 #badSrcFuncFreq
-
 ```
 
-```{r kable, echo=FALSE, warning=FALSE, message=FALSE}
 
-kable(avgPkt - attackAvgPkt, caption='Difference in Packet Averages')
+```{r, echo=FALSE, warning=FALSE, message=FALSE, comment=''}
+
+#kable(avgPkt - attackAvgPkt, caption='Difference in Packet Averages')
 
 setkey(attackSrcs, ip.src)
-kable(attackSrcs[!srcs], caption='Anomalous Sources', format='latex')
+kable(attackSrcs[!srcs], caption='Anomalous Sources')
 
 setkey(attackDst, ip.dst)
 kable(attackDst[!dst], caption='Anomalous Destinations')
@@ -229,17 +232,69 @@ kable(attackSmac[!smac], caption='Anomalous Source / MAC Address Pairs')
 setkey(attackSfunc, IP_SRC_MOD_FUNC)
 kable(attackSfunc[!sfunc], caption='Anomalous Source / MODBUS Function Code Pairs')
 
-setkey(attackSfuncRef, IP_SRC_MOD_FUNC_REF)
-kable(attackSfuncRef[!sfuncRef], caption='Anomalous Source / MODBUS Function Code / Reference Number')
+#setkey(attackSfuncRef, IP_SRC_MOD_FUNC_REF)
+#kable(attackSfuncRef[!sfuncRef], caption='Anomalous Source / MODBUS Function Code / Reference Number')
 
-mergedSrcFuncFreq <- merge(srcFuncFreq,attackSrcFuncFreq, by=c("ip.src","ip.dst","mbtcp.modbus.func_code"),suffixes=c(".n", ".a"))
-kable(mergedSrcFuncFreq[avgFrequencySec.n - avgFrequencySec.a,])
+#mergedSrcFuncFreq <- merge(srcFuncFreq,attackSrcFuncFreq, by=c("ip.src","ip.dst","mbtcp.modbus.func_code"),suffixes=c(".n", ".a"))
+#kable(mergedSrcFuncFreq[avgFrequencySec.n - avgFrequencySec.a,])
 
-mergedSrcFuncRefFreq <- merge(srcFuncRefFreq,attackSrcFuncRefFreq, by=c("ip.src","ip.dst","mbtcp.modbus.func_code","mbtcp.modbus.reference_num"),suffixes=c(".n", ".a"))
-kable(mergedSrcFuncRefFreq$avgFrequncySec.n - mergedSrcFuncRefFreq$avgFrequncySec.a, caption='Differences in ')
+mergedSrcFuncFreq <- merge(srcFuncFreq,attackSrcFuncFreq, 
+                           by=c("ip.src","ip.dst","mbtcp.modbus.func_code"),
+                           suffixes=c(".n", ".a"))
+mergedSrcFuncFreq$avgFrequencySec.diff <- mergedSrcFuncFreq$avgFrequencySec.n - mergedSrcFuncFreq$avgFrequencySec.a
+m1 <- mergedSrcFuncFreq[,.(ip.src,ip.dst, mbtcp.modbus.func_code)]
+kable(m1, caption='Differences in Frequency \nof Source/Function Code')
+m2 <- mergedSrcFuncFreq[,.(avgFrequencySec.n, avgFrequencySec.a, avgFrequencySec.diff)]
+kable(m2, caption='(cont.)')
 
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, comment=''}
+mergedSrcFuncRefFreq <- merge(srcFuncRefFreq,attackSrcFuncRefFreq, 
+                              by=c("ip.src","ip.dst","mbtcp.modbus.func_code","mbtcp.modbus.reference_num"),
+                              suffixes=c(".n", ".a"))
+mergedSrcFuncRefFreq$avgFrequencySec.diff <- mergedSrcFuncRefFreq$avgFrequncySec.n - mergedSrcFuncRefFreq$avgFrequncySec.a
+m3 <- mergedSrcFuncRefFreq[,.(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num)]
+kable(m3, caption='Differences in Frequency \nof Source/Function Code/Reference Number')
+m4 <- mergedSrcFuncRefFreq[,.(avgFrequncySec.n, avgFrequncySec.a, avgFrequencySec.diff)]
+kable(m4, caption='(cont.)')
+
+
+#######
+```
+\newpage
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, comment=''}
+
+responses<-sewModbusDT[tcp.srcport=="502"]
+responses
+
+req1<-summary(responses[,.(frame.number, frame.time_relative, frame.time_delta, frame.len, ip.proto, ip.version)])
+kable(req1, caption="Requests Summary")
+
+req2<-summary(responses[,.(ip.src, eth.src, ip.dst, eth.dst)])
+kable(req2)
+                      
+req3<-summary(responses[,.(mbtcp.modbus.unit_id, tcp.srcport, tcp.dstport, mbtcp.prot_id, mbtcp.trans_id, mbtcp.len)])
+kable(req3)
+
+req4<-summary(responses[,.(mbtcp.modbus.func_code, mbtcp.modbus.reference_num, mbtcp.modbus.word_cnt)])
+kable(req4)
+
+#req5<-summary(responses[,.(mbtcp.modbus.data, frame.second)])
+#kable(req5)
+
+#print(xtable(summary(reqs)), floating.environment="sidewaystable", comment=FALSE)
 #mergedSrcFuncRefFreq$avgFrequncySec.n - mergedSrcFuncRefFreq$avgFrequncySec.a
-mergedSrcFuncRefFreq$avgFreqDiff <- 
+#mergedSrcFuncRefFreq$avgFreqDiff <- 
+```
 
+```{r, results='asis', echo=FALSE}
+
+tab<-summary(reqs[,.(frame.number, frame.time_relative, frame.time_delta)])
+#print(xtable(tab), floating.environment="sidewaystable", comment=FALSE, size="small")
+#sideways <- xtable(summary(reqs))
+#sideways
+#print(sideways, floating=FALSE)
 
 ``` 

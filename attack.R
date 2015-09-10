@@ -34,6 +34,8 @@ attackModbusDT <- attackModbusDT[!(is.na(mbtcp.modbus.unit_id))]
 attackModbusDT <- attackModbusDT[!(is.na(mbtcp.trans_id))]
 attackModbusDT <- attackModbusDT[!(is.na(mbtcp.modbus.reference_num))]
 
+attackModbusDT$frame.second <- floor(attackModbusDT$frame.time_relative)
+
 save(attackModbusDT, file="attack.Rda")
 rm(datafile)
 

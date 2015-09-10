@@ -20,6 +20,8 @@ sewModbusDT <- sewModbusDT[!(is.na(mbtcp.modbus.unit_id))]
 sewModbusDT <- sewModbusDT[!(is.na(mbtcp.trans_id))]
 sewModbusDT <- sewModbusDT[!(is.na(mbtcp.modbus.reference_num))]
 
+sewModbusDT$frame.second <- floor(sewModbusDT$frame.time_relative)
+
 save(sewModbusDT, file="sew.Rda")
 rm(datafile)
 

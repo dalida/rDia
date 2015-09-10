@@ -71,21 +71,13 @@
   \date{}
   \predate{}\postdate{}
 
+\usepackage{rotating}
 
 
 \begin{document}
 
 \maketitle
 
-
-\begin{longtable}[c]{@{}r@{}}
-\caption{Difference in Packet Averages}\tabularnewline
-\toprule
-\endfirsthead
-\toprule
--2.387511\tabularnewline
-\bottomrule
-\end{longtable}
 
 \begin{longtable}[c]{@{}l@{}}
 \caption{Anomalous Sources}\tabularnewline
@@ -167,18 +159,211 @@ IP\_SRC\_MOD\_FUNC & ip.src & mbtcp.modbus.func\_code\tabularnewline
 \bottomrule
 \end{longtable}
 
-Table: Anomalous Source / MODBUS Function Code / Reference Number
+\begin{longtable}[c]{@{}lll@{}}
+\caption{Differences in Frequency of Source/Function
+Code}\tabularnewline
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code\tabularnewline
+\midrule
+\endhead
+192.168.12.253 & 192.168.12.53 & 4\tabularnewline
+192.168.12.53 & 192.168.12.253 & 4\tabularnewline
+\bottomrule
+\end{longtable}
 
-IP\_SRC\_MOD\_FUNC\_REF ip.src mbtcp.modbus.func\_code
-mbtcp.modbus.reference\_num -------------------- -------
------------------------ ---------------------------
+\begin{longtable}[c]{@{}rrr@{}}
+\caption{(cont.)}\tabularnewline
+\toprule
+avgFrequencySec.n & avgFrequencySec.a &
+avgFrequencySec.diff\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+avgFrequencySec.n & avgFrequencySec.a &
+avgFrequencySec.diff\tabularnewline
+\midrule
+\endhead
+33.14408 & 33.08108 & 0.0630013\tabularnewline
+33.14408 & 33.08108 & 0.0630013\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llll@{}}
+\caption{Differences in Frequency of Source/Function Code/Reference
+Number}\tabularnewline
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code &
+mbtcp.modbus.reference\_num\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code &
+mbtcp.modbus.reference\_num\tabularnewline
+\midrule
+\endhead
+192.168.12.53 & 192.168.12.253 & 4 & 0\tabularnewline
+192.168.12.53 & 192.168.12.253 & 4 & 1\tabularnewline
+192.168.12.53 & 192.168.12.253 & 4 & 2\tabularnewline
+192.168.12.53 & 192.168.12.253 & 4 & 3\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}rrr@{}}
+\caption{cont.}\tabularnewline
+\toprule
+avgFrequncySec.n & avgFrequncySec.a &
+avgFrequencySec.diff\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+avgFrequncySec.n & avgFrequncySec.a &
+avgFrequencySec.diff\tabularnewline
+\midrule
+\endhead
+13.675258 & 13.714286 & -0.0390280\tabularnewline
+15.618557 & 15.567568 & 0.0509891\tabularnewline
+1.962069 & 1.959184 & 0.0028853\tabularnewline
+1.962004 & 1.959184 & 0.0028198\tabularnewline
+\newpage & &\tabularnewline
+\bottomrule
+\end{longtable}
 
 \begin{verbatim}
-## Empty data.table (0 rows) of 5 cols: ip.src,ip.dst,mbtcp.modbus.func_code,avgFrequencySec.n,avgFrequencySec.a
+       frame.number frame.time_relative frame.time_delta frame.len
+    1:            3            0.185127         0.004811        65
+    2:            5            0.196988         0.011572        65
+    3:            7            0.208054         0.010812        65
+    4:            9            0.221087         0.012746        65
+    5:           11            0.233086         0.011740        65
+   ---                                                            
+24941:        51349          778.068159         0.010721        65
+24942:        51351          778.080318         0.011812        65
+24943:        51353          778.093005         0.012338        65
+24944:        51355          778.105172         0.011818        65
+24945:        51357          778.117466         0.011945        65
+       ip.proto ip.version         ip.src           eth.src         ip.dst
+    1:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+    2:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+    3:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+    4:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+    5:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+   ---                                                                    
+24941:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+24942:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+24943:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+24944:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+24945:        6          4 192.168.12.252 00:0f:69:0d:55:cd 192.168.12.117
+                 eth.dst mbtcp.modbus.unit_id tcp.srcport tcp.dstport
+    1: 08:00:27:f9:b1:f1                    1         502        1043
+    2: 08:00:27:f9:b1:f1                    1         502        1043
+    3: 08:00:27:f9:b1:f1                    1         502        1043
+    4: 08:00:27:f9:b1:f1                    1         502        1043
+    5: 08:00:27:f9:b1:f1                    1         502        1043
+   ---                                                               
+24941: 08:00:27:f9:b1:f1                    1         502        1043
+24942: 08:00:27:f9:b1:f1                    1         502        1043
+24943: 08:00:27:f9:b1:f1                    1         502        1043
+24944: 08:00:27:f9:b1:f1                    1         502        1043
+24945: 08:00:27:f9:b1:f1                    1         502        1043
+       mbtcp.prot_id mbtcp.trans_id mbtcp.len mbtcp.modbus.func_code
+    1:             0             90         5                      4
+    2:             0             91         5                      4
+    3:             0             92         5                      4
+    4:             0             93         5                      4
+    5:             0             94         5                      4
+   ---                                                              
+24941:             0            198         5                      4
+24942:             0            199         5                      4
+24943:             0            200         5                      4
+24944:             0            201         5                      4
+24945:             0            202         5                      4
+       mbtcp.modbus.reference_num mbtcp.modbus.word_cnt mbtcp.modbus.data
+    1:                                               NA             12:e7
+    2:                                               NA             00:70
+    3:                                               NA             00:70
+    4:                                               NA             00:70
+    5:                                               NA             00:70
+   ---                                                                   
+24941:                                               NA             00:70
+24942:                                               NA             00:70
+24943:                                               NA             00:70
+24944:                                               NA             00:70
+24945:                                               NA             00:50
 \end{verbatim}
 
-\begin{verbatim}
-## [1] -0.039027982  0.050989133  0.002885292  0.002819781
-\end{verbatim}
+\begin{longtable}[c]{@{}lcllcll@{}}
+\caption{Requests Summary}\tabularnewline
+\toprule
+& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
+ip.proto & ip.version\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
+ip.proto & ip.version\tabularnewline
+\midrule
+\endhead
+& Min. : 3 & Min. : 0.1851 & Min. :0.001642 & Min. :65 & 6:24945 &
+4:24945\tabularnewline
+& 1st Qu.:12840 & 1st Qu.:198.0572 & 1st Qu.:0.011584 & 1st Qu.:65 & NA
+& NA\tabularnewline
+& Median :25679 & Median :388.5154 & Median :0.011861 & Median :65 & NA
+& NA\tabularnewline
+& Mean :25679 & Mean :388.8184 & Mean :0.011772 & Mean :65 & NA &
+NA\tabularnewline
+& 3rd Qu.:38518 & 3rd Qu.:584.1774 & 3rd Qu.:0.012571 & 3rd Qu.:65 & NA
+& NA\tabularnewline
+& Max. :51357 & Max. :778.1175 & Max. :0.775146 & Max. :65 & NA &
+NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}lcccc@{}}
+\toprule
+& ip.src & eth.src & ip.dst & eth.dst\tabularnewline
+\midrule
+\endhead
+& 192.168.12.117: 0 & 00:0f:69:0d:55:cd:24945 & 192.168.12.117:24945 &
+00:0f:69:0d:55:cd: 0\tabularnewline
+& 192.168.12.252:24945 & 08:00:27:f9:b1:f1: 0 & 192.168.12.252: 0 &
+08:00:27:f9:b1:f1:24945\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llllllc@{}}
+\toprule
+& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport & mbtcp.prot\_id &
+mbtcp.trans\_id & mbtcp.len\tabularnewline
+\midrule
+\endhead
+& : 0 & 1043: 0 & 1043:24945 & : 0 & Min. : 0.0 & Min. :5\tabularnewline
+& 1:24945 & 502 :24945 & 502 : 0 & 0:24945 & 1st Qu.: 64.0 & 1st
+Qu.:5\tabularnewline
+& NA & NA & NA & NA & Median :128.0 & Median :5\tabularnewline
+& NA & NA & NA & NA & Mean :127.6 & Mean :5\tabularnewline
+& NA & NA & NA & NA & 3rd Qu.:191.0 & 3rd Qu.:5\tabularnewline
+& NA & NA & NA & NA & Max. :255.0 & Max. :5\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llll@{}}
+\toprule
+& mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num &
+mbtcp.modbus.word\_cnt\tabularnewline
+\midrule
+\endhead
+& : 0 & :24945 & Min. : NA\tabularnewline
+& 4:24945 & 0: 0 & 1st Qu.: NA\tabularnewline
+& NA & 1: 0 & Median : NA\tabularnewline
+& NA & 2: 0 & Mean :NaN\tabularnewline
+& NA & 3: 0 & 3rd Qu.: NA\tabularnewline
+& NA & NA & Max. : NA\tabularnewline
+& NA & NA & NA's :24945\tabularnewline
+\bottomrule
+\end{longtable}
 
 \end{document}
