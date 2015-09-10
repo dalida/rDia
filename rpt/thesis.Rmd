@@ -77,7 +77,8 @@ grid.raster(img)
 
 {\Huge Diateam: SCAD@COPS}\\
 \bigskip
-{\Huge A Hybrid Network Intrusion Detection System}\\
+{\Huge A Hybrid}\\
+{\Huge Network Intrusion Detection System}\\
 \vspace{25mm}
 {\Large by}\\
 \vspace{10mm}
@@ -134,7 +135,8 @@ Professor Sandrine Vaton\\
 
 {\Huge Diateam: SCAD@COPS}\\
 \bigskip
-{\Huge Un système de détection d’intrusion de réseau hybride}\\
+{\Huge Un système de détection}\\
+{\Huge d’intrusion de réseau hybride}\\
 
 \vspace{30mm}
 {\huge Lisa MALIPHOL}\\
@@ -167,7 +169,7 @@ Professor Sandrine Vaton\\
 
 
 
-\textbf{Keywords: }Network Intrusion Detection, Anomaly Intrusion Detection, SCADA Systems, MODBUS/TCP
+\textbf{Keywords: }Network Intrusion Detection, Anomaly Intrusion Detection, SCADA Systems, Modbus/TCP
 
 
 \newpage
@@ -182,7 +184,7 @@ Professor Sandrine Vaton\\
 
 
 
-\textbf{Mots-clés: }détéction d’intrusion réseau, détéction d’intrusion basée des anomalies, systèmes industriels, MODBUS/TCP
+\textbf{Mots-clés: }détéction d’intrusion réseau, détéction d’intrusion basée des anomalies, systèmes industriels, Modbus/TCP
 
 \newpage
 \mbox{}
@@ -204,18 +206,22 @@ Professor Sandrine Vaton\\
 
 # Acronyms {-}
 
-* A-NIDS - Anomaly-based Network Intrusion Detection System
-* HMI - Human-Machine Interface
-* HNS - Hybrid Network Simulation
-* ICS - Industrial Control System
-* IDS - Intrusion Detection System
-* IPS - Intrusion Prevention System
-* MTU - Master Terminal Unit
-* NIDS - Network Intrusion Detection System
-* PLC - Programmable Logic Controller
-* POC - Proof of Concept
-* RTU - Remote Terminal Unit
-* SCADA - Supervisory Control and Data Acquisition
+  --------  --------------------------------------------------
+    A-NIDS  Anomaly-based Network Intrusion Detection System
+     DARPA  Defense Advanced Research Project Agency
+       EDA  Exploratory Data Analysis
+       HMI  Human-Machine Interface
+       HNS  Hybrid Network Simulation
+       ICS  Industrial Control System
+       IDS  Intrusion Detection System
+       IPS  Intrusion Prevention System
+       MTU  Master Terminal Unit
+      NIDS  Network Intrusion Detection System
+       PLC  Programmable Logic Controller
+       POC  Proof of Concept
+       RTU  Remote Terminal Unit
+     SCADA  Supervisory Control and Data Acquisition
+  --------  --------------------------------------------------
 
 \newpage
 \mbox{}
@@ -228,29 +234,28 @@ Professor Sandrine Vaton\\
 
 # Introduction
 
-Supervisory control and data acquisition systems (SCADA) are one type of industrial control system (ICS) put in place for monitoring and controlling industrial processes, such as those in the energy or manufacturing sectors. Originally, these systems were isolated and used proprietary protocols, whose security relied predominantly on obscurity. As SCADA systems have moved towards open standards and have become more interconnected to traditional information technology systems, these critical systems have also become increasingly exposed and targeted to cyber attacks.[[@Zhu2010; @Zhu2011]]
+Supervisory control and data acquisition systems (SCADA) are one type of industrial control systems put in place for monitoring and controlling industrial processes, such as those in the energy or manufacturing sectors. Originally, these systems were isolated and used proprietary protocols, whose security relied predominantly on obscurity. As SCADA systems have moved towards open standards and have become more interconnected to traditional information technology systems, these critical systems have also become increasingly exposed and targeted to cyber attacks.[[@Zhu2010; @Zhu2011]]
 
-To secure SCADA systems, intrusion detection systems (IDS) are put into place with the purpose of observing, analyzing and detecting any malicious activity, which are then alerted to, and reviewed by, security analysts. Most IDSs found in the market-place are commonly network, signature-based IDSs. Anomaly-based detection systems are relatively immature, however, they provide a greater possibility of detecting unknown attacks. Signature-based systems can only detect known and identified signatures of attacks. 
+In order to address the growing concern of the vulnerability of SCADA systems, Intrusion Detection Systems (IDS) are progressively being put strategically into place in order to monitor and analyze, and ultimately alert to devious behaviors. These devices can be either signature-, or anomaly-based, however there are trade-offs in terms of accuracy and robustness between the two types of systems.
 
-The trade-off between the two types of systems, signature-based and anomaly-based, are predominantly in the the accuracy with which they can detect a real attack, or anomaly. Although signature-based systems that have been properly configured rarely raise false alarms, unlike anomaly-based systems, they are less capable of detecting novel attacks. Additionally, these intrusion detection systems themselves are also exposed to the same security issues as the systems they are trying to secure. 
+A hybrid IDS has been proposed by diateam under the project name SCAD\@COPS. The aim of the work presented in this paper was to realize the anomaly-based component of this proof of concept (POC). Based on the contributions of [[@Chifflier2014]] and [[@Diallo2014]], the POC integrates the architectural and signature-based aspects as described in their work, and where the following constraints were taken into consideration in its design -- network-based and passive only; the IDS should not interfere with, nor modify the SCADA system; and only TCP/IP data are analyzed.
 
-Diateam has proposed an architecture and implemented a proof of concept (POC) of a hybrid IDS under the project SCAD\@COPS. Based on the contributions of [[@Chifflier2014]] and [[@Diallo2014]], the POC integrates the architectural and signature-based aspects as described in their work, and where the following constraints were taken into consideration in the design of SCAD\@COPS-- network-based and passive only; the IDS should not interfere with, nor modify the SCADA system; and only TCP/IP and Ethernet data are analyzed.
+This work began with an in-depth research of SCADA systems, related subject matter, IDSs and the state of the art of its application to SCADA systems, in addition to the methods of anomaly detection. Then an exploratory analysis of the data was done, which preceded the implementation of the initial POC based on statistical metrics.
 
-This work is divided into the following major sections: 
+As such, this paper is organized and divided into the following major sections:
 
-*  Section 1 gives an introction to this work, and outlines its organization
-*  Section 2 provides an overview of SCADA systems
-*  Section 3 provides some basic networking principles
-*  Section 4 briefly considers a few common cyber attacks
-*  Section 5 discusses intrusion detection systems
-*  Section 6 summarizes different approaches for detecting network intrusions
-*  Section 7 lists the tools utilized in this work
-*  Section 8 describes the data source analyzed
-*  Section 9 gives an overview of the exploratory data analysis
-*  Section 10 describes the architecture and implementation of the proof of concept
-*  Section 11 outlines the statistical measures and features applied
-*  Section 12 describes the testing and evaluation process
-*  Section 13 summarizes and concludes
+*  Chapter 1 gives an introduction to this work, and outlines its organization
+*  Chapter 2 provides an overview of SCADA systems
+*  Chapter 3 provides some basic networking principles
+*  Chapter 4 briefly considers a few common cyber attacks
+*  Chapter 5 discusses intrusion detection systems
+*  Chapter 6 summarizes different approaches for detecting network intrusions
+*  Chapter 7 describes the data source analyzed
+*  Chapter 8 gives an overview of the exploratory data analysis
+*  Chapter 9 describes the architecture and implementation of the proof of concept 
+*  Chapter 10 outlines the statistical measures and features applied
+*  Chapter 11 describes the testing and evaluation process
+*  Chapter 12 summarizes and concludes
 
 
 \newpage
@@ -287,14 +292,14 @@ grid.raster(img)
 
 ## Traffic characterization  
 
-As seen in the comparative analysis done in [[@Barbosa2012]], it is shown how the traffic greatly differs between SCADA and traditional networks. Most traffic is generated by automated processes in SCADA networks as opposed to human-generated traffic predominant in traditional networks. The traffic pattern generated in SCADA networks have been found to be fairly static and repetitive, with its network topology unchanging, or rarely modified. Likewise, it is usual for there to be a limited nuber of applications and protocols that run on industrial systems. [[@Cheung2006]] Considerably seen over MODBUS traffic, the messages exchanged between PLCs are recurrent giving it a fixed pattern and relatively stationary process.[[@Goldenberg2013; @Barbosa2012a; @Barbosa2012b]]
+As seen in the comparative analysis done in [[@Barbosa2012]], it is shown how the traffic greatly differs between SCADA and traditional networks. Most traffic is generated by automated processes in SCADA networks as opposed to human-generated traffic predominant in traditional networks. The traffic pattern generated in SCADA networks have been found to be fairly static and repetitive, with its network topology unchanging, or rarely modified. Likewise, it is usual for there to be a limited nuber of applications and protocols that run on industrial systems. [[@Cheung2006]] Considerably seen over Modbus traffic, the messages exchanged between PLCs are recurrent giving it a fixed pattern and relatively stationary process.[[@Goldenberg2013; @Barbosa2012a; @Barbosa2012b]]
 
 
 \newpage
 
 # Networking Overview
 
-In this section, a few fundamental networking terms are discussed. First, an outline of  the OSI model is described, followed by the TCP/IP and MODBUS/TCP protocols.
+In this section, a few fundamental networking terms are discussed. First, an outline of  the OSI model is described, followed by the TCP/IP and Modbus protocols.
 
 
 ## OSI
@@ -312,7 +317,7 @@ grid.raster(img)
 
 ## Protocols
 
-As SCADA systems have become increasingly interconnected to enterprise networks, they operate over, and utilize the same protocols as previously discussed. Additionally, most SCADA appliances implement and use the MODBUS/TCP protocol, which run over the TCP protocol.
+As SCADA systems have become increasingly interconnected to enterprise networks, they have started to leverage and operate over more modern protocols. Numerous vendors manufacture PLCs, such as Schneider, Sew and Siemens. Depending on the device, or manufacturer, PLCs may use a proprietary protocol, such as the Siemens SIMATIC S7-300. In most cases, however, the Modbus protocol has been widely adopted and is predominantly supported by many SCADA network appliances. As such, this work focused primarily on examining the Modbus/TCP protocol.
 
 ### Transmission Control Protocol/Internet Protocol (TCP/IP)
 
@@ -340,41 +345,41 @@ grid.raster(img)
 TCP/IP provides reliable, ordered and error-checked delivery of streams of octets between applications running on hosts communicating over an IP network. A detailed illustration of the TCP and IP headers can be seen in Figures 3 ([Image credit: Max Baxter](http://nmap.org/book/images/hdr/MJB-TCP-Header)) and Figure 4 ([Image credit: Max Baxter](http://nmap.org/book/images/hdr/MJB-IP-Header)).
 
 
-### MODBUS/TCP
+### Modbus
 
-The MODBUS/TCP protocol is an open standard and popular network protocol used for ICS devices. It is a messaging protocol located at the application layer that was designed to communicate with PLCs in industrial systems. However, due to the limited resources the PLCs have,  it was created to be a simple protocol that provides no security against unauthorized commands or interception of data.[[@Modbus2012]] Figure 5 gives an example architecture for MODBUS TCP communication.
+The Modbus protocol is an open standard and popular network protocol used for ICS devices. It is a messaging protocol located at the application layer that was designed to communicate with PLCs in industrial systems. However, due to the limited resources the PLCs have,  it was created to be a simple protocol that provides no security against unauthorized commands or interception of data.[[@Modbus2012]] Figure 5 gives an example architecture for Modbus TCP communication.
 
-```{r, echo=FALSE, fig.pos='middle', fig.width=5.5, fig.width=4.5, fig.align='center', fig.cap="MODBUS TCP/IP Communication Architecture"}
+```{r, echo=FALSE, fig.pos='middle', fig.width=5.5, fig.width=4.5, fig.align='center', fig.cap="Modbus TCP/IP Communication Architecture"}
 #setwd("~/rDia")
 #img <- readPNG("imgs/modbustcpCommArch.png")
 img <- readPNG(paste(homeDir, "imgs/modbustcpCommArch.png", sep=''))
 grid.raster(img)
 ```
 
-The master initiates a request and the slave sends a response containing either data or error. The common implementations of MODBUS are over Ethernet networks (MODBUS/TCP) or Serial busses (MODBUS/RTU). Both forms of MODBUS contain the packet data unit (PDU),  the component consisting of a function code and data.
+The master initiates a request and the slave sends a response containing either data or error. The common implementations of Modbus are over Ethernet networks (Modbus/TCP) or Serial busses (Modbus/RTU). Both forms of Modbus contain the packet data unit (PDU),  the component consisting of a function code and data.
 
-Attached to the PDU is the application specific addressing and error checking, which together comprise the application data unit (ADU). Specific to MODBUS/TCP, the ADU is encapsulated in the TCP packet. Thereby eliminating the need to include error checking in the MODBUS/TCP layer, it is left out from the MODBUS/TCP ADU. The MODBUS/TCP frame is depicted in Figure 6.
+Attached to the PDU is the application specific addressing and error checking, which together comprise the application data unit (ADU). Specific to Modbus/TCP, the ADU is encapsulated in the TCP packet. Thereby eliminating the need to include error checking in the Modbus/TCP layer, it is left out from the Modbus/TCP ADU. The Modbus/TCP frame is depicted in Figure 6.
 
 
 \clearpage
 
-```{r, echo=FALSE, fig.pos='top', fig.width=4, fig.height=2.75, fig.align='center', fig.cap="MODBUS/TCP Frame"}
+```{r, echo=FALSE, fig.pos='top', fig.width=4, fig.height=2.75, fig.align='center', fig.cap="Modbus/TCP Frame"}
 #setwd("~/rDia")
 #img <- readPNG("imgs/modbusADU.png")
 img <- readPNG(paste(homeDir, "imgs/modbusADU.png", sep=''))
 grid.raster(img)
 ```
 
-Included in the MODBUS Application Protocol (MBAP) are:
+Included in the Modbus Application Protocol (MBAP) are:
 
 -  Transaction ID - 2 bytes - identifies request/response pairs
 -  Protocol ID - 2 bytes - is always 00 00 for Modbus protocol
 -  Length - 2 bytes - identifies the number of bytes in the following message
 -  Unit ID - 1 byte - used to distinguish which slave is addressed when several slaves use the same IP address
 
-The MODBUS/TCP transaction ID is reset to zero with each new TCP session. It is important to note that in identifying MODBUS conversations, port 502 is reserved for MODBUS communication. MODBUS requests are initiated from port 502 and MODBUS responses terminate at port 502.
+The Modbus/TCP transaction ID is reset to zero with each new TCP session. It is important to note that in identifying Modbus conversations, port 502 is reserved for Modbus communication. Modbus requests are initiated from port 502 and Modbus responses terminate at port 502.
 
-As a result of using the simple design of MODBUS and its reliance on the TCP layer, security issues become apparent. With no authentication and authorization mechanisms, data integrity checks, or encryption, the SCADA network components provide no identity or permission verification, message content legitimacy, or confidentiality.
+As a result of using the simple design of Modbus and its reliance on the TCP layer, security issues become apparent. With no authentication and authorization mechanisms, data integrity checks, or encryption, the SCADA network components provide no identity or permission verification, message content legitimacy, or confidentiality.
 
 
 \clearpage
@@ -382,7 +387,7 @@ As a result of using the simple design of MODBUS and its reliance on the TCP lay
 
 # Common Attacks on SCADA
 
-[[@Hadziosmanovic2010; @Krotofil2013; @Lemay2013; @Rodrigues2011; @Stouffer2006]] define threats and vulnerabilities, security issues, as well as policies and best practices, and recommendations on how to best secure SCADA systems. However, cyber attacks continue to increase as SCADA systems become more exposed and as the attacks grow in sophistication. And specifically in regards to attacks on MODBUS TCP, little has been published, except for the work done by Digital Bond[^1].
+[[@Hadziosmanovic2010; @Krotofil2013; @Lemay2013; @Rodrigues2011; @Stouffer2006]] define threats and vulnerabilities, security issues, as well as policies and best practices, and recommendations on how to best secure SCADA systems. However, cyber attacks continue to increase as SCADA systems become more exposed and as the attacks grow in sophistication. And specifically in regards to attacks on Modbus TCP, little has been published, except for the work done by Digital Bond[^1].
 
 [^1]: http://www.digitalbond.com
 
@@ -394,19 +399,19 @@ The following provides an overview of common attacks that have been exploited ag
 
 In regards to command injection attacks, the attacker may intercept and alter, or insert conceivably malicious commands that are then unknowingly executed in the system. Some known types of command injection attacks are SQL Injection and Cross-Site Scripting (XSS). False commands meant to alter the control and configuration in ICSs commonly seen are injected to modify and interrupt communication and processes.
 
-More frequently seen in SCADA systems, MODBUS communication is intercepted, or more precisely, an attacker injects MODBUS functions intended to modify the industrial process. Since the MODBUS/TCP protocol was not designed with security taken into account and has no encryption or sophisticated security precautions, it is vulnerable to the manipulation of the function code or data field sent in the requests.
+More frequently seen in SCADA systems, Modbus communication is intercepted, or more precisely, an attacker injects Modbus functions intended to modify the industrial process. Since the Modbus/TCP protocol was not designed with security taken into account and has no encryption or sophisticated security precautions, it is vulnerable to the manipulation of the function code or data field sent in the requests.
 
 ## Response Injection
 
-The  nature of response injection attacks is that they perform unauthorized write requests. Commonly seen in ICSs, polling is continuously done in order to audit the state of remote processes. Over the MODBUS/TCP, there is frequent request and response communication between the MTU and RTUs. Perpetrators may craft response packets that are subsequently inserted into the communication loop and if timed accordingly, is received as the first response to a query thereby rejecting further responses as invalid.
+The  nature of response injection attacks is that they perform unauthorized write requests. Commonly seen in ICSs, polling is continuously done in order to audit the state of remote processes. Over the Modbus/TCP, there is frequent request and response communication between the MTU and RTUs. Perpetrators may craft response packets that are subsequently inserted into the communication loop and if timed accordingly, is received as the first response to a query thereby rejecting further responses as invalid.
 
 ## Denial of Service  
 
-In an attempt to render services unavailable and stop the proper functioning of a system, denial-of-service attacks either try to bring down and crash the service, or flood all resources preventing legitimate users from accessing the service. Attacks of this type on SCADA systems try to either reboot MODBUS servers or manipulate the controls to take them out of service. In other cases, an endpoint is overwhelmed to the point where it cannot take on further requests.
+In an attempt to render services unavailable and stop the proper functioning of a system, denial-of-service attacks either try to bring down and crash the service, or flood all resources preventing legitimate users from accessing the service. Attacks of this type on SCADA systems try to either reboot Modbus servers or manipulate the controls to take them out of service. In other cases, an endpoint is overwhelmed to the point where it cannot take on further requests.
 
 ## Reconnaissance
 
-In a reconnaissance attack there is unauthorized reading of data, where this type of attack generally surveys a network and identifies connected devices in order to ascertain the network architecture and topology. Once the attacker gains access to the network, they may carry out different levels of scanning over the network, such as address, port and points scanning. In the case of SCADA systems, with the MODBUS/TCP being the prevailing protocol implemented in ICS devices, function scanning is also attempted.
+In a reconnaissance attack there is unauthorized reading of data, where this type of attack generally surveys a network and identifies connected devices in order to ascertain the network architecture and topology. Once the attacker gains access to the network, they may carry out different levels of scanning over the network, such as address, port and points scanning. In the case of SCADA systems, with the Modbus/TCP being the prevailing protocol implemented in ICS devices, function scanning is also attempted.
 
 ## Zero-day Attacks
 
@@ -782,9 +787,9 @@ rm(bc1, bc2)
 
 \clearpage
 
-### MODBUS/TCP Request/Response Packet Statistics (Appendix C)  
+### Modbus/TCP Request/Response Packet Statistics (Appendix C)  
 
-MODBUS/TCP **requests** are identified by packets having destination port number 502
+Modbus/TCP **requests** are identified by packets having destination port number 502
 
 (Figure 13)
 
@@ -810,7 +815,7 @@ grid.arrange(p1, p2, p3, p4, ncol=2, nrow=2)
 invisible(dev.off())
 ```
 
-MODBUS/TCP **responses** are identified by packets having source port number 502 
+Modbus/TCP **responses** are identified by packets having source port number 502 
 
 (Figure 14)
 
@@ -857,10 +862,10 @@ invisible(dev.off())
 ```
 
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=3.5, fig.width=3.5, fig.align='center', fig.cap="Boxplot of MODBUS/TCP Data Length"}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height=3.5, fig.width=3.5, fig.align='center', fig.cap="Boxplot of Modbus/TCP Data Length"}
 ggplot(sewModbusDT,  aes(x=factor(0), y=mbtcp.len)) + geom_violin() +
   xlab("") + scale_x_discrete(breaks = NULL) + coord_flip() +
-#  ggtitle("Boxplot of MODBUS/TCP Data Length") +
+#  ggtitle("Boxplot of Modbus/TCP Data Length") +
   theme(#plot.title = element_text(face="bold"),
         plot.margin = unit(c(0, 0, 2, 0), "cm"))
 
@@ -869,10 +874,10 @@ invisible(dev.off())
 
 \clearpage
 
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center', fig.cap="Graph of MODBUS Data Values over Time by MODBUS  Reference Number"}
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center', fig.cap="Graph of Modbus Data Values over Time by Modbus  Reference Number"}
 ggplot(mergedSewDT, aes(x=frame.time_relative, y=d, color=mbtcp.modbus.reference_num)) +
   geom_point() + facet_grid(mbtcp.modbus.reference_num~resp.func.code) +
-#  ggtitle("MODBUS Data Values \nOver Time by Reference Number") + 
+#  ggtitle("Modbus Data Values \nOver Time by Reference Number") + 
   scale_fill_brewer(palette="Spectral") +
   theme(#plot.title = element_text(face="bold"),
         plot.margin = unit(c(0, 0, 2, 0), "cm"),
@@ -880,18 +885,18 @@ ggplot(mergedSewDT, aes(x=frame.time_relative, y=d, color=mbtcp.modbus.reference
 invisible(dev.off())
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Graph of MODBUS Data Values over Time by Function Code"}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Graph of Modbus Data Values over Time by Function Code"}
 ggplot(mergedSewDT, aes(resp.time.rel, d, color=mbtcp.modbus.reference_num)) +
   geom_point() + facet_grid(~resp.func.code) +
   scale_fill_brewer(palette="Set1") +
-#  ggtitle("MODBUS Data Value Over Time by Function Code") +
+#  ggtitle("Modbus Data Value Over Time by Function Code") +
   theme(#plot.title = element_text(face="bold"),
         plot.margin = unit(c(0, 0, 2, 0), "cm"),
         legend.position = "top", legend.title = element_text(size=10))
 invisible(dev.off())
 ```
 
-### MODBUS/TCP Data[^9] Analysis 
+### Modbus/TCP Data[^9] Analysis 
 [^9]: https://www.wireshark.org/docs/dfref/m/mbtcp.html
 
 The following analysis was done over the previous dataset that has been processed
@@ -900,7 +905,7 @@ field "d" is the data field "resp.data" converted from a hex to a decimal value.
 (Appendix D)
 
 
-### MODBUS Data Value Statistics
+### Modbus Data Value Statistics
 ```{r, comment='', echo=FALSE, warning=FALSE, message=FALSE}
 mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
             d.sd=sd(d, na.rm=T), min.resp.time.rel=min(resp.time.rel),
@@ -909,7 +914,7 @@ mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
            order(resp.func.code, mbtcp.modbus.reference_num)]
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap="Bar Chart of MODBUS Reference Numbers by Function Code"}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap="Bar Chart of Modbus Reference Numbers by Function Code"}
 # Frequency of Reference Numbers by Function Code
 ggplot(sewModbusDT, aes(x=mbtcp.modbus.reference_num, fill=mbtcp.modbus.reference_num)) +
   geom_bar(stat="bin") +
@@ -921,14 +926,14 @@ invisible(dev.off())
 ```
 
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3.5, fig.align='center', fig.cap="Boxplot of MODBUS Data Values by Function and Reference Number"}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3.5, fig.align='center', fig.cap="Boxplot of Modbus Data Values by Function and Reference Number"}
 ggplot(mergedSewDT, aes(x = factor(0), y = d)) +
   geom_boxplot(fill="lightpink4") +
   facet_grid(mbtcp.modbus.func_code~mbtcp.modbus.reference_num) +
   xlab("") + scale_x_discrete(breaks = NULL) +
   theme( plot.title = element_text(size=10))
 #  theme(plot.margin = unit(c(0, 1, 5, 1), "cm")  +
-#  ggtitle("Boxplot of MODBUS Data Values\n by Function/Reference Number")
+#  ggtitle("Boxplot of Modbus Data Values\n by Function/Reference Number")
 
 invisible(dev.off())
 ```
@@ -940,7 +945,7 @@ pairs(mergedSewDT[,.(mbtcp.len, mbtcp.modbus.func_code=as.numeric(mbtcp.modbus.f
 ```
 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="3D Scatterplot of MODBUS Reference Number\n and Data Over Time for Function Code 4"}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="3D Scatterplot of Modbus Reference Number\n and Data Over Time for Function Code 4"}
 cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = mergedSewDT[resp.func.code=="4"],
       col.point = mergedSewDT$mbtcp.modbus.reference_num, pch= 19,
       xlab = "d", ylab = "refNum", zlab = "resp.time.rel",
@@ -1028,7 +1033,7 @@ grid.raster(img)
 As illustrated in Section 10.1,  Figure 24, the data is acquired by one of the components of the NIDS, which has been configured to only monitor network traffic:
 
 *  Wireshark - An initial packet capture file was created over the simulated network traffic using Wireshark. Using its export facilities, various files were created for further analysis, with information such as TCP endpoints, conversations, etc.
-*  Tshark - The pertinent variables pertaining to the MODBUS/TCP application protocol enclosed in the packet data were parsed by TShark.
+*  Tshark - The pertinent variables pertaining to the Modbus/TCP application protocol enclosed in the packet data were parsed by TShark.
 
 #### Statistical Analysis and Processing
 
@@ -1093,7 +1098,7 @@ Security agents supervise SCADA systems that have numerous controls and systems 
 
 As discussed in Chapter 10.2.1, the process flow depicts the phases of the processes involved, from data acquisition, to data processing and statistical analysis, and finally to placing the device in “operational” mode where network traffic may be exposed to attacks. During the testing phase, another simulation was done with attacks injected via Metasploit. The packet capture file was also processed in a similar manner as the initial pcap file, and then a comparison was to find differences and anomalies between the two data sets.
 
-The test simulation exposed the routine activity running on the Virtual Scada Box to a MODBUS stop attack. The commands executed from Metasploit were a series of payloads were sent from the virtual attacker in order to establish the initial state of the water tank. This was then followed by the stop command with its relevant data values. (Appendix F)
+The test simulation exposed the routine activity running on the Virtual Scada Box to a Modbus stop attack. The commands executed from Metasploit were a series of payloads were sent from the virtual attacker in order to establish the initial state of the water tank. This was then followed by the stop command with its relevant data values. (Appendix F)
 
 The following tables lists anomalies and differences detected in the attack simulation:
 
@@ -1234,7 +1239,7 @@ setkey(attackSmac, IP_SRC_MAC_ADDR)
 kable(attackSmac[!smac], caption='Anomalous Source / MAC Address Pairs')
 
 setkey(attackSfunc, IP_SRC_MOD_FUNC)
-kable(attackSfunc[!sfunc], caption='Anomalous Source / MODBUS Function Code Pairs')
+kable(attackSfunc[!sfunc], caption='Anomalous Source / Modbus Function Code Pairs')
 
 mergedSrcFuncFreq <- merge(srcFuncFreq,attackSrcFuncFreq, 
                            by=c("ip.src","ip.dst","mbtcp.modbus.func_code"),
@@ -1483,7 +1488,7 @@ Configuration files generated from statistical processing.
 
 # Appendix C {-}
 
-## MODBUS/TCP Request/Response Packet Statistics {-}
+## Modbus/TCP Request/Response Packet Statistics {-}
 
 ```{r, comment='', warning=FALSE, echo=FALSE, message=FALSE}
 #summary(requests)
@@ -1555,7 +1560,7 @@ rm(mergedSewDT)
 
 #### C/C++ script {-}
 
-*  processMerge.cpp - C/C++ component for handling merge of MODBUS packets in data 
+*  processMerge.cpp - C/C++ component for handling merge of Modbus packets in data 
 processing.
 
 #### R {-}
