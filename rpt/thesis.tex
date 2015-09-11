@@ -44,7 +44,7 @@
 \hypersetup{breaklinks=true,
             bookmarks=true,
             pdfauthor={Lisa MALIPHOL},
-            pdftitle={Diateam SCAD@COPS A Hybrid Network Intrusion Detection System},
+            pdftitle={diateam SCAD@COPS A Hybrid Network Intrusion Detection System},
             colorlinks=true,
             citecolor=blue,
             urlcolor=blue,
@@ -71,7 +71,7 @@
 }
 
 \setlength{\droptitle}{-2em}
-  \title{Diateam\\SCAD@COPS\\A Hybrid Network Intrusion Detection System}
+  \title{diateam\\SCAD@COPS\\A Hybrid Network Intrusion Detection System}
   \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
   \author{Lisa MALIPHOL}
@@ -101,7 +101,7 @@
 
 \vspace{30mm}
 
-{\Huge Diateam: SCAD@COPS}\\
+{\Huge diateam: SCAD@COPS}\\
 \bigskip
 {\Huge A Hybrid}\\
 {\Huge Network Intrusion Detection System}\\
@@ -157,7 +157,7 @@ Professor Sandrine Vaton\\
 
 \vspace{30mm}
 
-{\Huge Diateam: SCAD@COPS}\\
+{\Huge diateam: SCAD@COPS}\\
 \bigskip
 {\Huge Un système de détection}\\
 {\Huge d’intrusion de réseau hybride}\\
@@ -222,7 +222,7 @@ basée des anomalies, systèmes industriels, Modbus/TCP
 \section*{Acronyms}\label{acronyms}
 \addcontentsline{toc}{section}{Acronyms}
 
-\begin{longtable}[c]{@{}ll@{}}
+\begin{longtable}[c]{@{}rl@{}}
 \toprule
 A-NIDS & Anomaly-based Network Intrusion Detection System\tabularnewline
 DARPA & Defense Advanced Research Project Agency\tabularnewline
@@ -234,10 +234,12 @@ IDS & Intrusion Detection System\tabularnewline
 IPS & Intrusion Prevention System\tabularnewline
 MTU & Master Terminal Unit\tabularnewline
 NIDS & Network Intrusion Detection System\tabularnewline
+OSI & Open Standards Interconnection\tabularnewline
 PLC & Programmable Logic Controller\tabularnewline
 POC & Proof of Concept\tabularnewline
 RTU & Remote Terminal Unit\tabularnewline
 SCADA & Supervisory Control and Data Acquisition\tabularnewline
+TCP/IP & Transmission Control Protocol/Internet Protocol\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -269,14 +271,13 @@ anomaly-based, however there are trade-offs in terms of accuracy and
 robustness between the two types of systems.
 
 A hybrid IDS has been proposed by diateam under the project name
-\href{mailto:SCAD@COPS}{\nolinkurl{SCAD@COPS}}. The aim of the work
-presented in this paper was to realize the anomaly-based component of
-this proof of concept (POC). Based on the contributions of {[}3{]} and
-{[}4{]}, the POC integrates the architectural and signature-based
-aspects as described in their work, and where the following constraints
-were taken into consideration in its design -- network-based and passive
-only; the IDS should not interfere with, nor modify the SCADA system;
-and only TCP/IP data are analyzed.
+SCAD@COPS. The aim of the work presented in this paper was to realize
+the anomaly-based component of this Proof of Concept (POC). Based on the
+contributions of {[}3{]} and {[}4{]}, the POC integrates the
+architectural and signature-based aspects as described in their work,
+and where the following constraints were taken into consideration in its
+design -- network-based and passive only; the IDS should not interfere
+with, nor modify the SCADA system; and only TCP/IP data are analyzed.
 
 This work began with an in-depth research of SCADA systems, related
 subject matter, IDSs and the state of the art of its application to
@@ -324,9 +325,9 @@ sections:
 
 \subsection{ICS}\label{ics}
 
-An Industrial control system (ICS) comprises such systems as supervisory
-controls and data acquisition (SCADA), distributed control systems
-(DCS), and smaller systems such as programmable logic controllers (PLC)
+An Industrial Control System (ICS) comprises such systems as Supervisory
+Controls and Data Acquisition (SCADA), distributed control systems
+(DCS), and smaller systems such as Programmable Logic Controllers (PLC)
 that are control systems predominantly used in industrial production.
 
 ICSs were initially developed to meet the requirements of performance,
@@ -345,38 +346,36 @@ and health, and financial and production losses.
 
 \subsection{SCADA}\label{scada}
 
-A Supervisory Control and Data Acquisition (SCADA) system is an
-industrial control system (ICS) used for monitoring equipment and
-controlling processes in industries such as electrical, water, and oil,
-as . The administration over a geographically widely distributed process
-can be directed from a central location at the master terminal unit
-(MTU) in SCADA systems. Changes to process controllers, the opening and
-closing of valves and switches, the monitoring and the measurement of
-information is administered from the MTU to remote terminal units (RTU).
-Due to their economy, versatility, flexibility, and configurability,
-programmable logic controllers, which are small industrial field devices
-that are widely used as RTUs.{[}5{]} The various components of a SCADA
-system is shown (Figure 1){[}1{]}.
+A Supervisory Control and Data Acquisition system is an ICS used for
+monitoring equipment and controlling processes in industries such as
+electrical, water, oil and manufacturing. The administration over a
+geographically widely distributed process can be directed from a central
+location at the Master Terminal Unit (MTU) in SCADA systems. Changes to
+process controllers, the opening and closing of valves and switches, the
+monitoring and the measurement of information is administered from the
+MTU to Remote Terminal Units (RTU). Due to their economy, versatility,
+flexibility, and configurability, programmable logic controllers, which
+are small industrial field devices are widely used as RTUs.{[}5{]} The
+various components of a SCADA system is shown (Figure 1){[}1{]}.
 
-A SCADA system is normally comprised of Programmable Logic Controllers
-(PLCs), small industrial computers made to perform logic functions
-executed by electrical hardware, which control sensors and actuators.
-Human operators modify control settings, override automatic processes
-manually, and monitor the state of the processes under control via an
-Human Interface Control (HMI). It is from these HMIs that the PLCs are
-managed.
+Additionally, SCADA system typically include PLCs, small industrial
+computers made to perform logic functions executed by electrical
+hardware, which control sensors and actuators. Human operators modify
+control settings, override automatic processes manually, and monitor the
+state of the processes under control via an Human Interface Control
+(HMI). It is from these HMIs that the PLCs are managed.
 
 These systems have differing constraints and properties from those of
 traditional IT systems, the most prominent being that they are real-time
 operational systems that must always be available and run continuously
 without outage. Once the field devices have been put into place, they
-are normally left untouched, i.e., not rebooted and left running for
+are normally left untouched, i.e., not rebooted, and left running for
 years. This creates the problem of the systems being more susceptible to
 buffer overflow due to the accumulation of fragmentation.{[}2{]}
 
 Historically, SCADA systems resided on their own internal networks and
 were not connected to other networks. They implemented proprietary
-protocols, and were, therefore, less vulnerable to network attacks.
+protocols and were, therefore, less vulnerable to network attacks.
 However, over time as these systems adopted open standards and leveraged
 traditional enterprise systems to lower costs, to increase functionality
 and productivity, SCADA systems are also now increasingly exposed to
@@ -399,13 +398,13 @@ traffic is generated by automated processes in SCADA networks as opposed
 to human-generated traffic predominant in traditional networks. The
 traffic pattern generated in SCADA networks have been found to be fairly
 static and repetitive, with its network topology unchanging, or rarely
-modified. Likewise, it is usual for there to be a limited nuber of
-applications and protocols that run on industrial systems. {[}7{]}
+modified. Likewise, it is usual for there to be a limited number of
+applications and protocols that run on industrial systems.{[}7{]}
 Considerably seen over Modbus traffic, the messages exchanged between
 PLCs are recurrent giving it a fixed pattern and relatively stationary
 process.{[}8--10{]}
 
-\newpage
+\clearpage
 
 \section{Networking Overview}\label{networking-overview}
 
@@ -425,7 +424,19 @@ Each layer serves the layer above it, and the lowest one being closest
 to the physical medium carrying the communication. Figure OSI Model
 depicts each layer and its role and responsibilities.
 
-\begin{figure}
+\subsection{Protocols}\label{protocols}
+
+As SCADA systems have become increasingly interconnected to enterprise
+networks, they have started to leverage and operate over more modern
+protocols. Numerous vendors, such as Schneider, Sew and Siemens,
+manufacture programmable logic controllers. Depending on the device, or
+manufacturer, PLCs may use a proprietary protocol, such as the Siemens
+SIMATIC S7-300. In most cases, however, the Modbus protocol has been
+widely adopted and is predominantly supported by many SCADA network
+appliances. As such, this work focuses primarily on examining the
+Modbus/TCP protocol.
+
+\begin{figure}[bottom]
 
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-5-1} 
 
@@ -434,16 +445,7 @@ depicts each layer and its role and responsibilities.
 \caption{OSI Model}\label{fig:unnamed-chunk-5}
 \end{figure}
 
-\subsection{Protocols}\label{protocols}
-
-As SCADA systems have become increasingly interconnected to enterprise
-networks, they have started to leverage and operate over more modern
-protocols. Numerous vendors manufacture PLCs, such as Schneider, Sew and
-Siemens. Depending on the device, or manufacturer, PLCs may use a
-proprietary protocol, such as the Siemens SIMATIC S7-300. In most cases,
-however, the Modbus protocol has been widely adopted and is
-predominantly supported by many SCADA network appliances. As such, this
-work focused primarily on examining the Modbus/TCP protocol.
+\clearpage
 
 \subsubsection{Transmission Control Protocol/Internet Protocol
 (TCP/IP)}\label{transmission-control-protocolinternet-protocol-tcpip}
@@ -454,28 +456,6 @@ the research and development of data transmission technologies in the
 United States that was utilized as a standard for military computer
 networking.
 
-\clearpage
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-6-1} 
-
-}
-
-\caption{IPv4 Header}\label{fig:unnamed-chunk-6}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-7-1} 
-
-}
-
-\caption{TCP Header}\label{fig:unnamed-chunk-7}
-\end{figure}
-
-\clearpage
-
 TCP/IP provides reliable, ordered and error-checked delivery of streams
 of octets between applications running on hosts communicating over an IP
 network. A detailed illustration of the TCP and IP headers can be seen
@@ -485,17 +465,46 @@ Baxter}) and Figure 4
 (\href{http://nmap.org/book/images/hdr/MJB-IP-Header}{Image credit: Max
 Baxter}).
 
-\subsubsection{Modbus}\label{modbus}
+\begin{figure}[bottom]
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-6-1} 
+
+}
+
+\caption{IPv4 Header}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+\subsubsection{Modbus Protocol}\label{modbus-protocol}
 
 The Modbus protocol is an open standard and popular network protocol
-used for ICS devices. It is a messaging protocol located at the
-application layer that was designed to communicate with PLCs in
-industrial systems. However, due to the limited resources the PLCs have,
-it was created to be a simple protocol that provides no security against
-unauthorized commands or interception of data.{[}11{]} Figure 5 gives an
-example architecture for Modbus TCP communication.
+implemented in ICS devices that were initially developed over serial
+communication, then later adapted for TCP/IP. It is a request/reply
+messaging protocol located at the application layer that was designed to
+communicate with PLCs in industrial systems. However, due to the limited
+resources that PLCs have, it was created to be a simple protocol that
+provides no security against unauthorized commands or interception of
+data.{[}11{]}. Figure 5 gives an example architecture for Modbus TCP
+communication.
 
-\begin{figure}[middle]
+\clearpage
+
+\begin{figure}[top]
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-7-1} 
+
+}
+
+\caption{TCP Header}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+The master initiates a request and the slave sends a response containing
+either data or error. The common implementations of Modbus are over
+Ethernet networks (Modbus/TCP) or Serial buses (Modbus/RTU). Both forms
+of Modbus contain the Packet Data Unit (PDU), the component consisting
+of a function code and data that is independent of the communication
+layer.
+
+\begin{figure}[bottom]
 
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-8-1} 
 
@@ -504,22 +513,16 @@ example architecture for Modbus TCP communication.
 \caption{Modbus TCP/IP Communication Architecture}\label{fig:unnamed-chunk-8}
 \end{figure}
 
-The master initiates a request and the slave sends a response containing
-either data or error. The common implementations of Modbus are over
-Ethernet networks (Modbus/TCP) or Serial busses (Modbus/RTU). Both forms
-of Modbus contain the packet data unit (PDU), the component consisting
-of a function code and data.
-
-Attached to the PDU is the application specific addressing and error
-checking, which together comprise the application data unit (ADU).
-Specific to Modbus/TCP, the ADU is encapsulated in the TCP packet.
-Thereby eliminating the need to include error checking in the Modbus/TCP
-layer, it is left out from the Modbus/TCP ADU. The Modbus/TCP frame is
-depicted in Figure 6.
-
 \clearpage
 
-\begin{figure}[top]
+Attached to the PDU is the application specific addressing and error
+checking, which together comprise the Application Data Unit (ADU).
+Specific to Modbus/TCP, the ADU is encapsulated in the TCP packet.
+Thereby eliminating the need to include error checking in the Modbus/TCP
+layer, it is omitted from the Modbus/TCP ADU. The Modbus/TCP frame is
+depicted in Figure 6.
+
+\begin{figure}[bottom]
 
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-9-1} 
 
@@ -544,14 +547,14 @@ Included in the Modbus Application Protocol (MBAP) are:
   several slaves use the same IP address
 \end{itemize}
 
-The Modbus/TCP transaction ID is reset to zero with each new TCP
-session. It is important to note that in identifying Modbus
-conversations, port 502 is reserved for Modbus communication. Modbus
-requests are initiated from port 502 and Modbus responses terminate at
-port 502.
+It is important to note that in identifying Modbus conversations, the
+listening port over TCP/IP reserved for Modbus communication is 502. Its
+services are specified by indicating the function code in the Modbus
+request and response. Appendix A lists the public function codes
+available.
 
 As a result of using the simple design of Modbus and its reliance on the
-TCP layer, security issues become apparent. With no authentication and
+TCP layer, security issues become inherent. With no authentication and
 authorization mechanisms, data integrity checks, or encryption, the
 SCADA network components provide no identity or permission verification,
 message content legitimacy, or confidentiality.
@@ -562,11 +565,11 @@ message content legitimacy, or confidentiality.
 
 {[}5, 12--15{]} define threats and vulnerabilities, security issues, as
 well as policies and best practices, and recommendations on how to best
-secure SCADA systems. However, cyber attacks continue to increase as
+secure SCADA systems. Nonetheless, cyber attacks continue to increase as
 SCADA systems become more exposed and as the attacks grow in
-sophistication. And specifically in regards to attacks on Modbus TCP,
-little has been published, except for the work done by Digital
-Bond\footnote{\url{http://www.digitalbond.com}}.
+sophistication. Due to the private nature of the data, however, little
+has been published regarding Modbus/TCP attacks apart from the work of
+Digital Bond\footnote{\url{http://www.digitalbond.com}}.
 
 Leveraging existing enterprise network infrastructure, SCADA systems are
 also at risk to the same threats that typical IT systems encounter. In
@@ -577,25 +580,26 @@ and known threats. In {[}2{]}, outlines and describes in detail the
 various methods of cyber attacks on software and hardware and ways of
 compromising SCADA systems.
 
-The following provides an overview of common attacks that have been
-exploited against SCADA systems {[}16{]}.
+The following is a non-exhaustive list of of attacks that provides an
+overview of just some of the common attacks that have been exploited
+against SCADA systems{[}16{]}:
 
 \subsection{Command Injection}\label{command-injection}
 
 In regards to command injection attacks, the attacker may intercept and
 alter, or insert conceivably malicious commands that are then
-unknowingly executed in the system. Some known types of command
-injection attacks are SQL Injection and Cross-Site Scripting (XSS).
-False commands meant to alter the control and configuration in ICSs
-commonly seen are injected to modify and interrupt communication and
-processes.
+unknowingly executed in the system. For example, a couple of known
+command injection type attacks over the web are SQL Injection and
+Cross-Site Scripting (XSS) attacks.
 
-More frequently seen in SCADA systems, Modbus communication is
-intercepted, or more precisely, an attacker injects Modbus functions
-intended to modify the industrial process. Since the Modbus/TCP protocol
-was not designed with security taken into account and has no encryption
-or sophisticated security precautions, it is vulnerable to the
-manipulation of the function code or data field sent in the requests.
+Concerning SCADA systems, false commands meant to alter the control and
+configuration of ICSs are injected to modify, or interrupt communication
+and processes. Modbus communication is intercepted, where an attacker
+injects Modbus functions intended to modify the industrial process.
+Since the Modbus/TCP protocol was not designed with security taken into
+account and has no encryption or sophisticated security precautions, it
+is vulnerable to the manipulation of the function code or data field
+sent in the Modbus request.
 
 \subsection{Response Injection}\label{response-injection}
 
@@ -610,13 +614,15 @@ rejecting further responses as invalid.
 
 \subsection{Denial of Service}\label{denial-of-service}
 
-In an attempt to render services unavailable and stop the proper
-functioning of a system, denial-of-service attacks either try to bring
-down and crash the service, or flood all resources preventing legitimate
-users from accessing the service. Attacks of this type on SCADA systems
-try to either reboot Modbus servers or manipulate the controls to take
-them out of service. In other cases, an endpoint is overwhelmed to the
-point where it cannot take on further requests.
+In an attempt to render services unavailable and to stop the proper
+functioning of a system, Denial-of-Service (DoS) attacks either try to
+bring down and crash the service, or flood all resources preventing
+legitimate users from accessing the service. Attacks of this type on
+SCADA systems try to either reboot Modbus servers or manipulate the
+controls to take them out of service. In other cases, an endpoint is
+inundated to the point where it cannot take on further requests.
+Considering that PLCs have very limited resources and capacity, it does
+not take very long to overwhelm these devices and disrupt operations.
 
 \subsection{Reconnaissance}\label{reconnaissance}
 
@@ -625,9 +631,9 @@ this type of attack generally surveys a network and identifies connected
 devices in order to ascertain the network architecture and topology.
 Once the attacker gains access to the network, they may carry out
 different levels of scanning over the network, such as address, port and
-points scanning. In the case of SCADA systems, with the Modbus/TCP being
-the prevailing protocol implemented in ICS devices, function scanning is
-also attempted.
+endpoints scanning. In the case of SCADA systems, with the Modbus/TCP
+being the prevailing protocol implemented in ICS devices, function
+scanning is also attempted.
 
 \subsection{Zero-day Attacks}\label{zero-day-attacks}
 
@@ -643,24 +649,21 @@ to exploit an assortment of zero-day flaws.{[}17{]}
 
 \section{Intrusion Detection Systems}\label{intrusion-detection-systems}
 
-An intrusion detection system (IDS) is a security mechanism put into
-place in order to monitor activity and whose purpose is to identify and
-detect any suspicious or unauthorized access or actions to resources and
-data. An IDS may act in a passive or reactive manner, the prior in which
-unusual activity is logged and an alert is sent to a monitoring system
-and the latter where the IDS takes action in response to suspicious
+An Intrusion Detection System (IDS) is a security mechanism put into
+place with the purpose of observing, analyzing and detecting
+unauthorized access to, or malicious activity on resources and data,
+which are then alerted to, and reviewed by, security analysts. An IDS
+may act in a passive or reactive manner, the prior in which unusual
+activity is logged and an alert is sent to a monitoring system. The
+latter, referred to as an Intrusion Prevention System (IPS), is where
+another step is taken further to take action in response to suspicious
 activity.
 
-Until fairly recently, the application of IDSs to SCADA systems was not
-prevalent, however there has been increasing interest and different
-approaches and implementations can be seen in the
-literature.{[}18--22{]}
-
 The initial model for intrusion detection systems was presented by
-{[}23{]}, where she described the framework for the design and
+{[}18{]}, where she described the framework for the design and
 implementation of a general-purpose intrusion detection system. The
 ideal detection system should contain the following characteristics and
-have these capabilities {[}24{]}:
+have these capabilities {[}19{]}:
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -688,7 +691,7 @@ network, for example, connected to the monitor port of a switch, and the
 traffic that occur between hosts is inspected by listening to and
 analyzing network events.
 
-Threats may be identified by the following means:
+Threats may be identified by NIDSs by the following means:
 
 \subsubsection{Signature-based}\label{signature-based}
 
@@ -700,33 +703,33 @@ maintained and updated frequently.
 
 \subsubsection{Anomaly-based}\label{anomaly-based}
 
-In an anomaly-based NIDS (A-NIDS), any deviation from ``normal''
-activity is flagged as an alarm. An initial (normal) profile of the
-system is first created where normal activity is observed. Once
-established, the A-NIDS collects data from network events and based on
-different metrics or measurements, looks for activity that differs
-significantly from the normal profile and raises an alarm. The advantage
-of an A-NIDS is that no a priori knowledge is required of previous known
-attacks and can be used to define signatures for malicious behaviour,
-however it cannot identify a specific attack and has a greater number of
-false alarms (false positives) than signature-based IDS.
+In an Anomaly-based NIDS (A-NIDS), any deviation from ``normal''
+activity is flagged as an alarm. An initial profile of the system is
+first created where normal activity is observed. Once established, the
+A-NIDS collects data from network events and based on different metrics
+or measurements, looks for activity that differs significantly from the
+normal profile and raises an alarm. The advantage of an A-NIDS is that
+no a priori knowledge is required of previous known attacks and can be
+used to define signatures for malicious behaviour, however it cannot
+identify a specific attack and has a greater number of false alarms
+(false positives) than signature-based IDS.
 
-Only fairly recently have security devices incorporated anomaly-based
-methods and, as such, a significant growth into research on the methods
-used in anomaly detection, particularly those which minimize the rate of
-false positives. The primary methods of anomaly detection are
-statistical, data mining, and machine learning, which generally follow
-through the stages and are briefly described below.{[}18, 19{]}
+In comparison to signature-based NIDS, anomaly-based methods are less
+mature. Nonetheless, there has been significant growth into research on
+the methods used in anomaly detection, particularly those which minimize
+the rate of false positives. The primary methods of anomaly detection
+are statistical, data mining, and machine learning, which generally
+follow through the stages and are briefly described below.{[}20, 21{]}
 
-The initial (parameterization) phase of implementing an anomaly-based
+The first (parameterization) phase of implementing an anomaly-based
 detection system is to create the baseline profile of the system
 characteristics and behaviour. Then a model is developed using the
 training set created using one of the methods outlined below during the
 training phase. A comparison of a subset of these methods is given
-(Table1).{[}{[}Garcia2009{]}{]} In the final stage, detection of
-abnormal behaviour is analyzed by comparing the observed network traffic
-to the model. Any significant deviations are signaled and an alert is
-fired. Figure 7 {[}19{]} models this process.
+(Figure 8).{[}21{]} In the final stage, detection of abnormal behaviour
+is analyzed by comparing the observed network traffic to the model. Any
+significant deviations are signaled and an alert is fired. Figure 7
+{[}21{]} models this process.
 
 \begin{figure}
 
@@ -737,6 +740,20 @@ fired. Figure 7 {[}19{]} models this process.
 \caption{Functional Architecture of an A-NIDS}\label{fig:unnamed-chunk-10}
 \end{figure}
 
+Most IDSs found in the market-place are commonly network,
+signature-based IDSs and although anomaly-based detection systems are
+relatively immature, they provide a greater possibility of detecting
+unknown attacks. The trade-off between the two types of systems are
+primarily in the accuracy with which they detect a real attack, or an
+anomaly. Properly configured signature-based systems rarely raise false
+alarms, but unlike anomaly-based systems, are less capable of detecting
+novel attacks.
+
+Until relatively recently, the application of IDSs to SCADA systems was
+not prevalent, however there has been increasing interest and different
+approaches and implementations can be seen in the
+literature.{[}20--24{]}
+
 \newpage
 
 \section{Techniques of Network Intrusion
@@ -744,7 +761,7 @@ Detection}\label{techniques-of-network-intrusion-detection}
 
 Numerous anomaly-based methods and techniques have been studied and
 implemented in detecting network intrusions. These include statistical,
-data mining and machine learning.{[}\textbf{???}, 19, 20, 25--38{]}
+data mining and machine learning.{[}\textbf{???}, 21, 22, 25--38{]}
 Figure 8 provides a brief summary of these techniques.
 
 \subsection{Statistical}\label{statistical}
@@ -755,15 +772,15 @@ distributions over a period of time observed. In the first case, an
 upper and lower bound are established to define an appropriate range of
 values for the individual variables measured. Earlier methods began by
 using the univariate model where single variables are analyzed, and
-later, multivariate models were applied, in which highly correlated
+later, multivariate models were applied in which highly correlated
 metrics were used, as they were considered to be more effective at
 distinguishing anomalies. In the second case, considered as a
 time-series model, a window of data is used to compute the mean of its
-distribution in order to determine the thresholds.{[}20, 39--43{]}
+distribution in order to determine the thresholds.{[}22, 39--43{]}
 
 \subsection{Data Mining}\label{data-mining}
 
-Data mining, also known as knowledge discovery in databases (KDD), is
+Data mining, also known as Knowledge Discovery in Databases (KDD), is
 the the process of extracting information and detecting interesting
 patterns from data. A good deal of work is involved prior to the mining
 process in understanding and preparing the data for the mining process
@@ -800,97 +817,6 @@ results, that is, how easily the results can be read and interpreted.
 
 \clearpage
 
-\section{Tools}\label{tools}
-
-All software and tools applied and implemented in the SCAD@COPS project
-are free and open source. A great deal of work is typically involved in
-preparing the raw data for analysis and depending on the initial state
-of the data, various pre-processing and transformations may be required.
-The following tools were employed in the exploratory phase of data
-analysis in order to capture, transform and analyze the data, as well as
-for implementing the statistical analytical process.
-
-\subsection[Wireshark - Network Traffic Analysis
-Tool]{Wireshark\footnote{\url{https://www.wireshark.org/docs/wsug_html_chunked}}
-- Network Traffic Analysis
-Tool}\label{wireshark2---network-traffic-analysis-tool}
-
-Developed in 1997 by Gerald Combs originally named Ethereal, Wireshark
-is now an Open Source GNU project. It is a network packet analyzer, or
-``packet sniffer'', that captures and displays network packets.
-
-Captured network packets are saved in the pcap file format and can be
-dissected and parsed by Wireshark in order to analyze its contents. An
-important aspect of Wireshark is that of its passive/monitoring nature
-and so does not send, manipulate, or modify the data passing over the
-network.
-
-\subsection[TShark]{TShark\footnote{\url{https://www.wireshark.org/docs/man-pages/tshark.html}}}\label{tshark3}
-
-Another tool from the Wireshark suite is the command-line tool similar
-to tcpdump is tshark, a network protocol analyzer. In addition to
-capturing packet data over a live network, it is also capable of
-analyzing packets from an existing capture file.
-
-\subsection{UNIX Utilities}\label{unix-utilities}
-
-There are a myriad of UNIX utilities that are used for administration,
-scripting, text processing, etc.{[}67{]} In the data parsing and
-transformation process, the UNIX tools employedused were bash, sed, and,
-awk, which supports the use of regular expressions.
-
-\subsection[R - Statistical Tool]{R - Statistical Tool\footnote{\url{http://www.r-project.org/}}}\label{r---statistical-tool4}
-
-R is an Open Source programming language and environment used for
-statistical computing and graphics. Initially developed by John Chambers
-at Bell Labs as the S language in 1993, R was created as a freely
-available version under the GNU project by Ross Ihaka and Robert
-Gentleman at the University of Auckland, New Zealand.
-
-Maintained by the R Development Core Team and with an active and growing
-community, it provides various statistical and graphical creation
-capabilities available under most operating systems, and is extensible
-with numerous packages available. Its major limitation is that there
-must be sufficient RAM to hold the data in memory.
-
-\subsection{C/C++}\label{cc}
-
-Originally developed by Dennis Ritchie at AT\&T Bell Labs in the late
-60s and early 70s, the C programming language is a low-level, general
-purpose computer programming language, that was initially designed for
-and implemented on the UNIX OS. A sucessor to the C programming language
-is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most
-of C's syntax, as well as adds abstraction lending itself to be an
-object-oriented language.{[}68{]}
-
-\subsection[Suricata]{Suricata\footnote{\url{http://www.suricata-ids.org}}}\label{suricata5}
-
-A widely used network intrusion detection system is Snort.\footnote{\url{http://www.snort.org}}
-It is open source, and although highly effective and proven, its
-limitation is that it is single-threaded. A newer generation NIDS that
-has grown fairly popular is Suricata, developed by the Open Information
-Security Foundation (OISF) and partly funded by the US Department
-Homeland Security's Directorate for Science and Technology.
-
-Suricata is a high performing NIDS, IPS, and network security monitoring
-engine, that is based on signatures, however, unlike Snort it has a
-multithreaded architecture. The advanced techniques embedded in the
-engine uses an HTTP normalizer and parser in order to process HTTP
-streams which allow it to comprehend traffic at the application layer of
-the OSI model.
-
-\subsection[Metasploit]{Metasploit\footnote{\url{http://www.metasploit.com/index.jsp}}}\label{metasploit7}
-
-The open source network security tool was Metsaploit, created in 2003 by
-H.D.Moore, that is used to test weaknesses in computer systems,
-including breaking into systems that are remote. In addition to
-legitimate activities, Metasploit can be utilized to take unauthorized
-actions. One of its major advantages as a modular framework is that it
-allows for combinations of any exploit with any payload, allowing it to
-simulate real-world attacks.
-
-\newpage
-
 \section{Data Source}\label{data-source}
 
 It is usual for network data to contain private and sensitive
@@ -901,14 +827,14 @@ different methods applied in anomaly detection.
 
 One of the only publicly available datasets containing network traffic
 data has been provided by the US Defense Advanced Research Projects
-Agency (DARPA).{[}69{]} Network IDS analysis and studies have commonly
+Agency (DARPA).{[}67{]} Network IDS analysis and studies have commonly
 been carried out using the DARPA dataset. In this study, the analysis
-has been done using data acquired from a simulated testbed, the Virtual
-Scada Box.
+has been completed using data acquired from a simulated testbed, the
+Virtual Scada Box.
 
 \subsection{HNS and Virtual Scada Box}\label{hns-and-virtual-scada-box}
 
-Diateam has developed a system, hynesim (HNS), that is a distributed
+diateam has developed a system, hynesim (HNS), that is a distributed
 platform used in simulating complex information and network systems.
 With its ergonomic graphical user interface, hynesim has a distributed
 architecture and modular system, which allows for the inter-connection
@@ -919,20 +845,35 @@ where there is a virtual system that simulates a water treatment plant.
 Virtual Scada Box includes components such as the PLCs, HMIs, and a
 virtual water pump that have been connected over a TCP/IP network.
 
-The data analyzed was derived from a simulated network running on the
+The data analyzed were derived from a simulated network running on the
 Virtual Scada Box. A packet capture file was created via Wireshark,
 which captured the network traffic simulated over a virtual SCADA
-network. Once the network traffic was captured and saved in a pcap file,
+network. Once the network traffic was captured and saved in a PCAP file,
 Wireshark provides the capability to export the raw data into various
 comma delimited files in order to do further analysis. Exported files
 were created with TCP endpoints, TCP conversations, as well as the
-entire pcap file, each as a CSV file. (Appendix A)
+entire PCAP file, each as a CSV file. (Appendix A)
 
-\subsection[PCAP]{PCAP\footnote{\url{https://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html}}}\label{pcap8}
+\subsection[PCAP]{PCAP\footnote{\url{https://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html}}}\label{pcap2}
 
 This section describes the format used for the packet capture file
-format of the dumped packets. The general structure is in a block format
-as shown below.
+format of the dumped packets.
+
+The general structure is in a block format as shown below, with the
+following fields:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Block Type (32 bits) - unique value that identifies the block.
+\item
+  Block Total Length - total size in bytes.
+\item
+  Block Body - content.
+\item
+  Block Total Length - total size in bytes. that is duplicated for
+  allowing backward file navigation.
+\end{itemize}
 
 \newpage
 
@@ -953,26 +894,45 @@ as shown below.
     
 \end{verbatim}
 
-The fields have the following meaning:
+\subsection{Modbus/TCP Packets}\label{modbustcp-packets}
 
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  Block Type (32 bits) - unique value that identifies the block.
-\item
-  Block Total Length - total size in bytes.
-\item
-  Block Body - content.
-\item
-  Block Total Length - total size in bytes. that is duplicated for
-  allowing backward file navigation.
-\end{itemize}
+Example Modbus packets, with Modbus data values in bold:
+
+\subsubsection{Request}\label{request}
+
+\begin{verbatim}
+
+65  572.608117000   192.168.12.51   192.168.12.253  Modbus/TCP  66     query: trans:
+20; unit:   1, func:   4: Read input registers
+
+0000  00 80 f4 0f 35 aa 00 18  63 37 9b 5b 08 00 45 00   ....5... c7.[..E.
+0010  00 34 41 35 40 00 80 06  1f 0e c0 a8 0c 33 c0 a8   .4A5@... .....3..
+0020  0c fd 09 c3 01 f6 05 1a  47 65 63 b7 1f c5 50 18   ........ Gec...P.
+0030  fa 14 3e 57 00 00 00 14  00 00 00 06 01 04 00 00   ..>W.... ........
+0040  00 01    
+    
+\end{verbatim}
+
+\subsubsection{Response}\label{response}
+
+\begin{verbatim}
+
+66  572.617795000   192.168.12.253  192.168.12.51   Modbus/TCP  65  response: trans:
+20; unit:   1, func:   4: Read input registers
+
+0000  00 18 63 37 9b 5b 00 80  f4 0f 35 aa 08 00 45 00   ..c7.[.. ..5...E.
+0010  00 33 89 26 40 00 40 06  17 1e c0 a8 0c fd c0 a8   .3.&@.@. ........
+0020  0c 33 01 f6 09 c3 63 b7  1f c5 05 1a 47 71 50 18   .3....c. ....GqP.
+0030  22 08 9f 5a 00 00 00 14  00 00 00 05 01 04 02 00   "..Z.... ........
+0040  75
+    
+\end{verbatim}
 
 \newpage
 
 \section{Exploratory Data Analysis}\label{exploratory-data-analysis}
 
-Originally championed by John Tukey{[}70{]}, Exploratory Data Analysis
+Originally championed by John Tukey{[}68{]}, Exploratory Data Analysis
 (EDA) is an initial approach to understanding a data set in order to get
 a ``feel'' for the data, to summarizing its essential characteristics
 and to studying patterns in the data. Moreover, exploratory data
@@ -980,14 +940,13 @@ analysis frequently incorporates graphical representations beyond using
 quantitative techniques.
 
 Conducting EDA possibly gives further insight into the form and
-structure of the data set, in addition to extracting value from it,
-visualizing it, and just as importantly, in communicating it. After a
-fairly exhaustive study of the state of the art of IDS and SCADA
-systems, an initial phase of exploratory data analysis was conducted in
-order to better understand the data. This section presents a short list
-of statistical terminology, followed by the exploratory data analysis
-carried out on the network traffic data captured over the simulated
-SCADA network.
+structure of the data set, in addition to extracting value, visualizing
+the data, and just as importantly, in communicating it. The initial
+phase of exploratory data analysis was conducted in order to better
+understand the data. This section presents a short list of statistical
+terminology, followed by the exploratory data analysis carried out on
+the network traffic data captured over the simulated SCADA network. The
+analysis, reporting and visualization was done using R and RStudio.
 
 \subsection{Statistical Definitions}\label{statistical-definitions}
 
@@ -1036,11 +995,11 @@ uncorrelated.
 \subsubsection{Correlation}\label{correlation}
 
 Correlation is the strength between the relationship of, or dependence
-between, two variables whose value is typically bounded between the
-values of -1 and 1, that is to say, that the value has been normalized.
-It describes the magnitude and the direction of the relationship. If the
-correlation is positive, their values increase together, and if it is
-negative, one value decreases as the other value increases.
+between, two variables whose value have been normalized and is typically
+bounded between the values of -1 and 1. It describes the magnitude and
+the direction of the relationship. If the correlation is positive, their
+values increase together, and if it is negative, one value decreases as
+the other value increases.
 
 \[ \rho(X, Y) = \sigma(X, Y) / (\sigma [X] \sigma [Y]) \]
 
@@ -1049,10 +1008,13 @@ negative, one value decreases as the other value increases.
 \subsubsection{Pie chart}\label{pie-chart}
 
 A pie chart is a circular diagram representing numerical proportions as
-slices of the pie. Scatter plot A diagram showing a collection of points
-as depicted by the coordinates between two variables on a plane. One
-axis represents the independent variable, whereas the other represents
-the dependent variable.
+slices of the pie.
+
+\subsubsection{Scatter plot}\label{scatter-plot}
+
+A diagram showing a collection of points as depicted by the coordinates
+between two variables on a plane. One axis represents the independent
+variable, whereas the other represents the dependent variable.
 
 \subsubsection{Histogram}\label{histogram}
 
@@ -1065,22 +1027,22 @@ different heights.
 \subsubsection{Bar chart}\label{bar-chart}
 
 Similar to a histogram, a bar chart shows the distribution of values of
-a given variable,however, the data is in categorized.
+a given variable with the data categorized.
 
 \subsubsection{Boxplot}\label{boxplot}
 
 An effective and graphical method for visualizing outliers is the
 boxplot. It displays the data in terms of interquartiles, where outliers
 are depicted as individual points. (Figure 9: Boxplot Image
-Source{[}71{]})
+Source{[}69{]})
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-13-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-15-1} 
 
 }
 
-\caption{Boxplot}\label{fig:unnamed-chunk-13}
+\caption{Boxplot}\label{fig:unnamed-chunk-15}
 \end{figure}
 
 \subsubsection{Heat Map}\label{heat-map}
@@ -1094,7 +1056,7 @@ illustrates clusters.
 \subsubsection{Network Graph}\label{network-graph}
 
 Modeling the relations between objects, another mathematical structure
-is the graph, comprised of nodes, or vertices, and edges. Depending on
+is the graph comprised of nodes, or vertices, and edges. Depending on
 the nature of the relationship, a graph may be either cyclic or acyclic,
 directed or undirected. Attributes of a node or edge may be reflected in
 the graph as well.
@@ -1130,13 +1092,13 @@ Avg. Mit/sec & 0,035\tabularnewline
 \bottomrule
 \end{longtable}
 
-Once the network traffic was captured and saved in a pcap file,
+Once the network traffic was captured and saved in a PCAP file,
 Wireshark provides the capability to export the raw data into various
 comma delimited files in order to do further analysis. Exported files
 were created with TCP endpoints, TCP conversations, as well as the
 entire pcap file, each as a CSV file. (Appendix A)
 
-\newpage
+\clearpage
 
 \subsection{Network Analysis}\label{network-analysis}
 
@@ -1157,47 +1119,82 @@ on the simulated network.
 
 The following lists the data extracted from the packet capture file:
 
-Source / Destination / UnitID
+\begin{longtable}[c]{@{}lllr@{}}
+\caption{Source / Destination / UnitID}\tabularnewline
+\toprule
+ip.src & ip.dst & mbtcp.modbus.unit\_id & count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & ip.dst & mbtcp.modbus.unit\_id & count\tabularnewline
+\midrule
+\endhead
+192.168.12.117 & 192.168.12.252 & 1 & 24947\tabularnewline
+192.168.12.252 & 192.168.12.117 & 1 & 24945\tabularnewline
+\bottomrule
+\end{longtable}
 
-\begin{verbatim}
-           ip.src         ip.dst mbtcp.modbus.unit_id count
-1: 192.168.12.117 192.168.12.252                    1 24947
-2: 192.168.12.252 192.168.12.117                    1 24945
-\end{verbatim}
+\begin{longtable}[c]{@{}lr@{}}
+\caption{Sources}\tabularnewline
+\toprule
+ip.src & count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & count\tabularnewline
+\midrule
+\endhead
+192.168.12.117 & 24947\tabularnewline
+192.168.12.252 & 24945\tabularnewline
+\bottomrule
+\end{longtable}
 
-Sources
-
-\begin{verbatim}
-           ip.src count
-1: 192.168.12.117 24947
-2: 192.168.12.252 24945
-\end{verbatim}
-
-Destinations
-
-\begin{verbatim}
-           ip.dst count
-1: 192.168.12.252 24947
-2: 192.168.12.117 24945
-\end{verbatim}
+\begin{longtable}[c]{@{}lr@{}}
+\caption{Destination}\tabularnewline
+\toprule
+ip.dst & count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.dst & count\tabularnewline
+\midrule
+\endhead
+192.168.12.252 & 24947\tabularnewline
+192.168.12.117 & 24945\tabularnewline
+\bottomrule
+\end{longtable}
 
 \newpage
 
-Destination / UnitID
+\begin{longtable}[c]{@{}lll@{}}
+\caption{Destination / UnitID}\tabularnewline
+\toprule
+ip.dst & mbtcp.modbus.unit\_id & ip.dst.unit\_id\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.dst & mbtcp.modbus.unit\_id & ip.dst.unit\_id\tabularnewline
+\midrule
+\endhead
+192.168.12.252 & 1 & 192.168.12.252/1\tabularnewline
+192.168.12.117 & 1 & 192.168.12.117/1\tabularnewline
+\bottomrule
+\end{longtable}
 
-\begin{verbatim}
-           ip.dst mbtcp.modbus.unit_id   ip.dst.unit_id
-1: 192.168.12.252                    1 192.168.12.252/1
-2: 192.168.12.117                    1 192.168.12.117/1
-\end{verbatim}
-
-Source / Function Code
-
-\begin{verbatim}
-           ip.src mbtcp.modbus.func_code         src.func
-1: 192.168.12.117                      4 192.168.12.117/4
-2: 192.168.12.252                      4 192.168.12.252/4
-\end{verbatim}
+\begin{longtable}[c]{@{}lll@{}}
+\caption{Source / Function Code}\tabularnewline
+\toprule
+ip.src & mbtcp.modbus.func\_code & src.func\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & mbtcp.modbus.func\_code & src.func\tabularnewline
+\midrule
+\endhead
+192.168.12.117 & 4 & 192.168.12.117/4\tabularnewline
+192.168.12.252 & 4 & 192.168.12.252/4\tabularnewline
+\bottomrule
+\end{longtable}
 
 \subsection{Packet Analysis}\label{packet-analysis}
 
@@ -1205,31 +1202,12 @@ Figure 11 depicts a boxplot indicating packet size.
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-19-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-21-1} 
 
 }
 
-\caption{Source Packet Size Boxplot}\label{fig:unnamed-chunk-19}
+\caption{Source Packet Size Boxplot}\label{fig:unnamed-chunk-21}
 \end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-20-1} 
-
-}
-
-\caption{Bar Charts of Packet Counts}\label{fig:unnamed-chunk-20}
-\end{figure}
-
-\clearpage
-
-\subsubsection{Modbus/TCP Request/Response Packet Statistics (Appendix
-C)}\label{modbustcp-requestresponse-packet-statistics-appendix-c}
-
-Modbus/TCP \textbf{requests} are identified by packets having
-destination port number 502
-
-(Figure 13)
 
 \begin{figure}
 
@@ -1237,43 +1215,34 @@ destination port number 502
 
 }
 
-\caption{Boxplot of Request Packets}\label{fig:unnamed-chunk-22}
+\caption{Bar Charts of Packet Counts}\label{fig:unnamed-chunk-22}
 \end{figure}
 
-Modbus/TCP \textbf{responses} are identified by packets having source
-port number 502
+\subsubsection{Modbus/TCP Request/Response Packet Statistics (Appendix
+C)}\label{modbustcp-requestresponse-packet-statistics-appendix-c}
 
-(Figure 14)
+Modbus/TCP \textbf{requests} are identified by packets having
+destination port number 502 (Figure 13).
 
-\nobreak
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-23-1} 
-
-}
-
-\caption{Boxplot of Response Packets}\label{fig:unnamed-chunk-23}
-\end{figure}
-
-\clearpage
-
-\begin{figure}
+\begin{figure}[top]
 
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-24-1} 
 
 }
 
-\caption{Scatterplot of Time as a Function of Frame Number}\label{fig:unnamed-chunk-24}
+\caption{Boxplot of Request Packets}\label{fig:unnamed-chunk-24}
 \end{figure}
 
-\begin{figure}
+Modbus/TCP \textbf{responses} are identified by packets having source
+port number 502 (Figure 14).
+
+\begin{figure}[bottom]
 
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-25-1} 
 
 }
 
-\caption{Boxplot of Modbus/TCP Data Length}\label{fig:unnamed-chunk-25}
+\caption{Boxplot of Response Packets}\label{fig:unnamed-chunk-25}
 \end{figure}
 
 \clearpage
@@ -1284,7 +1253,7 @@ port number 502
 
 }
 
-\caption{Graph of Modbus Data Values over Time by Modbus  Reference Number}\label{fig:unnamed-chunk-26}
+\caption{Scatterplot of Time as a Function of Frame Number}\label{fig:unnamed-chunk-26}
 \end{figure}
 
 \begin{figure}
@@ -1293,13 +1262,33 @@ port number 502
 
 }
 
-\caption{Graph of Modbus Data Values over Time by Function Code}\label{fig:unnamed-chunk-27}
+\caption{Boxplot of Modbus/TCP Data Length}\label{fig:unnamed-chunk-27}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-28-1} 
+
+}
+
+\caption{Graph of Modbus Data Values over Time by Modbus  Reference Number}\label{fig:unnamed-chunk-28}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-29-1} 
+
+}
+
+\caption{Graph of Modbus Data Values over Time by Function Code}\label{fig:unnamed-chunk-29}
 \end{figure}
 
 \subsubsection[Modbus/TCP Data Analysis]{Modbus/TCP Data\footnote{\url{https://www.wireshark.org/docs/dfref/m/mbtcp.html}}
-Analysis}\label{modbustcp-data9-analysis}
+Analysis}\label{modbustcp-data3-analysis}
 
-The following analysis was done over the previous dataset that has been
+The following analysis was done over the previous dataset that was
 processed to merge response packet to the request packet of the same
 transaction. An additional field ``d'' is the data field ``resp.data''
 converted from a hex to a decimal value. (Appendix D)
@@ -1322,29 +1311,11 @@ Statistics}\label{modbus-data-value-statistics}
 
 \begin{figure}
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-29-1} 
-
-}
-
-\caption{Bar Chart of Modbus Reference Numbers by Function Code}\label{fig:unnamed-chunk-29}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-30-1} 
-
-}
-
-\caption{Boxplot of Modbus Data Values by Function and Reference Number}\label{fig:unnamed-chunk-30}
-\end{figure}
-
-\begin{figure}
-
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-31-1} 
 
 }
 
-\caption{Scatterplot Matrix of Pairs of Variables}\label{fig:unnamed-chunk-31}
+\caption{Bar Chart of Modbus Reference Numbers by Function Code}\label{fig:unnamed-chunk-31}
 \end{figure}
 
 \begin{figure}
@@ -1353,9 +1324,32 @@ Statistics}\label{modbus-data-value-statistics}
 
 }
 
-\caption{3D Scatterplot of Modbus Reference Number
- and Data Over Time for Function Code 4}\label{fig:unnamed-chunk-32}
+\caption{Boxplot of Modbus Data Values by Function and Reference Number}\label{fig:unnamed-chunk-32}
 \end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-33-1} 
+
+}
+
+\caption{Scatterplot Matrix of Pairs of Variables}\label{fig:unnamed-chunk-33}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[middle]
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-34-1} 
+
+}
+
+\caption{3D Scatterplot of Modbus Reference Number
+ and Data Over Time for Function Code 4}\label{fig:unnamed-chunk-34}
+\end{figure}
+
+It can be seen in Figures 18 and 22 how cyclical the processes are in
+the system.
 
 \clearpage
 
@@ -1364,9 +1358,10 @@ Statistics}\label{modbus-data-value-statistics}
 The SCAD@COPS proof of concept incorporates the methods as outlined in
 {[}3, 4{]}, which define the architectural and signature-based detection
 system, and the last component being the anomaly-based detection system.
-The signature-based IDS component has been implemented and configured
-using Suricata. The initial POC will contain an anomaly-based IDS using
-statistical methods.
+The signature-based IDS component was previously implemented and
+configured using Suricata. The initial POC will contain an anomaly-based
+IDS using statistical methods, which is what this project has
+concentrated on.
 
 \subsection{Architecture Overview}\label{architecture-overview}
 
@@ -1389,15 +1384,6 @@ attacks on it. The two approaches presented are to:
 In Figure 23, an example is shown of the placement of the IDS and its
 supporting DB, connected to other SCADA components.
 
-\begin{figure}[bottom]
-
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-34-1} 
-
-}
-
-\caption{Technical Architecture}\label{fig:unnamed-chunk-34}
-\end{figure}
-
 Based on the recommendations of {[}3{]}, in order to address the
 security concerns of the IDS appliance itself, the architecture contains
 a partition of the various components and isolates each IDS instance
@@ -1414,15 +1400,24 @@ throughout the SCADA system on a dedicated network for supervision, and
 presents the two different approaches of a centralized or a distributed
 system.
 
-\clearpage
-
 \begin{figure}[bottom]
 
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-35-1} 
 
 }
 
-\caption{Architecture of secure IDS }\label{fig:unnamed-chunk-35}
+\caption{Technical Architecture}\label{fig:unnamed-chunk-35}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[bottom]
+
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-36-1} 
+
+}
+
+\caption{Architecture of secure IDS }\label{fig:unnamed-chunk-36}
 \end{figure}
 
 \subsubsection{Signature-based IDS}\label{signature-based-ids}
@@ -1435,11 +1430,13 @@ behaviour of a SCADA system.
 \subsubsection{Anomaly-based IDS}\label{anomaly-based-ids}
 
 In the scope of the SCAD@COPS project, the anomaly-based component will
-be derived from various statistical properties. Section 10.2.2 outlines
-the statistical processes, and Section 11 describes the statistical
-measures and features.
+be derived from various statistical properties, that will be discussed
+subsequently in Chapter 10.
 
 \subsection{Implementation}\label{implementation}
+
+All software and tools applied and implemented in the SCAD@COPS project
+are free and open source (Appendix C).
 
 \subsubsection{Process Flow}\label{process-flow}
 
@@ -1459,12 +1456,12 @@ mode.
   \begin{itemize}
   \itemsep1pt\parskip0pt\parsep0pt
   \item
-    2.1 - Process data - Perform any transformation, filtering and data
+    2.1 Process data - Perform any transformation, filtering and data
     cleansing necessary.
   \item
-    2.2 - Calculate and determine statistical measures.
+    2.2 Calculate and determine statistical measures.
   \item
-    2.3 - Configure appliance with statistical parameters.
+    2.3 Configure appliance with statistical parameters.
   \end{itemize}
 \item
   Step 3: Detection Mode - Appliance is set to detection mode.
@@ -1472,17 +1469,17 @@ mode.
 
 \begin{figure}[bottom]
 
-{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-36-1} 
+{\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-37-1} 
 
 }
 
-\caption{Process Flow}\label{fig:unnamed-chunk-36}
+\caption{Process Flow}\label{fig:unnamed-chunk-37}
 \end{figure}
 
 \paragraph{Data Acquisition}\label{data-acquisition}
 
-As illustrated in Section 10.1, Figure 24, the data is acquired by one
-of the components of the NIDS, which has been configured to only monitor
+As illustrated in Section 9.1, Figure 24, the data is acquired by one of
+the components of the NIDS, which has been configured to only monitor
 network traffic:
 
 \begin{itemize}
@@ -1494,56 +1491,33 @@ network traffic:
   information such as TCP endpoints, conversations, etc.
 \item
   Tshark - The pertinent variables pertaining to the Modbus/TCP
-  application protocol enclosed in the packet data were parsed by
-  TShark.
+  application protocol enclosed in the packet data were extracted and
+  parsed by TShark.
 \end{itemize}
 
 \paragraph{Statistical Analysis and
 Processing}\label{statistical-analysis-and-processing}
 
 The statistical process was implemented using various components to
-handle specific steps (Figure 25). Each element used was initially
-selected to manage a particular task of the process according to its
-ease and efficiency of development, as well as its processing time. Once
-captured from the monitoring device on the IDS appliance, the packet
-capture file is sent to be processed offline. The entire procedure is
-handled by a bash script. Most statistical computations were done using
-R scripts, however, part of the data pre-processing, including merging
-and transformations went through a C++ program. Configuration files are
-subsequently generated in JSON format, which are then uploaded to the
-IDS appliance. The components to the process can be found in Appendix E.
+handle specific steps. Each component used was initially selected to
+manage a particular task of the process according to its ease and
+efficiency of development, as well as its processing time. Once captured
+from the monitoring device on the IDS appliance, the packet capture file
+can be processed offline. (Appendix G)
 
-\clearpage
-
-\subsubsection{Modbus/TCP}\label{modbustcp}
-
-Example modbus packets:
-
-\paragraph{Query}\label{query}
-
-\begin{verbatim}
-65  572.608117000   192.168.12.51   192.168.12.253  Modbus/TCP  66
-query: trans:    20; unit:   1, func:   4: Read input registers
-
-0000  00 80 f4 0f 35 aa 00 18  63 37 9b 5b 08 00 45 00   ....5... c7.[..E.
-0010  00 34 41 35 40 00 80 06  1f 0e c0 a8 0c 33 c0 a8   .4A5@... .....3..
-0020  0c fd 09 c3 01 f6 05 1a  47 65 63 b7 1f c5 50 18   ........ Gec...P.
-0030  fa 14 3e 57 00 00 00 14  00 00 00 06 01 04 00 00   ..>W.... ........
-0040  00 01    
-\end{verbatim}
-
-\paragraph{Response}\label{response}
-
-\begin{verbatim}
-66  572.617795000   192.168.12.253  192.168.12.51   Modbus/TCP  65
-response: trans:    20; unit:   1, func:   4: Read input registers
-
-0000  00 18 63 37 9b 5b 00 80  f4 0f 35 aa 08 00 45 00   ..c7.[.. ..5...E.
-0010  00 33 89 26 40 00 40 06  17 1e c0 a8 0c fd c0 a8   .3.&@.@. ........
-0020  0c 33 01 f6 09 c3 63 b7  1f c5 05 1a 47 71 50 18   .3....c. ....GqP.
-0030  22 08 9f 5a 00 00 00 14  00 00 00 05 01 04 02 00   "..Z.... ........
-0040  75
-\end{verbatim}
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  bash/Unix - The entire procedure is handled by a bash shell script,
+  executing other scripts or programs.
+\item
+  R - Most statistical computations and configuration file generations
+  were done using many R libraries and programmed in R scripts.
+\item
+  C/C++ - Initial analysis was completed in R, however, for greater
+  efficiency, some data preprocessing, including merging and
+  transformations were programmed in C/C++.
+\end{itemize}
 
 \newpage
 
@@ -1559,8 +1533,8 @@ of data that are handled can greatly benefit from the careful selection
 of relevant features. In addition, removing redundancies also improves
 the efficiency and having both allows for further increased accuracy and
 reduction in complexity. However, there should be an appropriate
-selection of features so as to prevent any loss of information.{[}72,
-73{]}
+selection of features so as to prevent any loss of information.{[}70,
+71{]}
 
 Depending on the size of the dataset and the number of features, or
 variables, the selection process may simply be done by a domain expert
@@ -1574,10 +1548,12 @@ patterns with less human intervention.
 An example of applying feature selection is in the area of text mining
 where unstructured data can be comprised of millions of words. Using
 such techniques as stop word elimination and stemming, the
-dimensionality is notably reduced.
+dimensionality is notably reduced. Principal component analysis is
+another statistical procedure by which the data can be transformed and
+represented as its eigenvalues and eigenvectors.
 
 Network based intrusion detection has been studied for some time and can
-be implemented by using conventional network variables.{[}41, 74{]} In
+be implemented by using conventional network variables.{[}41, 72{]} In
 {[}35, 65{]}, the challenges of feature selection in the context of
 anomaly detection in industrial systems are discussed. The prediction
 model's performance is highly dependent on the selection of pertinent
@@ -1587,11 +1563,11 @@ knowledge and experience in a domain, or by using other feature
 selection techniques not involving humans.
 
 The first version of the SCAD@COPS network intrusion detection device
-for industrial systems is based on simple statistical variables that
-have been chosen by an expert in the domain of cyber security with
-experience in SCADA systems. An example configuration file generated
-from the statistical process as outlined in Section 10.2.2 (Appendix B)
-have been used as the parameters in the proof of concept.
+for industrial systems will be based on simple statistical variables
+that have been chosen by an expert in the domain of cyber security with
+experience in SCADA systems. Example configuration files generated from
+the statistical process as outlined in Section 9.2.2 (Appendix D) have
+been used as the parameters in the proof of concept.
 
 \newpage
 
@@ -1607,22 +1583,22 @@ or characteristics that occur out of the ordinary. Such events may be
 malicious as those seen in Chapter 4, as well as routine, or
 spontaneous, maintenance activities.
 
-As discussed in Chapter 10.2.1, the process flow depicts the phases of
+As discussed in Section 9.2.1, the process flow depicts the phases of
 the processes involved, from data acquisition, to data processing and
 statistical analysis, and finally to placing the device in
 ``operational'' mode where network traffic may be exposed to attacks.
 During the testing phase, another simulation was done with attacks
 injected via Metasploit. The packet capture file was also processed in a
-similar manner as the initial pcap file, and then a comparison was to
-find differences and anomalies between the two data sets.
+similar manner as the initial pcap file, and then a comparison was made
+to find differences and anomalies between the two data sets.
 
 The test simulation exposed the routine activity running on the Virtual
-Scada Box to a Modbus stop attack. The commands executed from Metasploit
-were a series of payloads were sent from the virtual attacker in order
-to establish the initial state of the water tank. This was then followed
-by the stop command with its relevant data values. (Appendix F)
+Scada Box to a Modbus STOP attack. The commands executed from Metasploit
+were a series of payloads sent by the attacker in order to establish the
+initial state of the water tank. This was then followed by the stop
+command with its relevant data values. (Appendix F)
 
-The following tables lists anomalies and differences detected in the
+The following tables list anomalies and differences detected in the
 attack simulation:
 
 \begin{longtable}[c]{@{}l@{}}
@@ -1705,6 +1681,9 @@ IP\_SRC\_MOD\_FUNC & ip.src & mbtcp.modbus.func\_code\tabularnewline
 \bottomrule
 \end{longtable}
 
+In Table 7, we see Modbus function code 90 sent to perform
+administrative commands without authentication.
+
 \begin{longtable}[c]{@{}lll@{}}
 \caption{Differences in Frequency of Source/Function
 Code}\tabularnewline
@@ -1722,13 +1701,6 @@ ip.src & ip.dst & mbtcp.modbus.func\_code\tabularnewline
 \end{longtable}
 
 \begin{longtable}[c]{@{}rrr@{}}
-\caption{Differences in Frequency of Source/Function Code/Reference
-Number}\tabularnewline
-\toprule
-avgFrequencySec.n & avgFrequencySec.a &
-avgFrequencySec.diff\tabularnewline
-\midrule
-\endfirsthead
 \toprule
 avgFrequencySec.n & avgFrequencySec.a &
 avgFrequencySec.diff\tabularnewline
@@ -1739,7 +1711,17 @@ avgFrequencySec.diff\tabularnewline
 \bottomrule
 \end{longtable}
 
+The difference in average frequency shown in Table 9 are indicated by a
+prefix `n' for normal and `a' for attack.
+
 \begin{longtable}[c]{@{}llll@{}}
+\caption{Differences in Frequency of Source/Function Code/Reference
+Number}\tabularnewline
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code &
+mbtcp.modbus.reference\_num\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 ip.src & ip.dst & mbtcp.modbus.func\_code &
 mbtcp.modbus.reference\_num\tabularnewline
@@ -1769,59 +1751,71 @@ avgFrequencySec.diff\tabularnewline
 
 \section{Conclusion and Future Work}\label{conclusion-and-future-work}
 
-SCADA systems have typically been isolated and less prone to cyber
-threats, but as they continue to increasingly use traditional IT
-infrastructure in order to minimize costs and increase efficiency and
-functionality, they become more and more vulnerable to cyber attacks.
-IDSs offer a solution to provide supervision and protection to SCADA
-systems, which are implemented as either host- or network-based IDSs.
-Most commercial IDSs offered are usually signature-based, which are only
-able to detect previously identified threats and defined rules of
-behaviour. A quality of ICSs is that their topology tends to remain
-static, their protocols simple, and the traffic fairly regular. The
-initial part of this paper provided a general overview of SCADA systems,
-networks and protocols, intrusion detection systems
+The goal of this project was to provide the study, analysis and
+conception of a proof of concept for a hybrid NIDS, focusing on the
+anomaly based detection component. The work realized during this project
+began with a study of the domain and the state of the art of network
+intrusion detection systems in industrial control systems, SCADA systems
+in particular. SCADA systems have typically been isolated and less prone
+to cyber threats, but as they continue to increasingly use traditional
+IT infrastructure in order to minimize costs and increase efficiency and
+functionality, they become more and more vulnerable to cyber attacks. A
+quality of ICSs is that their topology tends to remain static, their
+protocols simple, and the traffic fairly regular.
 
-Following, the different techniques of anomaly based network intrusion
-detection and tools used in this project were presented. With a growing
-need for robust and flexible detection of new threats as the number of
-attacks increase, there is more research and advancements in anomaly
-detection applying methods such as statistical, data mining and machine
-learning techniques to find intelligent ways of anomaly detection. An
-integral process also carried out during this work was the exploratory
-data analysis phase. This aspect alone can easily, and does typically,
-take up a great portion of time as it requires cleaning and treating the
-data to be analysed. In addition to the traditional methods of using
-descriptive statistics to explain the data, the various graphical and
-visual manners of representing the data were presented.
+Following the overviews of the SCADA systems and networking principles,
+the Modbus protocol and intrusion detection systems were presented, as
+well as a few common attacks on SCADA systems were discussed. IDSs are
+implemented as either host- or network-based and they offer a solution
+to provide supervision and monitoring of SCADA systems in order to alert
+to suspicious or anomalous activity. Most commercial IDSs offered are
+usually signature-based, which are only able to detect previously
+identified threats and defined rules of behavior. Then, different
+techniques of anomaly based network intrusion detection were described.
+With a growing need for robust and flexible detection of new threats as
+the number of attacks increase, there is more research and advancements
+in anomaly detection applying methods such as statistical, data mining
+and machine learning techniques to find intelligent ways of anomaly
+detection.
 
-Diateam has proposed a proof of concept, SCAD@COPS, which is a hybrid
-IDS that incorporates both signature-based, as well as an anomaly-based
-IDS. Paramount to the mission critical nature of SCADA systems, it is
-important for systems to maintain a passive and non-intrusive mode in
-detecting intrusions so as not to perturb their functionality. This work
-focused its analysis primarily on network data acquired at the TCP/IP
-and Ethernet layers. According to research conducted and systems
-implemented that can be found in the literature, various techniques have
-been examined to detect anomalous behaviour over the network traffic.
-These methods and techniques include those of statistical, machine
-learning, as well as data mining.
+SCAD@COPS is a proof of concept presented by diateam, which is a hybrid
+IDS that incorporates both a signature-based, as well as an
+anomaly-based IDS. Once having completed a comprehensive study of the
+components involved, the first step carried out in the development of
+the POC was the exploratory data analysis of the ``normal'' network
+traffic data simulated by the Virtual Scada Box. In addition to the
+traditional methods of using descriptive statistics to explain the data,
+the various graphical and visual manners of representing the data were
+exhibited. An initial implementation of the data acquisition, data
+processing and statistical computation were then executed using various
+tools. The project was concluded by running another simulation in
+``attack'' mode and running a comparison against the normal data in
+order to detect the anomalies.
 
 Although the first implementation of the SCAD@COPS NIDS prototype uses
-statistical analysis and methods, further research and work can be
-conducted to ascertain more viable and effective methods for anomaly
-detection. Other areas of study include more sophisticated and advanced
-detection of anomalous behaviour applying machine learning techniques
-such as Neural and Bayesian networks. Additionally, another potential
-area of study is Time-Series analysis. As these methods are fairly new
-to the field, more work can be explored and these methods can be
-exploited to further improve the accuracy and detection of network
-intrusion in future versions of SCAD@COPS.
+rather simple statistical analysis and methods, further research and
+work can be conducted to ascertain more viable and effective methods for
+anomaly detection. Other areas of study include more sophisticated and
+advanced detection of anomalous behaviour applying machine learning, or
+data mining techniques such as Neural and Bayesian networks.
+Additionally, another potential area of study is Time-Series analysis.
+As these methods are fairly new to the field, more work can be explored
+and these methods can be exploited to further improve the accuracy and
+detection of network intrusion in future versions of SCAD@COPS.
 
-\newpage
+\clearpage
 
 \section*{Appendix A}\label{appendix-a}
 \addcontentsline{toc}{section}{Appendix A}
+
+\subsection{Modbus Function Codes}\label{modbus-function-codes}
+
+\begin{center}\includegraphics{thesis_files/figure-latex/unnamed-chunk-41-1} \end{center}
+
+\clearpage
+
+\section*{Appendix B}\label{appendix-b}
+\addcontentsline{toc}{section}{Appendix B}
 
 \subsection*{Wireshark Exports}\label{wireshark-exports}
 \addcontentsline{toc}{subsection}{Wireshark Exports}
@@ -1891,8 +1885,96 @@ bps.A.B.1\tabularnewline
 
 \newpage
 
-\section*{Appendix B}\label{appendix-b}
-\addcontentsline{toc}{section}{Appendix B}
+\section*{Appendix C}\label{appendix-c}
+\addcontentsline{toc}{section}{Appendix C}
+
+\subsection[Wireshark - Network Traffic Analysis
+Tool]{Wireshark\footnote{\url{https://www.wireshark.org/docs/wsug_html_chunked}}
+- Network Traffic Analysis
+Tool}\label{wireshark4---network-traffic-analysis-tool}
+
+Developed in 1997 by Gerald Combs originally named Ethereal, Wireshark
+is now an Open Source GNU project. It is a network packet analyzer, or
+``packet sniffer'', that captures and displays network packets.
+
+Captured network packets are saved in the pcap file format and can be
+dissected and parsed by Wireshark in order to analyze its contents. An
+important aspect of Wireshark is that of its passive/monitoring nature
+and so does not send, manipulate, or modify the data passing over the
+network.
+
+\subsection[TShark]{TShark\footnote{\url{https://www.wireshark.org/docs/man-pages/tshark.html}}}\label{tshark5}
+
+Another tool from the Wireshark suite is the command-line tool similar
+to tcpdump{[}\^{}6{]} is tshark, a network protocol analyzer. In
+addition to capturing packet data over a live network, it is also
+capable of analyzing packets from an existing capture file. {[}\^{}6{]}:
+\url{http://www.tcpdump.org}
+
+\subsection{UNIX Utilities}\label{unix-utilities}
+
+There are a myriad of UNIX utilities that are used for administration,
+scripting, text processing, etc.{[}73{]} In the data parsing and
+transformation process, the UNIX tools employedused were bash, sed, and,
+awk, which supports the use of regular expressions.
+
+\subsection[R - Statistical Tool]{R - Statistical Tool\footnote{\url{http://www.r-project.org}}}\label{r---statistical-tool7}
+
+R is an Open Source programming language and environment used for
+statistical computing and graphics. Initially developed by John Chambers
+at Bell Labs as the S language in 1993, R was created as a freely
+available version under the GNU project by Ross Ihaka and Robert
+Gentleman at the University of Auckland, New Zealand.
+
+Maintained by the R Development Core Team and with an active and growing
+community, it provides various statistical and graphical creation
+capabilities available under most operating systems, and is extensible
+with numerous packages available. Its major limitation is that there
+must be sufficient RAM to hold the data in memory.
+
+RStudio\footnote{\url{https://www.rstudio.com}} is an integrated
+development environment for the R statistical programming language.
+
+\subsection{C/C++}\label{cc}
+
+Originally developed by Dennis Ritchie at AT\&T Bell Labs in the late
+60s and early 70s, the C programming language is a low-level, general
+purpose computer programming language, that was initially designed for
+and implemented on the UNIX OS. A sucessor to the C programming language
+is C++, developed by Bjarne Stroustrup in the late 90s. It inherits most
+of C's syntax, as well as adds abstraction lending itself to be an
+object-oriented language.{[}74{]}
+
+\subsection[Suricata]{Suricata\footnote{\url{http://www.suricata-ids.org}}}\label{suricata9}
+
+A widely used network intrusion detection system is Snort.\footnote{\url{http://www.snort.org}}
+It is open source, and although highly effective and proven, its
+limitation is that it is single-threaded. A newer generation NIDS that
+has grown fairly popular is Suricata, developed by the Open Information
+Security Foundation (OISF) and partly funded by the US Department
+Homeland Security's Directorate for Science and Technology.
+
+Suricata is a high performing NIDS, IPS, and network security monitoring
+engine, that is based on signatures, however, unlike Snort it has a
+multithreaded architecture. The advanced techniques embedded in the
+engine uses an HTTP normalizer and parser in order to process HTTP
+streams which allow it to comprehend traffic at the application layer of
+the OSI model.
+
+\subsection[Metasploit]{Metasploit\footnote{\url{http://www.metasploit.com/index.jsp}}}\label{metasploit11}
+
+The open source network security tool was Metsaploit, created in 2003 by
+H.D.Moore, that is used to test weaknesses in computer systems,
+including breaking into systems that are remote. In addition to
+legitimate activities, Metasploit can be utilized to take unauthorized
+actions. One of its major advantages as a modular framework is that it
+allows for combinations of any exploit with any payload, allowing it to
+simulate real-world attacks.
+
+\newpage
+
+\section*{Appendix D}\label{appendix-d}
+\addcontentsline{toc}{section}{Appendix D}
 
 \subsection*{Configuration Files}\label{configuration-files}
 \addcontentsline{toc}{subsection}{Configuration Files}
@@ -2045,8 +2127,8 @@ Configuration files generated from statistical processing.
 
 \newpage
 
-\section*{Appendix C}\label{appendix-c}
-\addcontentsline{toc}{section}{Appendix C}
+\section*{Appendix E}\label{appendix-e}
+\addcontentsline{toc}{section}{Appendix E}
 
 \subsection*{Modbus/TCP Request/Response Packet
 Statistics}\label{modbustcp-requestresponse-packet-statistics}
@@ -2228,8 +2310,8 @@ mbtcp.modbus.word\_cnt\tabularnewline
 
 \newpage
 
-\section*{Appendix D}\label{appendix-d}
-\addcontentsline{toc}{section}{Appendix D}
+\section*{Appendix F}\label{appendix-f}
+\addcontentsline{toc}{section}{Appendix F}
 
 \subsection*{Merged Request/Response Packet
 Statistics}\label{merged-requestresponse-packet-statistics}
@@ -2316,8 +2398,8 @@ mbtcp.modbus.reference\_num\tabularnewline
 
 \newpage
 
-\section*{Appendix E}\label{appendix-e}
-\addcontentsline{toc}{section}{Appendix E}
+\section*{Appendix G}\label{appendix-g}
+\addcontentsline{toc}{section}{Appendix G}
 
 \subsection*{Commands and Scripts}\label{commands-and-scripts}
 \addcontentsline{toc}{subsection}{Commands and Scripts}
@@ -2330,7 +2412,7 @@ mbtcp.modbus.reference\_num\tabularnewline
 \item
   processScada.sh - Driver script for statistical computational process.
 \item
-  sew.sh - Script to execute extract data from pcap file via Tshark
+  sew.sh - Script to execute extract data from PCAP file via Tshark
   command
 \end{itemize}
 
@@ -2362,8 +2444,8 @@ mbtcp.modbus.reference\_num\tabularnewline
 
 \newpage
 
-\section*{Appendix F}\label{appendix-f}
-\addcontentsline{toc}{section}{Appendix F}
+\section*{Appendix H}\label{appendix-h}
+\addcontentsline{toc}{section}{Appendix H}
 
 \subsection*{Metasploit Attack
 Commands}\label{metasploit-attack-commands}
@@ -2538,37 +2620,37 @@ Attacks,'' \emph{\ldots{}International Symposium for ICS \& SCADA Cyber
 cyber-physical system security,'' \emph{IECON Proceedings (Industrial
 Electronics Conference)}, pp. 4490--4494, 2011.
 
-{[}18{]}J. Yasakethu, ``Intrusion Detection via Machine Learning for
+{[}18{]}D. E. Denning, ``An Intrusion-Detection Model,'' no. 2, pp.
+222--232, 1987.
+
+{[}19{]}M. Bishop, \emph{Computer security: art and science}.
+Addison-Wesley, 2003.
+
+{[}20{]}J. Yasakethu, ``Intrusion Detection via Machine Learning for
 SCADA System Protection,'' \emph{Proceedings of the 1st International
 Symposium for ICS \& SCADA Cyber Security Research}, 2013.
 
-{[}19{]}P. Garcia, J. Díaz-Verdejo, G. Maciá-Fernández, and E. Vázquez,
+{[}21{]}P. Garcia, J. Díaz-Verdejo, G. Maciá-Fernández, and E. Vázquez,
 ``Anomaly-based network intrusion detection: Techniques, systems and
 challenges,'' \emph{Computers \& Security}, vol. 28, no. 1-2, pp.
 18--28, 2009.
 
-{[}20{]}C. Wang, K. Viswanathan, L. Choudur, V. Talwar, W. Satterfield,
+{[}22{]}C. Wang, K. Viswanathan, L. Choudur, V. Talwar, W. Satterfield,
 and K. Schwan, ``Statistical techniques for online anomaly detection in
 data centers,'' \emph{12th IFIP/IEEE International Symposium on
 Integrated Network Management (IM 2011) and Workshops}, no. May, pp.
 385--392, 2011.
 
-{[}21{]}A. Valdes and S. Cheung, ``Communication pattern anomaly
+{[}23{]}A. Valdes and S. Cheung, ``Communication pattern anomaly
 detection in process control systems,'' \emph{2009 IEEE Conference on
 Technologies for Homeland Security, HST 2009}, pp. 22--29, 2009.
 
-{[}22{]}N. Sayegh, I. H. Elhajj, A. Kayssi, and A. Chehab, ``SCADA
+{[}24{]}N. Sayegh, I. H. Elhajj, A. Kayssi, and A. Chehab, ``SCADA
 Intrusion Detection System based on temporal behavior of frequent
 patterns,'' \emph{MELECON 2014 - 2014 17th IEEE Mediterranean
 Electrotechnical Conference}, no. April, pp. 432--438, 2014
 {[}Online{]}. Available:
 \url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6820573}
-
-{[}23{]}D. E. Denning, ``An Intrusion-Detection Model,'' no. 2, pp.
-222--232, 1987.
-
-{[}24{]}M. Bishop, \emph{Computer security: art and science}.
-Addison-Wesley, 2003.
 
 {[}25{]}K. Wang and Z. Wang, ``Anomalous payload-based network intrusion
 detection,'' \emph{Recent Adv. Intrusion Detect}, pp. 203--222, 2004.
@@ -2737,8 +2819,8 @@ Neural Network Based Intrusion Detection System for Critical
 Infrastructures,'' \emph{Neural Networks}, 2009.
 
 {[}64{]}L. A. Maglaras and J. Jiang, ``OCSVM model combined with K-means
-recursive clustering for intrusion detection in SCADA systems,'' vol. 1,
-pp. 5--6, 2014.
+recursive clustering for intrusion detection in SCADA systems,'' 2014,
+vol. 1, pp. 5--6.
 
 {[}65{]}M. Mantere, M. Sailio, and S. Noponen, ``Feature Selection for
 Machine Learning Based Anomaly Detection in Industrial Control System
@@ -2750,30 +2832,30 @@ and Communications}, pp. 771--774, 2012 {[}Online{]}. Available:
 on Behavior Mining and Machine Learning Techniques,'' pp. 619--628,
 2006.
 
-{[}67{]}D. A. Troy, ``Computing fundamentals UNIX systems,'' 1990.
-
-{[}68{]}B. Stroustrup, \emph{The C++ programming language}. 2000, p.
-1019.
-
-{[}69{]}``1999 DARPA Intrusion Detection Evaluation Data Set,'' 1999
+{[}67{]}``1999 DARPA Intrusion Detection Evaluation Data Set,'' 1999
 {[}Online{]}. Available:
 \url{http://www.ll.mit.edu/ideval/data/1999data.html}
 
-{[}70{]}J. W. Tukey, \emph{Exploratory Data Analysis}. Addison-Wesley,
+{[}68{]}J. W. Tukey, \emph{Exploratory Data Analysis}. Addison-Wesley,
 1977.
 
-{[}71{]}P. Lafaye de Micheaux, \emph{The R Software: Fundamentals of
+{[}69{]}P. Lafaye de Micheaux, \emph{The R Software: Fundamentals of
 Programming and Statistical Analysis, Statistics and Computing}.
 Springer New York, 2013.
 
-{[}72{]}I. Guyon and A. Elisseeff, ``An Introduction to Variable and
+{[}70{]}I. Guyon and A. Elisseeff, ``An Introduction to Variable and
 Feature Selection,'' \emph{Journal of Machine Learning Research}, 2003.
 
-{[}73{]}L. Yu and H. Liu, ``Efficient Feature Selection via Analysis of
+{[}71{]}L. Yu and H. Liu, ``Efficient Feature Selection via Analysis of
 Relevance and Redundancy,'' \emph{Journal of Machine Learning Research},
 2004.
 
-{[}74{]}T. Ma W and D. Sharma, ``A Study on the Feature Selection of
+{[}72{]}T. Ma W and D. Sharma, ``A Study on the Feature Selection of
 Network Traffic for Intrusion Detection Purpose,'' \emph{IEEE}, 2008.
+
+{[}73{]}D. A. Troy, ``Computing fundamentals UNIX systems,'' 1990.
+
+{[}74{]}B. Stroustrup, \emph{The C++ programming language}. 2000, p.
+1019.
 
 \end{document}
