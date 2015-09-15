@@ -11,7 +11,9 @@ sewModbusDT <- as.data.table(
                       tcp.srcport="factor", tcp.dstport="factor",
                       mbtcp.modbus.func_code="factor",
                       mbtcp.modbus.reference_num="factor",
-                      mbtcp.prot_id="factor")))
+                      mbtcp.prot_id="factor",
+                      
+                      )))
 
 # cleanup
 

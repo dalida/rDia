@@ -1,13 +1,10 @@
 \documentclass[11pt,]{article}
-\usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
-% Set line spacing
-% use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
 \else % if luatex or xelatex
   \ifxetex
@@ -19,29 +16,24 @@
   \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
   \newcommand{\euro}{€}
 \fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
-\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
 \usepackage[margin=1in]{geometry}
 \usepackage{longtable,booktabs}
 \usepackage{graphicx}
-% Redefine \includegraphics so that, unless explicit options are
-% given, the image width will not exceed the width of the page.
-% Images get their normal width if they fit onto the page, but
-% are scaled down if they would overflow the margins.
 \makeatletter
-\def\ScaleIfNeeded{%
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
 \makeatother
-\let\Oldincludegraphics\includegraphics
-{%
- \catcode`\@=11\relax%
- \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
-}%
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -64,8 +56,20 @@
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \setcounter{secnumdepth}{5}
 
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
 %%% Change title format to be more compact
 \usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
 \setlength{\droptitle}{-2em}
   \title{diateam\\SCAD@COPS\\A Hybrid Network Intrusion Detection System}
   \pretitle{\vspace{\droptitle}\centering\huge}
@@ -75,7 +79,6 @@
   \postauthor{\par}
   \date{}
   \predate{}\postdate{}
-
 
 
 
@@ -99,11 +102,13 @@
 \vspace{30mm}
 
 {\Huge diateam}\\
+\bigskip
 {\Huge SCAD@COPS}\\
+\bigskip
 \bigskip
 {\Huge A Hybrid}\\
 {\Huge Network Intrusion Detection System}\\
-\vspace{25mm}
+\vspace{15mm}
 {\Large by}\\
 \vspace{10mm}
 {\huge Lisa MALIPHOL}\\
@@ -126,7 +131,7 @@
 \medskip
 \textbf{\textit{\Large Télécom Bretagne}}\\
 
-\vspace{25mm}
+\vspace{15mm}
 
 Corporate Advisor:\\
 \smallskip
@@ -156,7 +161,9 @@ Professor Sandrine Vaton\\
 \vspace{30mm}
 
 {\Huge diateam}\\
+\bigskip
 {\Huge SCAD@COPS}\\
+\bigskip
 \bigskip
 {\Huge Un système hybride de détection}\\
 {\Huge d’intrusion de réseau }\\
@@ -195,9 +202,10 @@ controlled by computer systems called Supervisory Control and Data
 Acquisition (SCADA) systems. Previously, these systems resided on their
 own networks and used proprietary protocols and software, and therefore,
 through obscurity and isolation were moderately immune to outside
-threats. Over time, with the advancement of technology and increased
-interconnectivity to traditional IT systems, they have become
-susceptible and more vulnerable to cyber attacks.
+threats. Over time, with the advancement of technologies, such as in
+computing systems and networking, and increased interconnectivity to
+traditional IT systems they have become susceptible and more vulnerable
+to cyber attacks.
 
 In order to address this issue, Network Intrusion Detection Systems
 (NIDS) have been put in place in SCADA environments to monitor and
@@ -320,39 +328,23 @@ Masters of Science diploma at Télécom Bretagne.
 \addcontentsline{toc}{section}{Acronyms}
 
 \begin{longtable}[c]{@{}rl@{}}
-\toprule\addlinespace
-A-NIDS & Anomaly-based Network Intrusion Detection System
-\\\addlinespace
-DARPA & Defense Advanced Research Project Agency
-\\\addlinespace
-EDA & Exploratory Data Analysis
-\\\addlinespace
-HMI & Human-Machine Interface
-\\\addlinespace
-HNS & Hybrid Network Simulation
-\\\addlinespace
-ICS & Industrial Control System
-\\\addlinespace
-IDS & Intrusion Detection System
-\\\addlinespace
-IPS & Intrusion Prevention System
-\\\addlinespace
-MTU & Master Terminal Unit
-\\\addlinespace
-NIDS & Network Intrusion Detection System
-\\\addlinespace
-OSI & Open Standards Interconnection
-\\\addlinespace
-PLC & Programmable Logic Controller
-\\\addlinespace
-POC & Proof of Concept
-\\\addlinespace
-RTU & Remote Terminal Unit
-\\\addlinespace
-SCADA & Supervisory Control and Data Acquisition
-\\\addlinespace
-TCP/IP & Transmission Control Protocol/Internet Protocol
-\\\addlinespace
+\toprule
+A-NIDS & Anomaly-based Network Intrusion Detection System\tabularnewline
+DARPA & Defense Advanced Research Project Agency\tabularnewline
+EDA & Exploratory Data Analysis\tabularnewline
+HMI & Human-Machine Interface\tabularnewline
+HNS & Hybrid Network Simulation\tabularnewline
+ICS & Industrial Control System\tabularnewline
+IDS & Intrusion Detection System\tabularnewline
+IPS & Intrusion Prevention System\tabularnewline
+MTU & Master Terminal Unit\tabularnewline
+NIDS & Network Intrusion Detection System\tabularnewline
+OSI & Open Standards Interconnection\tabularnewline
+PLC & Programmable Logic Controller\tabularnewline
+POC & Proof of Concept\tabularnewline
+RTU & Remote Terminal Unit\tabularnewline
+SCADA & Supervisory Control and Data Acquisition\tabularnewline
+TCP/IP & Transmission Control Protocol/Internet Protocol\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -450,7 +442,7 @@ private networks, desktop computing, or the Internet. Since ICSs
 remained rather isolated and obscure, the dangers of cyber security were
 less, or non-existent.
 
-Typically industrial control systems are continuously operational and
+Typically, industrial control systems are continuously operational and
 commonly serve vital public services and infrastructure, thus preventive
 security measures must be put into place. The compromise of SCADA
 systems may have negative consequences including, but not limited to,
@@ -529,13 +521,13 @@ and MODBUS protocols.
 
 Known as the Open System Interconnection (OSI) model, it was initially
 developed by the International Standards Organization (ISO) to define
-and characterizes the communication between computing systems. The OSI
+and characterize the communication between computing systems. The OSI
 model, as shown in Figure 2
 (\href{https://engineering.linkedin.com/endorsements/geographic-trends-skills-using-linkedins-endorsement-feature}{Image
 source}) is represented as layers, each one expressed as a protocol.
 Each layer serves the layer above it, and the lowest one being closest
-to the physical medium carrying the communication. Figure OSI Model
-depicts each layer and its role and responsibilities.
+to the physical medium carrying the communication. Figure 2 depicts each
+layer and its role and responsibilities.
 
 \subsection{Protocols}\label{protocols}
 
@@ -569,7 +561,7 @@ networking.
 
 TCP/IP provides reliable, ordered and error-checked delivery of streams
 of octets between applications running on hosts communicating over an IP
-network. A detailed illustration of the TCP and IP headers can be seen
+network. A detailed illustration of the IP and TCP headers can be seen
 in Figures 3
 (\href{http://nmap.org/book/images/hdr/MJB-TCP-Header}{Image credit: Max
 Baxter}) and Figure 4
@@ -614,6 +606,13 @@ communication.
 
 \caption{MODBUS TCP/IP Communication Architecture}\label{fig:unnamed-chunk-8}
 \end{figure}
+
+The master initiates a request and the slave sends a response containing
+either data or error. The common implementations of MODBUS are over
+Ethernet networks (MODBUS/TCP) or Serial buses (MODBUS/RTU). Both forms
+of MODBUS contain the Packet Data Unit (PDU), the component consisting
+of a function code and data that is independent of the communication
+layer.
 
 Attached to the PDU is the application specific addressing and error
 checking, which together comprise the Application Data Unit (ADU). In
@@ -738,9 +737,9 @@ Attacks that exploit previously unknown vulnerabilities and security
 holes before a vendor can react and correct them via a patch are known
 as zero-day attacks. As deploying upgrades and patches to ICSs are
 relatively slow and infrequent, ICSs are highly susceptible to the
-weakness discovered in software or hardware before they are corrected. A
-well-known malware meant to target industrial PLCs, Stuxnet was designed
-to exploit an assortment of zero-day flaws.{[}17{]}
+weaknesses discovered in software or hardware before they are corrected.
+A well-known malware meant to target industrial PLCs, Stuxnet was
+designed to exploit an assortment of zero-day flaws.{[}17{]}
 
 \newpage
 
@@ -757,7 +756,7 @@ additional steps, such as terminating, or denying connections, may be
 taken in response to suspicious activity.
 
 The initial model for intrusion detection systems was presented by
-{[}18{]}, where she described the framework for the design and
+{[}18{]}, where Denning described the framework for the design and
 implementation of a general-purpose intrusion detection system. The
 ideal detection system should contain the following characteristics and
 have these capabilities {[}19{]}:
@@ -819,7 +818,7 @@ mature. Nonetheless, there has been significant growth into research on
 the methods used in anomaly detection, particularly those which minimize
 the rate of false positives. The primary methods of anomaly detection
 are statistical, data mining, and machine learning, which generally
-follow through the stages and are briefly described below.{[}20, 21{]}
+follow through the stages that are briefly described below.{[}20, 21{]}
 
 The first (parameterization) phase of implementing an anomaly-based
 detection system is to create the baseline profile of the system
@@ -861,8 +860,8 @@ Detection}\label{techniques-of-network-intrusion-detection}
 
 Numerous anomaly-based methods and techniques have been studied and
 implemented in detecting network intrusions. These include statistical,
-data mining and machine learning.{[}\textbf{???}, 21, 22, 25--38{]}
-Figure 8 provides a brief summary of these techniques.
+data mining and machine learning.{[}7, 21, 22, 25--39{]} Figure 8
+provides a brief summary of these techniques.
 
 \subsection{Statistical}\label{statistical}
 
@@ -876,7 +875,7 @@ later, multivariate models were applied in which highly correlated
 metrics were used, as they were considered to be more effective at
 distinguishing anomalies. In the second case, considered as a
 time-series model, a window of data is used to compute the mean of its
-distribution in order to determine the thresholds.{[}22, 40--44{]}
+distribution in order to determine the thresholds.{[}22, 41--45{]}
 
 \subsection{Data Mining}\label{data-mining}
 
@@ -887,7 +886,7 @@ process in understanding and preparing the data for the mining process
 and analysis. Some data mining techniques include, but are not limited
 to association rules, language processing, and decision trees and
 consist of such algorithms as Apriori, K-Means, and K-Medoids to mention
-a few.{[}45--59{]}
+a few.{[}46--60{]}
 
 \subsection{Machine Learning}\label{machine-learning}
 
@@ -895,7 +894,7 @@ In the machine learning approach an algorithm is trained to learn
 against a set of data that has been previously identified, or labeled,
 and as more data becomes available, the greater the accuracy of the
 model. Prominent methods of machine learning are Bayesian and Neural
-Networks, SVM, kNN, clustering and outlier detection.{[}43, 60--67{]}
+Networks, SVM, kNN, clustering and outlier detection.{[}44, 61--68{]}
 
 Similarities and overlap can be seen between the techniques above as
 they have evolved and originated from, and are intersections of, the
@@ -927,7 +926,7 @@ different methods applied in anomaly detection.
 
 One of the only publicly available datasets containing network traffic
 data has been provided by the US Defense Advanced Research Projects
-Agency (DARPA).{[}68{]} Network IDS analysis and studies have commonly
+Agency (DARPA).{[}69{]} Network IDS analysis and studies have commonly
 been carried out using the DARPA dataset. In this study, the analysis
 has been completed using data acquired from a simulated testbed, the
 Virtual Scada Box.
@@ -948,11 +947,7 @@ virtual water pump that have been connected over a TCP/IP network.
 The data analyzed were derived from a simulated network running on the
 Virtual Scada Box. A packet capture file was created via Wireshark,
 which captured the network traffic simulated over a virtual SCADA
-network. Once the network traffic was captured and saved in a PCAP file,
-Wireshark provides the capability to export the raw data into various
-comma delimited files in order to do further analysis. Exported files
-were created with TCP endpoints, TCP conversations, as well as the
-entire PCAP file, each as a CSV file. (Appendix A)
+network.
 
 \subsection[PCAP]{PCAP\footnote{\url{https://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html}}}\label{pcap2}
 
@@ -1032,7 +1027,7 @@ Example MODBUS packets, with MODBUS data values:
 
 \section{Exploratory Data Analysis}\label{exploratory-data-analysis}
 
-Originally championed by John Tukey{[}69{]}, Exploratory Data Analysis
+Originally championed by John Tukey{[}70{]}, Exploratory Data Analysis
 (EDA) is an initial approach to understanding a data set in order to get
 a ``feel'' for the data, to summarizing its essential characteristics
 and to studying patterns in the data. Moreover, exploratory data
@@ -1087,7 +1082,7 @@ of the variance and is, unlike the variance, expressed in the same terms
 \subsubsection{Covariance}\label{covariance}
 
 A measure of how closely two variables change, or vary together is the
-covariance. Random random variables whose covariance is 0 is said to be
+covariance. Random variables whose covariance is 0 is said to be
 uncorrelated.
 
 \[ \sigma(X, Y) = E[(X - E[X])(Y-E[Y])] \]
@@ -1134,7 +1129,7 @@ a given variable with the data categorized.
 An effective and graphical method for visualizing outliers is the
 boxplot. It displays the data in terms of interquartiles, where outliers
 are indicated as individual points. (Figure 9: Boxplot Image
-Source{[}70{]})
+Source{[}71{]})
 
 \begin{figure}
 
@@ -1163,49 +1158,31 @@ the graph as well.
 
 \subsection{Data Analysis}\label{data-analysis}
 
-A packet capture file was created via Wireshark, which captured the
-network traffic simulated over a virtual SCADA network under normal
-conditions (no attacks).
+Below is a summary of the packet capture file that was created under
+``normal'' conditions over the virtual SCADA network.
 
 \begin{longtable}[c]{@{}ll@{}}
-\toprule\addlinespace
-\textbf{capture\_sew\_20150617.pcap} &
-\\\addlinespace
-\midrule\endhead
-\textbf{File} &
-\\\addlinespace
-Length: & 5124210 bytes
-\\\addlinespace
-Format: & Wireshark - pcapng
-\\\addlinespace
-Encapsulation: & Ethernet
-\\\addlinespace
-Packet size limit: & 65535
-\\\addlinespace
-\textbf{Time} &
-\\\addlinespace
-First packet: & 2015-07-21 15:16:56
-\\\addlinespace
-Last packet: & 2015-07-21 15:29:54
-\\\addlinespace
-Elapsed: & 00:12:58
-\\\addlinespace
-\textbf{Traffic Captured} &
-\\\addlinespace
-Packets & 51358
-\\\addlinespace
-B/t first and last pkt & 778,118 sec
-\\\addlinespace
-Avg. packets/sec & 66,003
-\\\addlinespace
-Avg. packet size & 65,343 bytes
-\\\addlinespace
-Bytes & 3355887
-\\\addlinespace
-Avg. bytes/sec & 4312,826
-\\\addlinespace
-Avg. Mit/sec & 0,035
-\\\addlinespace
+\toprule
+**capture\_schneider\_20150903\_ & normal.pcapng**\tabularnewline
+\midrule
+\endhead
+\textbf{File} &\tabularnewline
+Length: & 3969470 bytes\tabularnewline
+Format: & Wireshark - pcapng\tabularnewline
+Encapsulation: & Ethernet\tabularnewline
+Packet size limit: & 65535\tabularnewline
+\textbf{Time} &\tabularnewline
+First packet: & 2015-09-03 15:26:26\tabularnewline
+Last packet: & 2015-09-03 15:36:29\tabularnewline
+Elapsed: & 00:10:02\tabularnewline
+\textbf{Traffic Captured} &\tabularnewline
+Packets & 39784\tabularnewline
+B/t first and last pkt & 602,865 sec\tabularnewline
+Avg. packets/sec & 65,992\tabularnewline
+Avg. packet size & 65,343 bytes\tabularnewline
+Bytes & 2599593\tabularnewline
+Avg. bytes/sec & 4312,063\tabularnewline
+Avg. Mit/sec & 0,034\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1213,7 +1190,7 @@ Once the network traffic was captured and saved in a PCAP file,
 Wireshark provides the capability to export the raw data into various
 comma delimited files in order to do further analysis. Exported files
 were created with TCP endpoints, TCP conversations, as well as the
-entire pcap file, each as a CSV file. (Appendix A)
+entire pcap file, each as a CSV file. (Appendix B)
 
 \subsection{Network Analysis}\label{network-analysis}
 
@@ -1236,75 +1213,80 @@ The following Tables 3-7 list the data extracted from the packet capture
 file:
 
 \begin{longtable}[c]{@{}lllr@{}}
-\toprule\addlinespace
-ip.src & ip.dst & mbtcp.modbus.unit\_id & count
-\\\addlinespace
-\midrule\endhead
-192.168.12.117 & 192.168.12.252 & 1 & 24947
-\\\addlinespace
-192.168.12.252 & 192.168.12.117 & 1 & 24945
-\\\addlinespace
+\caption{Source / Destination / UnitID}\tabularnewline
+\toprule
+ip.src & ip.dst & mbtcp.modbus.unit\_id & count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & ip.dst & mbtcp.modbus.unit\_id & count\tabularnewline
+\midrule
+\endhead
+192.168.12.53 & 192.168.12.253 & 1 & 19323\tabularnewline
+192.168.12.253 & 192.168.12.53 & 1 & 19323\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Source / Destination / UnitID}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lr@{}}
-\toprule\addlinespace
-ip.src & count
-\\\addlinespace
-\midrule\endhead
-192.168.12.117 & 24947
-\\\addlinespace
-192.168.12.252 & 24945
-\\\addlinespace
+\caption{Sources}\tabularnewline
+\toprule
+ip.src & count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & count\tabularnewline
+\midrule
+\endhead
+192.168.12.53 & 19323\tabularnewline
+192.168.12.253 & 19323\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Sources}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lr@{}}
-\toprule\addlinespace
-ip.dst & count
-\\\addlinespace
-\midrule\endhead
-192.168.12.252 & 24947
-\\\addlinespace
-192.168.12.117 & 24945
-\\\addlinespace
+\caption{Destination}\tabularnewline
+\toprule
+ip.dst & count\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.dst & count\tabularnewline
+\midrule
+\endhead
+192.168.12.253 & 19323\tabularnewline
+192.168.12.53 & 19323\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Destination}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lll@{}}
-\toprule\addlinespace
-ip.dst & mbtcp.modbus.unit\_id & ip.dst.unit\_id
-\\\addlinespace
-\midrule\endhead
-192.168.12.252 & 1 & 192.168.12.252/1
-\\\addlinespace
-192.168.12.117 & 1 & 192.168.12.117/1
-\\\addlinespace
+\caption{Destination / UnitID}\tabularnewline
+\toprule
+ip.dst & mbtcp.modbus.unit\_id & ip.dst.unit\_id\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.dst & mbtcp.modbus.unit\_id & ip.dst.unit\_id\tabularnewline
+\midrule
+\endhead
+192.168.12.253 & 1 & 192.168.12.253/1\tabularnewline
+192.168.12.53 & 1 & 192.168.12.53/1\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Destination / UnitID}
 \end{longtable}
 
 \newpage
 
 \begin{longtable}[c]{@{}lll@{}}
-\toprule\addlinespace
-ip.src & mbtcp.modbus.func\_code & src.func
-\\\addlinespace
-\midrule\endhead
-192.168.12.117 & 4 & 192.168.12.117/4
-\\\addlinespace
-192.168.12.252 & 4 & 192.168.12.252/4
-\\\addlinespace
+\caption{Source / Function Code}\tabularnewline
+\toprule
+ip.src & mbtcp.modbus.func\_code & src.func\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & mbtcp.modbus.func\_code & src.func\tabularnewline
+\midrule
+\endhead
+192.168.12.53 & 4 & 192.168.12.53/4\tabularnewline
+192.168.12.253 & 4 & 192.168.12.253/4\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Source / Function Code}
 \end{longtable}
 
 \subsection{Packet Analysis}\label{packet-analysis}
@@ -1462,6 +1444,8 @@ PLC devices. The reference numbers indicate the following:
 \caption{Scatterplot Matrix of Pairs of Variables}\label{fig:unnamed-chunk-33}
 \end{figure}
 
+\clearpage
+
 \begin{figure}[h]
 
 {\centering \includegraphics{thesis_files/figure-latex/unnamed-chunk-34-1} 
@@ -1558,7 +1542,7 @@ subsequently in Chapter 10.
 \subsection{Implementation}\label{implementation}
 
 All software and tools applied and implemented in the SCAD@COPS project
-are free and open source (Appendix C).
+are free and open source (Appendix E).
 
 \subsubsection{Process Flow}\label{process-flow}
 
@@ -1612,7 +1596,7 @@ network traffic:
   facilities, various files were created for further analysis, with
   information such as TCP endpoints, conversations, etc.
 \item
-  Tshark - The pertinent variables pertaining to the MODBUS/TCP
+  TShark - The pertinent variables pertaining to the MODBUS/TCP
   application protocol enclosed in the packet data were extracted and
   parsed by TShark.
 \end{itemize}
@@ -1623,7 +1607,7 @@ Processing}\label{statistical-analysis-and-processing}
 The statistical process was implemented using various components to
 handle specific steps. Each component used was initially selected to
 manage a particular task of the process according to its ease and
-efficiency of development, as well as its processing time (Appendix G).
+efficiency of development, as well as its processing time (Appendix F).
 Once captured from the monitoring device on the IDS appliance, the
 packet capture file can be processed offline. Configuration files are
 subsequently generated in JSON format after the statistical
@@ -1637,6 +1621,8 @@ computations, which can then be uploaded to the IDS appliance.
 
 \caption{Statistical Computational Process}\label{fig:unnamed-chunk-38}
 \end{figure}
+
+\newpage
 
 The components are as follows, and depicted in Figure 26:
 
@@ -1668,8 +1654,8 @@ of data that are handled can greatly benefit from the careful selection
 of relevant features. In addition, removing redundancies also improves
 the efficiency and having both allows for further increased accuracy and
 reduction in complexity. However, there should be an appropriate
-selection of features so as to prevent any loss of information.{[}71,
-72{]}
+selection of features so as to prevent any loss of information.{[}72,
+73{]}
 
 Depending on the size of the dataset and the number of features, or
 variables, the selection process may simply be done by a domain expert
@@ -1688,15 +1674,15 @@ another statistical procedure by which the data can be transformed and
 represented as its eigenvalues and eigenvectors.
 
 Network based intrusion detection has been studied for some time and can
-be implemented by using conventional network variables.{[}42, 73{]} In
-{[}35, 66{]}, the challenges of feature selection in the context of
+be implemented by using conventional network variables.{[}43, 74{]} In
+{[}36, 67{]}, the challenges of feature selection in the context of
 anomaly detection in industrial systems are discussed.
 
 The first version of the SCAD@COPS network intrusion detection device
 for industrial systems will be based on simple statistical variables
 that have been chosen by an expert in the domain of cyber security with
 experience in SCADA systems. Example configuration files generated from
-the statistical process as outlined in Section 9.2.2 (Appendix D) have
+the statistical process as outlined in Section 9.2.2 (Appendix G) have
 been used as the parameters in the proof of concept.
 
 \clearpage
@@ -1726,111 +1712,118 @@ The test simulation exposed the routine activity running on the Virtual
 Scada Box to a MODBUS STOP attack. The commands executed from Metasploit
 were a series of payloads sent by the attacker in order to establish the
 initial state of the water tank. This was then followed by the stop
-command with its relevant data values. (Appendix F)
+command with its relevant data values. (Appendix H)
 
 The following tables list anomalies and differences detected in the
 attack simulation:
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule\addlinespace
-ip.src
-\\\addlinespace
-\midrule\endhead
-192.168.12.34
-\\\addlinespace
+\caption{Anomalous Sources}\tabularnewline
+\toprule
+ip.src\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src\tabularnewline
+\midrule
+\endhead
+192.168.12.34\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Anomalous Sources}
 \end{longtable}
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule\addlinespace
-ip.dst
-\\\addlinespace
-\midrule\endhead
-192.168.12.34
-\\\addlinespace
+\caption{Anomalous Destinations}\tabularnewline
+\toprule
+ip.dst\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.dst\tabularnewline
+\midrule
+\endhead
+192.168.12.34\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Anomalous Destinations}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lll@{}}
-\toprule\addlinespace
-IP\_DST\_MODBUS\_UNIT\_ID & ip.dst & mbtcp.modbus.unit\_id
-\\\addlinespace
-\midrule\endhead
-192.168.12.253/ & 192.168.12.253 &
-\\\addlinespace
-192.168.12.253/0 & 192.168.12.253 & 0
-\\\addlinespace
-192.168.12.34/ & 192.168.12.34 &
-\\\addlinespace
-192.168.12.34/0 & 192.168.12.34 & 0
-\\\addlinespace
+\caption{Anomalous Source / MODBUS Unit Pairs}\tabularnewline
+\toprule
+IP\_DST\_MODBUS\_UNIT\_ID & ip.dst &
+mbtcp.modbus.unit\_id\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+IP\_DST\_MODBUS\_UNIT\_ID & ip.dst &
+mbtcp.modbus.unit\_id\tabularnewline
+\midrule
+\endhead
+192.168.12.253/ & 192.168.12.253 &\tabularnewline
+192.168.12.253/0 & 192.168.12.253 & 0\tabularnewline
+192.168.12.34/ & 192.168.12.34 &\tabularnewline
+192.168.12.34/0 & 192.168.12.34 & 0\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Anomalous Source / MODBUS Unit Pairs}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lll@{}}
-\toprule\addlinespace
-IP\_SRC\_MAC\_ADDR & ip.src & eth.src
-\\\addlinespace
-\midrule\endhead
-192.168.12.34/08:00:27:4a:25:6c & 192.168.12.34 & 08:00:27:4a:25:6c
-\\\addlinespace
+\caption{Anomalous Source / MAC Address Pairs}\tabularnewline
+\toprule
+IP\_SRC\_MAC\_ADDR & ip.src & eth.src\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+IP\_SRC\_MAC\_ADDR & ip.src & eth.src\tabularnewline
+\midrule
+\endhead
+192.168.12.34/08:00:27:4a:25:6c & 192.168.12.34 &
+08:00:27:4a:25:6c\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Anomalous Source / MAC Address Pairs}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lll@{}}
-\toprule\addlinespace
-IP\_SRC\_MOD\_FUNC & ip.src & mbtcp.modbus.func\_code
-\\\addlinespace
-\midrule\endhead
-192.168.12.253/ & 192.168.12.253 &
-\\\addlinespace
-192.168.12.253/90 & 192.168.12.253 & 90
-\\\addlinespace
-192.168.12.34/ & 192.168.12.34 &
-\\\addlinespace
-192.168.12.34/90 & 192.168.12.34 & 90
-\\\addlinespace
-192.168.12.53/ & 192.168.12.53 &
-\\\addlinespace
+\caption{Anomalous Source / MODBUS Function Code Pairs}\tabularnewline
+\toprule
+IP\_SRC\_MOD\_FUNC & ip.src & mbtcp.modbus.func\_code\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+IP\_SRC\_MOD\_FUNC & ip.src & mbtcp.modbus.func\_code\tabularnewline
+\midrule
+\endhead
+192.168.12.253/ & 192.168.12.253 &\tabularnewline
+192.168.12.253/90 & 192.168.12.253 & 90\tabularnewline
+192.168.12.34/ & 192.168.12.34 &\tabularnewline
+192.168.12.34/90 & 192.168.12.34 & 90\tabularnewline
+192.168.12.53/ & 192.168.12.53 &\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Anomalous Source / MODBUS Function Code Pairs}
 \end{longtable}
 
-In Table 12, we see MODBUS function code 90 sent to perform
-administrative commands without authentication.
+In Table 12, we see MODBUS function code 90, which is ordinarily sent to
+perform administrative commands without authentication.
 
 \begin{longtable}[c]{@{}lll@{}}
-\toprule\addlinespace
-ip.src & ip.dst & mbtcp.modbus.func\_code
-\\\addlinespace
-\midrule\endhead
-192.168.12.253 & 192.168.12.53 & 4
-\\\addlinespace
-192.168.12.53 & 192.168.12.253 & 4
-\\\addlinespace
+\caption{Differences in Frequency of Source/Function
+Code}\tabularnewline
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code\tabularnewline
+\midrule
+\endhead
+192.168.12.253 & 192.168.12.53 & 4\tabularnewline
+192.168.12.53 & 192.168.12.253 & 4\tabularnewline
 \bottomrule
-\addlinespace
-\caption{Differences in Frequency of Source/Function Code}
 \end{longtable}
 
 \begin{longtable}[c]{@{}rrr@{}}
-\toprule\addlinespace
-avgFrequencySec.n & avgFrequencySec.a & avgFrequencySec.diff
-\\\addlinespace
-\midrule\endhead
-33.14408 & 33.08108 & 0.0630013
-\\\addlinespace
-33.14408 & 33.08108 & 0.0630013
-\\\addlinespace
+\toprule
+avgFrequencySec.n & avgFrequencySec.a &
+avgFrequencySec.diff\tabularnewline
+\midrule
+\endhead
+33.14408 & 33.08108 & 0.0630013\tabularnewline
+33.14408 & 33.08108 & 0.0630013\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1838,37 +1831,35 @@ The difference in average frequency shown in Table 13 and 15 are
 indicated by a prefix `n' for normal and `a' for attack.
 
 \begin{longtable}[c]{@{}llll@{}}
-\toprule\addlinespace
-ip.src & ip.dst & mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num
-\\\addlinespace
-\midrule\endhead
-192.168.12.53 & 192.168.12.253 & 4 & 0
-\\\addlinespace
-192.168.12.53 & 192.168.12.253 & 4 & 1
-\\\addlinespace
-192.168.12.53 & 192.168.12.253 & 4 & 2
-\\\addlinespace
-192.168.12.53 & 192.168.12.253 & 4 & 3
-\\\addlinespace
-\bottomrule
-\addlinespace
 \caption{Differences in Frequency of Source/Function Code/Reference
-Number}
+Number}\tabularnewline
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code &
+mbtcp.modbus.reference\_num\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+ip.src & ip.dst & mbtcp.modbus.func\_code &
+mbtcp.modbus.reference\_num\tabularnewline
+\midrule
+\endhead
+192.168.12.53 & 192.168.12.253 & 4 & 0\tabularnewline
+192.168.12.53 & 192.168.12.253 & 4 & 1\tabularnewline
+192.168.12.53 & 192.168.12.253 & 4 & 2\tabularnewline
+192.168.12.53 & 192.168.12.253 & 4 & 3\tabularnewline
+\bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}rrr@{}}
-\toprule\addlinespace
-avgFrequncySec.n & avgFrequncySec.a & avgFrequencySec.diff
-\\\addlinespace
-\midrule\endhead
-13.675258 & 13.714286 & -0.0390280
-\\\addlinespace
-15.618557 & 15.567568 & 0.0509891
-\\\addlinespace
-1.962069 & 1.959184 & 0.0028853
-\\\addlinespace
-1.962004 & 1.959184 & 0.0028198
-\\\addlinespace
+\toprule
+avgFrequncySec.n & avgFrequncySec.a &
+avgFrequencySec.diff\tabularnewline
+\midrule
+\endhead
+13.675258 & 13.714286 & -0.0390280\tabularnewline
+15.618557 & 15.567568 & 0.0509891\tabularnewline
+1.962069 & 1.959184 & 0.0028853\tabularnewline
+1.962004 & 1.959184 & 0.0028198\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1918,16 +1909,15 @@ concluded by running another simulation in ``attack'' mode and running a
 comparison against the normal data in order to detect the anomalies.
 
 Although the first implementation of the SCAD@COPS NIDS prototype uses
-rather simple statistical analysis and methods, additionalfurther
-research and work can be conducted to deviseascertain furthermore viable
-and effective methods for anomaly detection. Other areas of study
-include more sophisticated and advanced detection of anomalous behaviour
-applying machine learning, or data mining techniques such as Neural and
-Bayesian networks. Additionally, another potential area of study is
-Time-Series analysis. As these methods are fairly new to the field, more
-work can be explored and these methods can be exploited to further
-improve the accuracy and detection of network intrusion in future
-versions of SCAD@COPS.
+rather simple statistical analysis and methods, additional research and
+work can be conducted to devise further viable and effective methods for
+anomaly detection. Other areas of study include more sophisticated and
+advanced detection of anomalous behaviour applying machine learning, or
+data mining techniques such as Neural and Bayesian networks.
+Additionally, another potential area of study is Time-Series analysis.
+As these methods are fairly new to the field, more work can be explored
+and these methods can be exploited to further improve the accuracy and
+detection of network intrusion in future versions of SCAD@COPS.
 
 \clearpage
 
@@ -1952,90 +1942,60 @@ of the exported files:
 Entire pcap file exported in CSV format:
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule\addlinespace
-SCADA\_20150429\_042915.csv
-\\\addlinespace
-\midrule\endhead
-Time
-\\\addlinespace
-Source
-\\\addlinespace
-Destination
-\\\addlinespace
-Protocol
-\\\addlinespace
-Length
-\\\addlinespace
-Info
-\\\addlinespace
+\toprule
+SCADA\_20150429\_042915.csv\tabularnewline
+\midrule
+\endhead
+Time\tabularnewline
+Source\tabularnewline
+Destination\tabularnewline
+Protocol\tabularnewline
+Length\tabularnewline
+Info\tabularnewline
 \bottomrule
 \end{longtable}
 
 List of endpoints, the traffic to and from an IP address:
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule\addlinespace
-SCADA\_Security\_042915\_TCP\_Endpoints.csv
-\\\addlinespace
-\midrule\endhead
-Address
-\\\addlinespace
-Port
-\\\addlinespace
-Packets
-\\\addlinespace
-Bytes
-\\\addlinespace
-Tx.Packets
-\\\addlinespace
-Tx.Bytes
-\\\addlinespace
-Rx.Packets
-\\\addlinespace
-Rx.Bytes
-\\\addlinespace
-Latitude
-\\\addlinespace
-Longitude
-\\\addlinespace
+\toprule
+SCADA\_Security\_042915\_TCP\_Endpoints.csv\tabularnewline
+\midrule
+\endhead
+Address\tabularnewline
+Port\tabularnewline
+Packets\tabularnewline
+Bytes\tabularnewline
+Tx.Packets\tabularnewline
+Tx.Bytes\tabularnewline
+Rx.Packets\tabularnewline
+Rx.Bytes\tabularnewline
+Latitude\tabularnewline
+Longitude\tabularnewline
 \bottomrule
 \end{longtable}
 
 List of conversations, the traffic between two endpoints :
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule\addlinespace
-SCADA\_Security\_042915\_TCP\_Conversations.csv
-\\\addlinespace
-\midrule\endhead
-Address.A
-\\\addlinespace
-Port.A
-\\\addlinespace
-Address.B
-\\\addlinespace
-Port.B
-\\\addlinespace
-Packets
-\\\addlinespace
-Bytes
-\\\addlinespace
-Packets.A.B
-\\\addlinespace
-Bytes.A.B
-\\\addlinespace
-Packets.A.B.1
-\\\addlinespace
-Bytes.A.B.1
-\\\addlinespace
-Rel.Start
-\\\addlinespace
-Duration
-\\\addlinespace
-bps.A.B
-\\\addlinespace
-bps.A.B.1
-\\\addlinespace
+\toprule
+SCADA\_Security\_042915\_TCP\_Conversations.csv\tabularnewline
+\midrule
+\endhead
+Address.A\tabularnewline
+Port.A\tabularnewline
+Address.B\tabularnewline
+Port.B\tabularnewline
+Packets\tabularnewline
+Bytes\tabularnewline
+Packets.A.B\tabularnewline
+Bytes.A.B\tabularnewline
+Packets.A.B.1\tabularnewline
+Bytes.A.B.1\tabularnewline
+Rel.Start\tabularnewline
+Duration\tabularnewline
+bps.A.B\tabularnewline
+bps.A.B.1\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -2043,6 +2003,277 @@ bps.A.B.1
 
 \section*{Appendix C}\label{appendix-c}
 \addcontentsline{toc}{section}{Appendix C}
+
+\subsection*{MODBUS/TCP Request/Response Packet
+Statistics}\label{modbustcp-requestresponse-packet-statistics}
+\addcontentsline{toc}{subsection}{MODBUS/TCP Request/Response Packet
+Statistics}
+
+\begin{longtable}[c]{@{}lcllcll@{}}
+\caption{Requests Summary}\tabularnewline
+\toprule
+& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
+ip.proto & ip.version\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
+ip.proto & ip.version\tabularnewline
+\midrule
+\endhead
+& Min. : 2 & Min. : 0.1604 & Min. :0.000164 & Min. :66 & 6:19323 &
+4:19323\tabularnewline
+& 1st Qu.: 9947 & 1st Qu.:150.7170 & 1st Qu.:0.000300 & 1st Qu.:66 & NA
+& NA\tabularnewline
+& Median :19892 & Median :301.2814 & Median :0.000347 & Median :66 & NA
+& NA\tabularnewline
+& Mean :19892 & Mean :300.9954 & Mean :0.012626 & Mean :66 & NA &
+NA\tabularnewline
+& 3rd Qu.:29837 & 3rd Qu.:451.8589 & 3rd Qu.:0.000368 & 3rd Qu.:66 & NA
+& NA\tabularnewline
+& Max. :39784 & Max. :602.8653 & Max. :1.905327 & Max. :66 & NA &
+NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}lcccc@{}}
+\toprule
+& ip.src & eth.src & ip.dst & eth.dst\tabularnewline
+\midrule
+\endhead
+& 192.168.12.253: 0 & 00:80:f4:0f:35:aa: 0 & 192.168.12.253:19323 &
+00:80:f4:0f:35:aa:19323\tabularnewline
+& 192.168.12.53 :19323 & 08:00:27:a5:dc:c4:19323 & 192.168.12.53 : 0 &
+08:00:27:a5:dc:c4: 0\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llllll@{}}
+\toprule
+& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport & mbtcp.prot\_id &
+mbtcp.trans\_id\tabularnewline
+\midrule
+\endhead
+& : 0 & 1044:19323 & 1044: 0 & : 0 & Min. : 0.0\tabularnewline
+& 1:19323 & 502 : 0 & 502 :19323 & 0:19323 & 1st Qu.:
+64.0\tabularnewline
+& NA & NA & NA & NA & Median :127.0\tabularnewline
+& NA & NA & NA & NA & Mean :127.4\tabularnewline
+& NA & NA & NA & NA & 3rd Qu.:191.0\tabularnewline
+& NA & NA & NA & NA & Max. :255.0\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llll@{}}
+\toprule
+& mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num &
+mbtcp.modbus.word\_cnt\tabularnewline
+\midrule
+\endhead
+& : 0 & : 0 & Min. :1\tabularnewline
+& 4:19323 & 0:7959 & 1st Qu.:1\tabularnewline
+& NA & 1:9090 & Median :1\tabularnewline
+& NA & 2:1138 & Mean :1\tabularnewline
+& NA & 3:1136 & 3rd Qu.:1\tabularnewline
+& NA & NA & Max. :1\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}lclc@{}}
+\toprule
+& mbtcp.len & mbtcp.modbus.data & frame.second\tabularnewline
+\midrule
+\endhead
+& Min. :6 & :19323 & Min. : 0.0\tabularnewline
+& 1st Qu.:6 & 00:3f : 0 & 1st Qu.:150.0\tabularnewline
+& Median :6 & 00:40 : 0 & Median :301.0\tabularnewline
+& Mean :6 & 00:41 : 0 & Mean :300.5\tabularnewline
+& 3rd Qu.:6 & 00:50 : 0 & 3rd Qu.:451.0\tabularnewline
+& Max. :6 & 00:54 : 0 & Max. :602.0\tabularnewline
+& NA & (Other): 0 & NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\newpage
+
+\begin{longtable}[c]{@{}lcllcll@{}}
+\caption{Responses Summary}\tabularnewline
+\toprule
+& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
+ip.proto & ip.version\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
+ip.proto & ip.version\tabularnewline
+\midrule
+\endhead
+& Min. : 3 & Min. : 0.169 & Min. :0.001774 & Min. :65 & 6:19323 &
+4:19323\tabularnewline
+& 1st Qu.: 9948 & 1st Qu.:150.727 & 1st Qu.:0.009454 & 1st Qu.:65 & NA &
+NA\tabularnewline
+& Median :19893 & Median :301.291 & Median :0.009655 & Median :65 & NA &
+NA\tabularnewline
+& Mean :19893 & Mean :301.002 & Mean :0.009573 & Mean :65 & NA &
+NA\tabularnewline
+& 3rd Qu.:29838 & 3rd Qu.:451.869 & 3rd Qu.:0.009773 & 3rd Qu.:65 & NA &
+NA\tabularnewline
+& Max. :39783 & Max. :602.865 & Max. :0.120188 & Max. :65 & NA &
+NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}lcccc@{}}
+\toprule
+& ip.src & eth.src & ip.dst & eth.dst\tabularnewline
+\midrule
+\endhead
+& 192.168.12.253:19323 & 00:80:f4:0f:35:aa:19323 & 192.168.12.253: 0 &
+00:80:f4:0f:35:aa: 0\tabularnewline
+& 192.168.12.53 : 0 & 08:00:27:a5:dc:c4: 0 & 192.168.12.53 :19323 &
+08:00:27:a5:dc:c4:19323\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llllll@{}}
+\toprule
+& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport & mbtcp.prot\_id &
+mbtcp.trans\_id\tabularnewline
+\midrule
+\endhead
+& : 0 & 1044: 0 & 1044:19323 & : 0 & Min. : 0.0\tabularnewline
+& 1:19323 & 502 :19323 & 502 : 0 & 0:19323 & 1st Qu.:
+64.0\tabularnewline
+& NA & NA & NA & NA & Median :127.0\tabularnewline
+& NA & NA & NA & NA & Mean :127.4\tabularnewline
+& NA & NA & NA & NA & 3rd Qu.:191.0\tabularnewline
+& NA & NA & NA & NA & Max. :255.0\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llll@{}}
+\toprule
+& mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num &
+mbtcp.modbus.word\_cnt\tabularnewline
+\midrule
+\endhead
+& : 0 & :19323 & Min. : NA\tabularnewline
+& 4:19323 & 0: 0 & 1st Qu.: NA\tabularnewline
+& NA & 1: 0 & Median : NA\tabularnewline
+& NA & 2: 0 & Mean :NaN\tabularnewline
+& NA & 3: 0 & 3rd Qu.: NA\tabularnewline
+& NA & NA & Max. : NA\tabularnewline
+& NA & NA & NA's :19323\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}lclc@{}}
+\toprule
+& mbtcp.len & mbtcp.modbus.data & frame.second\tabularnewline
+\midrule
+\endhead
+& Min. :5 & 00:70 :7959 & Min. : 0.0\tabularnewline
+& 1st Qu.:5 & 00:54 :4636 & 1st Qu.:150.0\tabularnewline
+& Median :5 & 00:50 :4427 & Median :301.0\tabularnewline
+& Mean :5 & 14:2a : 56 & Mean :300.5\tabularnewline
+& 3rd Qu.:5 & 12:e2 : 43 & 3rd Qu.:451.0\tabularnewline
+& Max. :5 & 12:d8 : 41 & Max. :602.0\tabularnewline
+& NA & (Other):2161 & NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\clearpage
+
+\section*{Appendix D}\label{appendix-d}
+\addcontentsline{toc}{section}{Appendix D}
+
+\subsection*{Merged Request/Response Packet
+Statistics}\label{merged-requestresponse-packet-statistics}
+\addcontentsline{toc}{subsection}{Merged Request/Response Packet
+Statistics}
+
+\begin{longtable}[c]{@{}lcllc@{}}
+\caption{Merged Packets Summary}\tabularnewline
+\toprule
+& frame.number & frame.time\_relative & frame.time\_delta &
+frame.len\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& frame.number & frame.time\_relative & frame.time\_delta &
+frame.len\tabularnewline
+\midrule
+\endhead
+& Min. : 2 & Min. : 0.1803 & Min. :0.000148 & Min. :66\tabularnewline
+& 1st Qu.:12839 & 1st Qu.:198.0456 & 1st Qu.:0.000277 & 1st
+Qu.:66\tabularnewline
+& Median :25678 & Median :388.5031 & Median :0.000350 & Median
+:66\tabularnewline
+& Mean :25678 & Mean :388.8066 & Mean :0.010094 & Mean
+:66\tabularnewline
+& 3rd Qu.:38517 & 3rd Qu.:584.1655 & 3rd Qu.:0.000376 & 3rd
+Qu.:66\tabularnewline
+& Max. :51356 & Max. :778.1055 & Max. :1.893549 & Max.
+:66\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}lcccc@{}}
+\toprule
+& ip.src & eth.src & ip.dst & eth.dst\tabularnewline
+\midrule
+\endhead
+& : 0 & Length:24945 & : 0 & Length:24945\tabularnewline
+& 192.168.12.117:24945 & Class :character & 192.168.12.252:24945 & Class
+:character\tabularnewline
+& NA & Mode :character & NA & Mode :character\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llll@{}}
+\toprule
+& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport\tabularnewline
+\midrule
+\endhead
+& : 0 & : 0 & : 0\tabularnewline
+& 1:24945 & 1043:24945 & 502:24945\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}lllcl@{}}
+\toprule
+& mbtcp.prot\_id & mbtcp.trans\_id & mbtcp.len &
+mbtcp.modbus.func\_code\tabularnewline
+\midrule
+\endhead
+& : 0 & Min. : 0.0 & Min. :6 & : 0\tabularnewline
+& 0:24945 & 1st Qu.: 64.0 & 1st Qu.:6 & 4:24945\tabularnewline
+& NA & Median :128.0 & Median :6 & NA\tabularnewline
+& NA & Mean :127.6 & Mean :6 & NA\tabularnewline
+& NA & 3rd Qu.:191.0 & 3rd Qu.:6 & NA\tabularnewline
+& NA & Max. :255.0 & Max. :6 & NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[c]{@{}llcl@{}}
+\toprule
+& mbtcp.modbus.word\_cnt & frame.second &
+mbtcp.modbus.reference\_num\tabularnewline
+\midrule
+\endhead
+& Min. :1 & Min. : 0.0 & : 0\tabularnewline
+& 1st Qu.:1 & 1st Qu.:198.0 & 0:10273\tabularnewline
+& Median :1 & Median :388.0 & 1:11737\tabularnewline
+& Mean :1 & Mean :388.3 & 2: 1468\tabularnewline
+& 3rd Qu.:1 & 3rd Qu.:584.0 & 3: 1467\tabularnewline
+& Max. :1 & Max. :778.0 & NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\newpage
+
+\section*{Appendix E}\label{appendix-e}
+\addcontentsline{toc}{section}{Appendix E}
 
 \subsection[Wireshark - Network Traffic Analysis
 Tool]{Wireshark\footnote{\url{https://www.wireshark.org/docs/wsug_html_chunked}}
@@ -2070,7 +2301,7 @@ capture file.
 \subsection{UNIX Utilities}\label{unix-utilities}
 
 There are a myriad of UNIX utilities that are used for administration,
-scripting, text processing, etc.{[}74{]} In the data parsing and
+scripting, text processing, etc.{[}75{]} In the data parsing and
 transformation process, the UNIX tools employedused were bash, sed, and,
 awk, which supports the use of regular expressions.
 
@@ -2099,7 +2330,7 @@ purpose computer programming language, that was initially designed for
 and implemented on the UNIX OS. A sucessor to the C programming language
 is C++, developed by Bjarne Stroustrup in the early 80s. It inherits
 most of C's syntax, as well as adds abstraction lending itself to be an
-object-oriented language.{[}75{]}
+object-oriented language.{[}76{]}
 
 \subsection[Suricata]{Suricata\footnote{\url{http://www.suricata-ids.org}}}\label{suricata10}
 
@@ -2127,10 +2358,56 @@ actions. One of its major advantages as a modular framework is that it
 allows for combinations of any exploit with any payload, allowing it to
 simulate real-world attacks.
 
-\clearpage
+\newpage
 
-\section*{Appendix D}\label{appendix-d}
-\addcontentsline{toc}{section}{Appendix D}
+\section*{Appendix F}\label{appendix-f}
+\addcontentsline{toc}{section}{Appendix F}
+
+\subsection*{Commands and Scripts}\label{commands-and-scripts}
+\addcontentsline{toc}{subsection}{Commands and Scripts}
+
+\paragraph*{Bash scripts}\label{bash-scripts}
+\addcontentsline{toc}{paragraph}{Bash scripts}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  processScada.sh - Driver script for statistical computational process.
+\item
+  sew.sh - Script to execute extract data from PCAP file via Tshark
+  command
+\end{itemize}
+
+\paragraph*{C/C++ script}\label{cc-script}
+\addcontentsline{toc}{paragraph}{C/C++ script}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  processMerge.cpp - C/C++ component for handling merge of MODBUS
+  packets in data processing.
+\end{itemize}
+
+\paragraph*{R}\label{r}
+\addcontentsline{toc}{paragraph}{R}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  install.R - Setup script to install required packages.
+\item
+  sewModbus.R - Script to process normal state packet capture file.
+\item
+  modbus.Rmd - Script for processing, analysing and visualizing modbus
+  data.
+\item
+  attack.R - Script to process attack state packet capture file.
+\end{itemize}
+
+\newpage
+
+\section*{Appendix G}\label{appendix-g}
+\addcontentsline{toc}{section}{Appendix G}
 
 \subsection*{Configuration Files}\label{configuration-files}
 \addcontentsline{toc}{subsection}{Configuration Files}
@@ -2280,375 +2557,6 @@ Configuration files generated from statistical processing.
 ]
 }
 \end{verbatim}
-
-\newpage
-
-\section*{Appendix E}\label{appendix-e}
-\addcontentsline{toc}{section}{Appendix E}
-
-\subsection*{MODBUS/TCP Request/Response Packet
-Statistics}\label{modbustcp-requestresponse-packet-statistics}
-\addcontentsline{toc}{subsection}{MODBUS/TCP Request/Response Packet
-Statistics}
-
-\begin{longtable}[c]{@{}lcllcll@{}}
-\toprule\addlinespace
-& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
-ip.proto & ip.version
-\\\addlinespace
-\midrule\endhead
-& Min. : 2 & Min. : 0.1803 & Min. :0.000148 & Min. :66 & 6:24947 &
-4:24947
-\\\addlinespace
-& 1st Qu.:12838 & 1st Qu.:198.0391 & 1st Qu.:0.000277 & 1st Qu.:66 & NA
-& NA
-\\\addlinespace
-& Median :25678 & Median :388.5031 & Median :0.000350 & Median :66 & NA
-& NA
-\\\addlinespace
-& Mean :25678 & Mean :388.8098 & Mean :0.010093 & Mean :66 & NA & NA
-\\\addlinespace
-& 3rd Qu.:38518 & 3rd Qu.:584.1722 & 3rd Qu.:0.000376 & 3rd Qu.:66 & NA
-& NA
-\\\addlinespace
-& Max. :51358 & Max. :778.1178 & Max. :1.893549 & Max. :66 & NA & NA
-\\\addlinespace
-\bottomrule
-\addlinespace
-\caption{Requests Summary}
-\end{longtable}
-
-\begin{longtable}[c]{@{}lcccc@{}}
-\toprule\addlinespace
-& ip.src & eth.src & ip.dst & eth.dst
-\\\addlinespace
-\midrule\endhead
-& 192.168.12.117:24947 & 00:0f:69:0d:55:cd: 0 & 192.168.12.117: 0 &
-00:0f:69:0d:55:cd:24947
-\\\addlinespace
-& 192.168.12.252: 0 & 08:00:27:f9:b1:f1:24947 & 192.168.12.252:24947 &
-08:00:27:f9:b1:f1: 0
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}llllll@{}}
-\toprule\addlinespace
-& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport & mbtcp.prot\_id &
-mbtcp.trans\_id
-\\\addlinespace
-\midrule\endhead
-& : 0 & 1043:24947 & 1043: 0 & : 0 & Min. : 0.0
-\\\addlinespace
-& 1:24947 & 502 : 0 & 502 :24947 & 0:24947 & 1st Qu.: 64.0
-\\\addlinespace
-& NA & NA & NA & NA & Median :128.0
-\\\addlinespace
-& NA & NA & NA & NA & Mean :127.6
-\\\addlinespace
-& NA & NA & NA & NA & 3rd Qu.:191.0
-\\\addlinespace
-& NA & NA & NA & NA & Max. :255.0
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}llll@{}}
-\toprule\addlinespace
-& mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num &
-mbtcp.modbus.word\_cnt
-\\\addlinespace
-\midrule\endhead
-& : 0 & : 0 & Min. :1
-\\\addlinespace
-& 4:24947 & 0:10273 & 1st Qu.:1
-\\\addlinespace
-& NA & 1:11739 & Median :1
-\\\addlinespace
-& NA & 2: 1468 & Mean :1
-\\\addlinespace
-& NA & 3: 1467 & 3rd Qu.:1
-\\\addlinespace
-& NA & NA & Max. :1
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}lclc@{}}
-\toprule\addlinespace
-& mbtcp.len & mbtcp.modbus.data & frame.second
-\\\addlinespace
-\midrule\endhead
-& Min. :6 & :24947 & Min. : 0.0
-\\\addlinespace
-& 1st Qu.:6 & 00:00 : 0 & 1st Qu.:198.0
-\\\addlinespace
-& Median :6 & 00:07 : 0 & Median :388.0
-\\\addlinespace
-& Mean :6 & 00:08 : 0 & Mean :388.3
-\\\addlinespace
-& 3rd Qu.:6 & 00:09 : 0 & 3rd Qu.:584.0
-\\\addlinespace
-& Max. :6 & 00:0c : 0 & Max. :778.0
-\\\addlinespace
-& NA & (Other): 0 & NA
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\newpage
-
-\begin{longtable}[c]{@{}lcllcll@{}}
-\toprule\addlinespace
-& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
-ip.proto & ip.version
-\\\addlinespace
-\midrule\endhead
-& Min. : 3 & Min. : 0.1851 & Min. :0.001642 & Min. :65 & 6:24945 &
-4:24945
-\\\addlinespace
-& 1st Qu.:12840 & 1st Qu.:198.0572 & 1st Qu.:0.011584 & 1st Qu.:65 & NA
-& NA
-\\\addlinespace
-& Median :25679 & Median :388.5154 & Median :0.011861 & Median :65 & NA
-& NA
-\\\addlinespace
-& Mean :25679 & Mean :388.8184 & Mean :0.011772 & Mean :65 & NA & NA
-\\\addlinespace
-& 3rd Qu.:38518 & 3rd Qu.:584.1774 & 3rd Qu.:0.012571 & 3rd Qu.:65 & NA
-& NA
-\\\addlinespace
-& Max. :51357 & Max. :778.1175 & Max. :0.775146 & Max. :65 & NA & NA
-\\\addlinespace
-\bottomrule
-\addlinespace
-\caption{Responses Summary}
-\end{longtable}
-
-\begin{longtable}[c]{@{}lcccc@{}}
-\toprule\addlinespace
-& ip.src & eth.src & ip.dst & eth.dst
-\\\addlinespace
-\midrule\endhead
-& 192.168.12.117: 0 & 00:0f:69:0d:55:cd:24945 & 192.168.12.117:24945 &
-00:0f:69:0d:55:cd: 0
-\\\addlinespace
-& 192.168.12.252:24945 & 08:00:27:f9:b1:f1: 0 & 192.168.12.252: 0 &
-08:00:27:f9:b1:f1:24945
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}llllll@{}}
-\toprule\addlinespace
-& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport & mbtcp.prot\_id &
-mbtcp.trans\_id
-\\\addlinespace
-\midrule\endhead
-& : 0 & 1043: 0 & 1043:24945 & : 0 & Min. : 0.0
-\\\addlinespace
-& 1:24945 & 502 :24945 & 502 : 0 & 0:24945 & 1st Qu.: 64.0
-\\\addlinespace
-& NA & NA & NA & NA & Median :128.0
-\\\addlinespace
-& NA & NA & NA & NA & Mean :127.6
-\\\addlinespace
-& NA & NA & NA & NA & 3rd Qu.:191.0
-\\\addlinespace
-& NA & NA & NA & NA & Max. :255.0
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}llll@{}}
-\toprule\addlinespace
-& mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num &
-mbtcp.modbus.word\_cnt
-\\\addlinespace
-\midrule\endhead
-& : 0 & :24945 & Min. : NA
-\\\addlinespace
-& 4:24945 & 0: 0 & 1st Qu.: NA
-\\\addlinespace
-& NA & 1: 0 & Median : NA
-\\\addlinespace
-& NA & 2: 0 & Mean :NaN
-\\\addlinespace
-& NA & 3: 0 & 3rd Qu.: NA
-\\\addlinespace
-& NA & NA & Max. : NA
-\\\addlinespace
-& NA & NA & NA's :24945
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}lclc@{}}
-\toprule\addlinespace
-& mbtcp.len & mbtcp.modbus.data & frame.second
-\\\addlinespace
-\midrule\endhead
-& Min. :5 & 00:70 :10273 & Min. : 0.0
-\\\addlinespace
-& 1st Qu.:5 & 00:50 : 5750 & 1st Qu.:198.0
-\\\addlinespace
-& Median :5 & 00:54 : 5561 & Median :388.0
-\\\addlinespace
-& Mean :5 & 00:40 : 426 & Mean :388.3
-\\\addlinespace
-& 3rd Qu.:5 & 14:74 : 26 & 3rd Qu.:584.0
-\\\addlinespace
-& Max. :5 & 12:a0 : 22 & Max. :778.0
-\\\addlinespace
-& NA & (Other): 2887 & NA
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\newpage
-
-\section*{Appendix F}\label{appendix-f}
-\addcontentsline{toc}{section}{Appendix F}
-
-\subsection*{Merged Request/Response Packet
-Statistics}\label{merged-requestresponse-packet-statistics}
-\addcontentsline{toc}{subsection}{Merged Request/Response Packet
-Statistics}
-
-\begin{longtable}[c]{@{}lcllc@{}}
-\toprule\addlinespace
-& frame.number & frame.time\_relative & frame.time\_delta & frame.len
-\\\addlinespace
-\midrule\endhead
-& Min. : 2 & Min. : 0.1803 & Min. :0.000148 & Min. :66
-\\\addlinespace
-& 1st Qu.:12839 & 1st Qu.:198.0456 & 1st Qu.:0.000277 & 1st Qu.:66
-\\\addlinespace
-& Median :25678 & Median :388.5031 & Median :0.000350 & Median :66
-\\\addlinespace
-& Mean :25678 & Mean :388.8066 & Mean :0.010094 & Mean :66
-\\\addlinespace
-& 3rd Qu.:38517 & 3rd Qu.:584.1655 & 3rd Qu.:0.000376 & 3rd Qu.:66
-\\\addlinespace
-& Max. :51356 & Max. :778.1055 & Max. :1.893549 & Max. :66
-\\\addlinespace
-\bottomrule
-\addlinespace
-\caption{Merged Packets Summary}
-\end{longtable}
-
-\begin{longtable}[c]{@{}lcccc@{}}
-\toprule\addlinespace
-& ip.src & eth.src & ip.dst & eth.dst
-\\\addlinespace
-\midrule\endhead
-& : 0 & Length:24945 & : 0 & Length:24945
-\\\addlinespace
-& 192.168.12.117:24945 & Class :character & 192.168.12.252:24945 & Class
-:character
-\\\addlinespace
-& NA & Mode :character & NA & Mode :character
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}llll@{}}
-\toprule\addlinespace
-& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport
-\\\addlinespace
-\midrule\endhead
-& : 0 & : 0 & : 0
-\\\addlinespace
-& 1:24945 & 1043:24945 & 502:24945
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}lllcl@{}}
-\toprule\addlinespace
-& mbtcp.prot\_id & mbtcp.trans\_id & mbtcp.len & mbtcp.modbus.func\_code
-\\\addlinespace
-\midrule\endhead
-& : 0 & Min. : 0.0 & Min. :6 & : 0
-\\\addlinespace
-& 0:24945 & 1st Qu.: 64.0 & 1st Qu.:6 & 4:24945
-\\\addlinespace
-& NA & Median :128.0 & Median :6 & NA
-\\\addlinespace
-& NA & Mean :127.6 & Mean :6 & NA
-\\\addlinespace
-& NA & 3rd Qu.:191.0 & 3rd Qu.:6 & NA
-\\\addlinespace
-& NA & Max. :255.0 & Max. :6 & NA
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\begin{longtable}[c]{@{}llcl@{}}
-\toprule\addlinespace
-& mbtcp.modbus.word\_cnt & frame.second & mbtcp.modbus.reference\_num
-\\\addlinespace
-\midrule\endhead
-& Min. :1 & Min. : 0.0 & : 0
-\\\addlinespace
-& 1st Qu.:1 & 1st Qu.:198.0 & 0:10273
-\\\addlinespace
-& Median :1 & Median :388.0 & 1:11737
-\\\addlinespace
-& Mean :1 & Mean :388.3 & 2: 1468
-\\\addlinespace
-& 3rd Qu.:1 & 3rd Qu.:584.0 & 3: 1467
-\\\addlinespace
-& Max. :1 & Max. :778.0 & NA
-\\\addlinespace
-\bottomrule
-\end{longtable}
-
-\newpage
-
-\section*{Appendix G}\label{appendix-g}
-\addcontentsline{toc}{section}{Appendix G}
-
-\subsection*{Commands and Scripts}\label{commands-and-scripts}
-\addcontentsline{toc}{subsection}{Commands and Scripts}
-
-\paragraph*{Bash scripts}\label{bash-scripts}
-\addcontentsline{toc}{paragraph}{Bash scripts}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  processScada.sh - Driver script for statistical computational process.
-\item
-  sew.sh - Script to execute extract data from PCAP file via Tshark
-  command
-\end{itemize}
-
-\paragraph*{C/C++ script}\label{cc-script}
-\addcontentsline{toc}{paragraph}{C/C++ script}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  processMerge.cpp - C/C++ component for handling merge of MODBUS
-  packets in data processing.
-\end{itemize}
-
-\paragraph*{R}\label{r}
-\addcontentsline{toc}{paragraph}{R}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  install.R - Setup script to install required packages.
-\item
-  sewModbus.R - Script to process normal state packet capture file.
-\item
-  modbus.Rmd - Script for processing, analysing and visualizing modbus
-  data.
-\item
-  attack.R - Script to process attack state packet capture file.
-\end{itemize}
 
 \newpage
 
@@ -2899,174 +2807,179 @@ Nuclear Plant Instrumentation, Control and Human Machine Interface
 Technologies (NPIC\&HMIT 05)}, pp. 12--16, 2005 {[}Online{]}. Available:
 \url{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.102.1649/\&rep=rep1/\&type=pdf}
 
-{[}33{]}T. Verwoerd and R. Hunt, ``Intrusion detection techniques and
+{[}33{]}J. Verba, ``Idaho national laboratory supervisory control and
+data acquisition intrusion detection system (SCADA IDS),''
+\emph{International Conference on Technologies for Homeland Security
+(HST)}, no. 208, pp. 469--473, 2008 {[}Online{]}. Available:
+\url{http://ieeexplore.ieee.org/xpls/abs/_all.jsp?arnumber=4534498}
+
+{[}34{]}T. Verwoerd and R. Hunt, ``Intrusion detection techniques and
 approaches,'' vol. 25, pp. 1356--1365, 2002.
 
-{[}34{]}J.-x. Wang and Z.-y. Wang, ``Intrusion Alert Analysis Based on
-PCA and the LVQ Neural Network,'' pp. 217--224, 2006.
+{[}35{]}J. Wang and Z. Wang, ``Intrusion Alert Analysis Based on PCA and
+the LVQ Neural Network,'' pp. 217--224, 2006.
 
-{[}35{]}M. Mantere, M. Sailio, and S. Noponen, ``Network Traffic
+{[}36{]}M. Mantere, M. Sailio, and S. Noponen, ``Network Traffic
 Features for Anomaly Detection in Specific Industrial Control System
 Network,'' pp. 460--473, 2013.
 
-{[}36{]}Y. Yang, K. Mclaughlin, S. Sezer, Y. B. Yuan, and W. Huang,
+{[}37{]}Y. Yang, K. Mclaughlin, S. Sezer, Y. B. Yuan, and W. Huang,
 ``Stateful Intrusion Detection for IEC 60870-5-104 SCADA Security,''
 vol. 1, pp. 5--9, 2014.
 
-{[}37{]}Y. Yu, ``A survey of anomaly intrusion detection techniques,''
+{[}38{]}Y. Yu, ``A survey of anomaly intrusion detection techniques,''
 \emph{Journal of Computing Sciences in Colleges}, pp. 9--17, 2012
 {[}Online{]}. Available: \url{http://dl.acm.org/citation.cfm?id=2379707}
 
-{[}38{]}C. Zhou, S. Huang, N. Xiong, S.-h. Yang, H. Li, Y. Qin, and X.
+{[}39{]}C. Zhou, S. Huang, N. Xiong, S.-h. Yang, H. Li, Y. Qin, and X.
 Li, ``Design and Analysis of Multimodel-Based Anomaly Intrusion
 Detection Systems in Industrial Process Automation,'' pp. 1--16, 2015.
 
-{[}39{]}L. A. Maglaras and J. Jiang, ``Intrusion Detection in SCADA
+{[}40{]}L. A. Maglaras and J. Jiang, ``Intrusion Detection in SCADA
 systems using Machine Learning Techniques,'' 2014.
 
-{[}40{]}C. Callegari, S. Vaton, and M. Pagano, ``A new statistical
+{[}41{]}C. Callegari, S. Vaton, and M. Pagano, ``A new statistical
 approach to network anomaly detection,'' pp. 441--447, 2008.
 
-{[}41{]}D. J. Marchette and N. Surface, ``Statistical Opportunities in
+{[}42{]}D. J. Marchette and N. Surface, ``Statistical Opportunities in
 Network Security,'' 2003.
 
-{[}42{]}D. J. Marchette, ``1 Network Intrusion Detection,'' pp. 1--22,
+{[}43{]}D. J. Marchette, ``1 Network Intrusion Detection,'' pp. 1--22,
 2004.
 
-{[}43{]}J. Meza, S. Campbell, and D. Bailey, ``LBNL Mathematical and
+{[}44{]}J. Meza, S. Campbell, and D. Bailey, ``LBNL Mathematical and
 Statistical Opportunities in Cyber Security,'' pp. 1--11, 2009
 {[}Online{]}. Available: \url{http://arxiv.org/abs/0904.1616}
 
-{[}44{]}Y. Wang, \emph{Statistical techniques for network security :
+{[}45{]}Y. Wang, \emph{Statistical techniques for network security :
 modern statistically-based intrusion detection and protection}. 2009, p.
 xii, 461p. {[}Online{]}. Available:
 \url{http://www.loc.gov/catdir/toc/ecip0820/2008023192.html}
 
-{[}45{]}Dipali, ``Network Traffic Intrusion Detection System using
+{[}46{]}Dipali, ``Network Traffic Intrusion Detection System using
 Decision Tree \& K-Means Clustering Algorithm,'' \emph{International
 Journal of Emerging Trends \& Technology in Computer Science}, pp.
 133--134, 2013.
 
-{[}46{]}A. Jayasimhan and J. Gadge, ``Anomaly Detection using a
+{[}47{]}A. Jayasimhan and J. Gadge, ``Anomaly Detection using a
 Clustering Technique,'' \emph{International Journal of Applied
 Information Systems}, vol. 2, no. 8, pp. 5--9, 2012.
 
-{[}47{]}W. L. W. Lee, S. Stolfo, P. Chan, E. Eskin, W. F. W. Fan, M.
+{[}48{]}W. L. W. Lee, S. Stolfo, P. Chan, E. Eskin, W. F. W. Fan, M.
 Miller, S. Hershkop, and J. Z. J. Zhang, ``Real time data mining-based
 intrusion detection,'' \emph{Proceedings DARPA Information Survivability
 Conference and Exposition II. DISCEX'01}, vol. 1, 2001.
 
-{[}48{]}S. Joshi and V. S. Pimprale, ``Network Intrusion Detection
+{[}49{]}S. Joshi and V. S. Pimprale, ``Network Intrusion Detection
 System ( NIDS ) based on Data Mining,'' \emph{International Journal of
 Engineering Science and Innovative Technology (IJESIT)}, vol. 2, no. 1,
 pp. 95--98, 2013.
 
-{[}49{]}W. Lee, S. J. Stolfo, and K. W. Mok, ``A Data Mining Framework
+{[}50{]}W. Lee, S. J. Stolfo, and K. W. Mok, ``A Data Mining Framework
 for Building Intrusion Detection Models,'' \emph{\{IEEE\} Symposium on
 Security and Privacy}, pp. 120--132, 1999.
 
-{[}50{]}T. Mara, ``The Integration of SNORT with K-Means Clustering
+{[}51{]}T. Mara, ``The Integration of SNORT with K-Means Clustering
 Algorithm to Detect New Attack,'' 2011.
 
-{[}51{]}C. Miao and W. Chen, ``A study of intrusion detection system
+{[}52{]}C. Miao and W. Chen, ``A study of intrusion detection system
 based on data mining,'' \emph{2010 IEEE International Conference on
 Information Theory and Information Security}, pp. 186--189, 2010.
 
-{[}52{]}M. Morkhade and M. Bartere, ``Survey on Data Mining based
+{[}53{]}M. Morkhade and M. Bartere, ``Survey on Data Mining based
 Intrusion Detection Systems,'' \emph{Ijaiem.Org}, vol. 2, no. 3, pp.
 338--343, 2013 {[}Online{]}. Available:
 \url{http://ijaiem.org/Volume2Issue3/IJAIEM-2013-03-31-104.pdf}
 
-{[}53{]}G. Münz, S. Li, and G. Carle, ``Traffic anomaly detection using
+{[}54{]}G. Münz, S. Li, and G. Carle, ``Traffic anomaly detection using
 k-means clustering,'' \emph{GI/ITG Workshop MMBnet}, 2007 {[}Online{]}.
 Available:
 \url{http://www.decom.ufop.br/menotti/rp122/sem/sem3-luciano-art.pdf}
 
-{[}54{]}P. Nader, P. Honeine, and P. Beauseroy, ``-norms in One-Class
+{[}55{]}P. Nader, P. Honeine, and P. Beauseroy, ``-norms in One-Class
 Classi fi cation for Intrusion Detection in SCADA Systems,'' vol. 10,
 no. 4, pp. 2308--2317, 2014.
 
-{[}55{]}S. N. S. Naiping and Z. G. Z. Genyuan, ``A Study on Intrusion
+{[}56{]}S. N. S. Naiping and Z. G. Z. Genyuan, ``A Study on Intrusion
 Detection Based on Data Mining,'' \emph{Information Science and
 Management Engineering (ISME), 2010 International Conference of}, vol.
 1, 2010.
 
-{[}56{]}S. Singh and M. Bansal, ``A Survey on Intrusion Detection System
+{[}57{]}S. Singh and M. Bansal, ``A Survey on Intrusion Detection System
 in Data Mining 1 1,2,'' vol. 1, no. 2, pp. 2190--2194, 2013.
 
-{[}57{]}D. B. Shukla and G. S. Chandel, ``An Implementation Of Network
+{[}58{]}D. B. Shukla and G. S. Chandel, ``An Implementation Of Network
 Traffic Classification Technique Based On K-Medoids,'' vol. 4, no. 4,
 pp. 41--46, 2014.
 
-{[}58{]}I. Syarif, A. Prugel-bennett, and G. Wills, ``Unsupervised
+{[}59{]}I. Syarif, A. Prugel-bennett, and G. Wills, ``Unsupervised
 clustering approach for network anomaly detection,'' 2012.
 
-{[}59{]}D. Z. D. Zhao, Q. X. Q. Xu, and Z. F. Z. Feng, ``Analysis and
+{[}60{]}D. Z. D. Zhao, Q. X. Q. Xu, and Z. F. Z. Feng, ``Analysis and
 Design for Intrusion Detection System Based on Data Mining,''
 \emph{Education Technology and Computer Science (ETCS), 2010 Second
 International Workshop on}, vol. 2, 2010.
 
-{[}60{]}W. Gao, T. Morris, B. Reaves, and D. Richey, ``On SCADA control
+{[}61{]}W. Gao, T. Morris, B. Reaves, and D. Richey, ``On SCADA control
 system command and response injection and intrusion detection,''
 \emph{General Members Meeting and eCrime Researchers Summit, eCrime
 2010}, 2010.
 
-{[}61{]}V. Golmah, ``An Efficient Hybrid Intrusion Detection System
+{[}62{]}V. Golmah, ``An Efficient Hybrid Intrusion Detection System
 based on C5. 0 and SVM.'' \emph{International Journal of Database Theory
 \& Application}, vol. 7, no. 2, pp. 59--70, 2014 {[}Online{]}.
 Available: \url{http://www.sersc.org/journals/IJDTA/vol7/_no2/6.pdf}
 
-{[}62{]}J. Jiang, ``Intrusion Detection via Machine Learning for SCADA
+{[}63{]}J. Jiang, ``Intrusion Detection via Machine Learning for SCADA
 System Protection,'' pp. 101--105, 2013.
 
-{[}63{]}L. Khan, M. Awad, and B. Thuraisingham, ``A new intrusion
+{[}64{]}L. Khan, M. Awad, and B. Thuraisingham, ``A new intrusion
 detection system using support vector machines and hierarchical
 clustering,'' \emph{The VLDB Journal}, vol. 16, no. 4, pp. 507--521,
 2007.
 
-{[}64{]}O. Linda, T. Vollmer, and M. Manic, ``Neural Network Based
-Intrusion Detection System for Critical Infrastructures Neural Networks
-Neural Network Based Intrusion Detection System for Critical
-Infrastructures,'' \emph{Neural Networks}, 2009.
+{[}65{]}O. Linda, T. Vollmer, and M. Manic, ``Neural Network Based
+Intrusion Detection System for Critical Infrastructures,'' \emph{Neural
+Networks}, 2009.
 
-{[}65{]}L. A. Maglaras and J. Jiang, ``OCSVM model combined with K-means
+{[}66{]}L. A. Maglaras and J. Jiang, ``OCSVM model combined with K-means
 recursive clustering for intrusion detection in SCADA systems,'' 2014,
 vol. 1, pp. 5--6.
 
-{[}66{]}M. Mantere, M. Sailio, and S. Noponen, ``Feature Selection for
+{[}67{]}M. Mantere, M. Sailio, and S. Noponen, ``Feature Selection for
 Machine Learning Based Anomaly Detection in Industrial Control System
 Networks,'' \emph{2012 IEEE International Conference on Green Computing
 and Communications}, pp. 771--774, 2012 {[}Online{]}. Available:
 \url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6468407}
 
-{[}67{]}S. Mukkamala, D. Xu, and A. H. Sung, ``Intrusion Detection Based
+{[}68{]}S. Mukkamala, D. Xu, and A. H. Sung, ``Intrusion Detection Based
 on Behavior Mining and Machine Learning Techniques,'' pp. 619--628,
 2006.
 
-{[}68{]}``1999 DARPA Intrusion Detection Evaluation Data Set,'' 1999
+{[}69{]}``1999 DARPA Intrusion Detection Evaluation Data Set,'' 1999
 {[}Online{]}. Available:
 \url{http://www.ll.mit.edu/ideval/data/1999data.html}
 
-{[}69{]}J. W. Tukey, \emph{Exploratory Data Analysis}. Addison-Wesley,
+{[}70{]}J. W. Tukey, \emph{Exploratory Data Analysis}. Addison-Wesley,
 1977.
 
-{[}70{]}P. Lafaye de Micheaux, \emph{The R Software: Fundamentals of
+{[}71{]}P. Lafaye de Micheaux, \emph{The R Software: Fundamentals of
 Programming and Statistical Analysis, Statistics and Computing}.
 Springer New York, 2013.
 
-{[}71{]}I. Guyon and A. Elisseeff, ``An Introduction to Variable and
+{[}72{]}I. Guyon and A. Elisseeff, ``An Introduction to Variable and
 Feature Selection,'' \emph{Journal of Machine Learning Research}, 2003.
 
-{[}72{]}L. Yu and H. Liu, ``Efficient Feature Selection via Analysis of
+{[}73{]}L. Yu and H. Liu, ``Efficient Feature Selection via Analysis of
 Relevance and Redundancy,'' \emph{Journal of Machine Learning Research},
 2004.
 
-{[}73{]}T. Ma W and D. Sharma, ``A Study on the Feature Selection of
+{[}74{]}T. Ma W and D. Sharma, ``A Study on the Feature Selection of
 Network Traffic for Intrusion Detection Purpose,'' \emph{IEEE}, 2008.
 
-{[}74{]}D. A. Troy, ``Computing fundamentals UNIX systems,'' 1990.
+{[}75{]}D. A. Troy, ``Computing fundamentals UNIX systems,'' 1990.
 
-{[}75{]}B. Stroustrup, \emph{The C++ programming language}. 2000, p.
+{[}76{]}B. Stroustrup, \emph{The C++ programming language}. 2000, p.
 1019.
 
 \end{document}
