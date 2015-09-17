@@ -1,0 +1,224 @@
+\def\telecom@CLASSNAME{telecom}
+\def\telecom@VERSION{1.2}
+\def\telecom@DATE{2013/06/17}
+\def\telecom@DATE@fr{17/06/2013}
+\def\telecom@AUTHOR{Charles Duchêne}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{\telecom@CLASSNAME}[\telecom@DATE]
+\RequirePackage{appendix}
+\RequirePackage{setspace}
+\RequirePackage{eso-pic}
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{geometry}
+\RequirePackage{titlesec}
+\RequirePackage{titletoc}
+\RequirePackage{MnSymbol}
+\RequirePackage{caption}
+
+\newif\if@Version \@Versionfalse
+\DeclareOption{version}{\@Versiontrue}
+\newif\if@Brest \@Bresttrue
+\newif\if@Rennes \@Rennesfalse
+\DeclareOption{Rennes}{\@Rennestrue\@Brestfalse}
+\newif\if@Toulouse \@Toulousefalse
+\DeclareOption{Toulouse}{\@Toulousetrue\@Brestfalse}
+\DeclareOption*{}
+\ProcessOptions
+
+% changement de police pour TB
+\renewcommand{\familydefault}{\sfdefault}
+% vert télécom
+\definecolor{TBvert}{RGB}{168,181,10}
+\definecolor{TBbrun}{RGB}{109,80,71}
+% format des titres
+\titleformat{\section}{\Large\bfseries}{\thesection.}{1em}{\uppercase}
+\titleformat{\subsection}{\large\bfseries\scshape\color{TBvert}}{\hspace{1em}\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\bfseries\color{TBbrun}}{\hspace{2em}\thesubsubsection}{1em}{}
+\titleformat{\paragraph}{\itshape\bfseries}{}{}{\\}
+% tabulations et style pour la table des matières
+\titlecontents*{section}[0em]{\large\bfseries}{\thecontentslabel.~\uppercase}{}{ \titlerule*[.3pc]{\tiny\textbullet} \thecontentspage\\}
+\titlecontents*{subsection}[0em]{\normalsize\scshape\bfseries}{\thecontentslabel~}{}{ \titlerule*[.3pc]{\tiny\textbullet} \thecontentspage\\}
+\titlecontents*{subsubsection}[0em]{\normalfont}{\thecontentslabel~}{}{ \titlerule*[.3pc]{\tiny.} \thecontentspage\\}
+% marges
+\geometry{paper=a4paper,
+          includeall,
+          headheight=0cm,
+          headsep=0.9cm,
+          vmargin=2cm,
+          hmargin=2.5cm,
+          marginparsep=0cm,
+          marginparwidth=0cm,
+}
+% couleur pour les légendes
+\DeclareCaptionFont{TBcaption}{\color{TBvert}}
+\captionsetup{labelfont={TBcaption},textfont={TBcaption}}
+
+% définition de nouvelles macros pour le document
+\def\@contributors{}
+\newcommand{\contributors}[1]{\gdef\@contributors{#1}}
+\def\@version{non versionné}
+\newcommand{\version}[1]{\gdef\@version{#1}}
+\def\@description{}
+\newcommand{\docdescription}[1]{\gdef\@description{#1}}
+
+%%%% première page -> modification de maketitle %%%%
+\newcommand{\maketitleTB}{
+ 	% imprime le logo TB sur la première de couverture
+	\AddToShipoutPicture{\unitlength=1cm
+	\put(9,2){\includegraphics[width=5cm]{pictures/logoTBMTdia.png}}}
+	% imprime la frise sur la première de couverture
+	\AddToShipoutPicture{\unitlength=1cm
+	\put(9,17){\includegraphics{pictures/frise.png}}}
+ 	% pour supporter plusieurs auteurs, position du bas de case de texte fixe	
+	\AddToShipoutPicture{\unitlength=1cm
+	\put(9,22){
+		\begin{minipage}{9 cm}
+			\begin{spacing}{1.5}	% première page : interligne de 1,5
+			\noindent\@author 
+
+			\noindent\today
+
+			\noindent\@contributors
+			\end{spacing}
+		\end{minipage}
+}}
+	% marge de 9 cm à gauche et 13.5 cm en haut
+	\newgeometry{top=13.5cm,left=9cm}
+	\thispagestyle{empty}
+	\begin{titlepage}
+	\noindent{\Large \bfseries \@title}
+	\vspace*{2 cm}
+
+\if@Version	% n'imprime la version que si l'option est spécifiée
+	\noindent Document version \@version\\
+\fi
+
+	\noindent\begin{minipage}{7 cm}
+		\begin{flushleft}
+			\@description
+		\end{flushleft}
+	\end{minipage}
+	\end{titlepage}
+	\restoregeometry
+	\ClearShipoutPicture
+	\clearpage
+	% ràz du compteur de page (la première ne compte pas)
+	\setcounter{page}{1}
+	% item, fait maintenant uniquement car babel redéfinit les étiquettes
+	\renewcommand{\labelitemi}{$\filledsquare$}
+}
+% alias \TBfrontcover pour maketitle
+\newcommand{\TBfrontcover}{\maketitleTB}
+
+%%%% dernière de couverture %%%%%
+\newcommand{\TBcoverpage}{
+	\clearpage
+	\thispagestyle{empty}
+	% imprime le logo TB sur la dernière de couverture
+	\AddToShipoutPicture{\unitlength=1cm
+	\put(9,2.7){\includegraphics[width=2.42cm]{logoTB.jpg}}}
+	% marge de 9 cm à gauche et 20 cm en haut
+	\newgeometry{top=20cm,left=9cm}
+	% imprime l'adresse
+	\begin{footnotesize}
+	\if@Brest
+	\noindent Technopôle Brest-Iroise\\
+	CS 83818 \\
+	29238 Brest Cedex 3\\
+	France \\
+	+33 (0)2 29 00 11 11\\
+	\fi
+	\if@Rennes
+	\noindent Campus de Rennes\\
+	2, rue de la Châtaigneraie\\
+	CS 17607 \\
+	35576 Cesson Sévigné Cedex \\
+	France \\
+	+33 (0)2 99 12 70 00\\
+	\fi
+	\if@Toulouse
+	\noindent Campus de Toulouse\\
+	10, avenue Édouard Belin\\
+	BP 44004 \\
+	31028 Toulouse Cedex 04\\
+	France \\
+	+33 (0)5 61 38 83 65\\
+	\fi
+	\textbf{\href{http://www.telecom-bretagne.eu}{www.telecom-bretagne.eu}}
+	\end{footnotesize}
+}
+
+% modification pour que le sommaire corresponde à celui de la chartre
+\newcommand{\TBsommaire}{%
+%\renewcommand{\contentsname}{\centering \color{TBvert} Sommaire}
+\renewcommand{\contentsname}{\centering \color{TBvert} Summary}
+\tableofcontents
+%\renewcommand*\listfigurename{\centering \color{TBvert} Liste de figures}
+\renewcommand*\listfigurename{\centering \color{TBvert} List of Figures}
+%\renewcommand*\listtablename{\centering \color{TBvert} Liste de tableaux}
+\renewcommand*\listtablename{\centering \color{TBvert} List of Tables}
+\newpage}
+
+% pour un index
+\newcommand{\TBindexname}{Index}
+\newcommand{\TBindex}{%
+% autorise de nouveau les sections dans la toc
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\renewcommand{\indexname}{\centering\textcolor{TBbrun}{\TBindexname}}
+\addtocontents{toc}{}{}
+\addcontentsline{toc}{section}{\uppercase{\TBindexname}}
+\printindex
+}
+% pour une bibliographie
+%\newcommand{\TBbiblioname}{Références}
+\newcommand{\TBbiblioname}{References}
+\newcommand{\TBbiblio}[2]{%
+\bibliographystyle{#1}
+% autorise de nouveau les sections dans la toc
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\renewcommand{\refname}{\centering\textcolor{TBbrun}{\TBbiblioname}} % pour article
+\renewcommand{\bibname}{\centering\textcolor{TBbrun}{\TBbiblioname}} % pour report et book
+\bibliography{#2}
+\addtocontents{toc}{}{}
+\addcontentsline{toc}{section}{\uppercase{\TBbiblioname}}
+\clearpage
+}
+% pour un glossaire
+%\newcommand{\TBglossaryname}{Glossaire}
+\newcommand{\TBglossaryname}{Glossary}
+\newcommand{\TBglossary}{%
+% autorise de nouveau les sections dans la toc
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\printglossary[title={\centering\textcolor{TBbrun}{\TBglossaryname}}]
+\addtocontents{toc}{}{}
+\addcontentsline{toc}{section}{\uppercase{\TBglossaryname}}
+\clearpage
+}
+% pour les annexes
+\newcounter{TBannexecounter}
+\setcounter{TBannexecounter}{1}
+\renewcommand{\appendix}{%
+	\addtocontents{toc}{}{}
+	\renewcommand{\thesection}{\Alph{section}}
+}
+\newcommand{\TBannexe}[1]{%
+	\clearpage
+	\setcounter{section}{0}
+	% autorise de nouveau les sections dans la toc
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+%	\addcontentsline{toc}{section}{ANNEXE \theTBannexecounter{} -- #1}
+	\addcontentsline{toc}{section}{ANNEX \theTBannexecounter{} -- #1}
+	% empêche les sections et inférieur d'apparaître dans la toc
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+	\begin{center}
+		\begin{Large}
+%			\textcolor{TBbrun}{\textbf{Annexe \theTBannexecounter{} -- #1}}
+			\textcolor{TBbrun}{\textbf{Annex \theTBannexecounter{} -- #1}}
+		\end{Large}
+	\end{center}
+	\addtocounter{TBannexecounter}{1}
+}
+% dossier des images
+\graphicspath{{pictures/}}
+\endinput
