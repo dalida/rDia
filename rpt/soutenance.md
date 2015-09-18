@@ -1,19 +1,37 @@
-soutenance
+diateam : SCAD@COPS
 ========================================================
-author: 
-date: 
+author: Lisa MALIPHOL
+date:   28 septembre 2015
+transition: rotate
 
-First Slide
+
+Introduction
 ========================================================
 
-For more details on authoring R presentations click the
-**Help** button on the toolbar.
+# diateam
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+# SCAD@COPS 
 
-Slide With Code
+Un système hybride de détéction d'intrusion de réseau
+
+
+Présentation
+========================================================
+
+- L'introduction
+- Les systèmes industriels
+- Les protocols
+- Des attaques
+- Les systèmes de détection d'intrusion
+- La détection d'intrusion basée sur des anomalies
+- La source de données
+- L'analyse de données exploiratoire (EDA)
+- Le preuve de concept
+- Les indicateurs statistiques
+
+
+
+Les systèmes industriels
 ========================================================
 
 
@@ -31,7 +49,60 @@ summary(cars)
  Max.   :25.0   Max.   :120.00  
 ```
 
-Slide With Plot
+Les protocols
 ========================================================
 
 ![plot of chunk unnamed-chunk-2](soutenance-figure/unnamed-chunk-2-1.png) 
+
+
+
+Des attaques
+========================================================
+
+
+
+
+
+Les systèmes de détection d'intrusion
+========================================================
+
+
+
+
+
+La détection d'intrusion basée sur des anomalies
+========================================================
+
+
+
+
+
+La source de données
+========================================================
+
+
+
+
+
+L'analyse de données exploiratoire
+========================================================
+
+
+
+
+
+
+Le preuve de concept
+========================================================
+
+
+
+
+
+
+Les indicateurs statistiques
+========================================================
+
+
+
+

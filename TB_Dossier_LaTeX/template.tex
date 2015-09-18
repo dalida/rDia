@@ -1,0 +1,169 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Modèle LaTeX pour les documents TB
+%
+%  Par Charles Duchêne, IG JI
+%  Mai 2013
+%
+%  Toutes les images doivent se trouver
+%  dans un sous-dossier pictures
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[pdftex]{hyperref}	
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[english,francais]{babel}
+\usepackage{telecom}	
+\usepackage{aeguill}
+\usepackage{times}
+\usepackage{listingsutf8}
+\usepackage{makeidx}
+\usepackage[style=tree,order=word,nonumberlist]{glossaries}
+\usepackage{lipsum}
+\usepackage{wrapfig}
+\makeindex
+\makeglossary
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Variables pour ce document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\author{Auteur 1\\Auteur 2\\Auteur 3\\Auteur 4\\Auteur 5}
+\title{Titre du document}
+\contributors{Contributeur1, Contributeur 2...}						
+\version{1.0}									
+\docdescription{\textbf{Destination :}\\Destinataire 1\\Destinataire 2\\Projet UV XXX\\Type de document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{configuration.tex} % fichier de configuration optionnel
+
+
+%%%% DÉBUT DOCUMENT
+\begin{document}
+% ne pas modifier ! imprime la première page du document
+\TBfrontcover
+
+%% Affichage des listes et tables.
+\TBsommaire
+\listoffigures  % commenter pour ne pas avoir la liste des figures
+\listoftables   % commenter pour ne pas avoir la liste des tables
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     CORPS DU DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Lorem ipsum}
+\subsection{Dolor sit amet}
+\lipsum[1]
+\index{Image en texte}
+\begin{wrapfigure}[15]{r}{6 cm}
+	\centering
+	\includegraphics[scale=0.5]{logoTB}
+	\caption{Logo de l'École}
+\end{wrapfigure} \lipsum[1-5]
+
+\subsection{Dolor sit amet}
+\subsubsection{Consectet tempor}
+\lipsum[1]
+\index{Liste à puces}
+\begin{itemize}
+	\item item 1 ;
+	\item item 2 ;
+	\item item 3;
+	\item item 4 : 
+		\begin{itemize}
+			\item item 4.1 ;
+			\item item 4.2 ;
+			\item item 4.3 ;
+		\end{itemize}
+	\item 5.
+\end{itemize}
+\lipsum[1]
+
+\subsubsection{Consectet tempor}
+\paragraph{Fusce Mauris}
+\lipsum[1]
+\paragraph{Fusce Mauris}
+\lipsum[1]
+\paragraph{Fusce Mauris}
+\lipsum[1]
+
+\section{Lorem ipsum}
+\subsection{Dolor sit amet}
+
+\index{Figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1]{frise}
+	\caption{Frise Télécom}
+\end{figure}
+
+\lipsum[1]
+
+\index{Table}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|}
+	\hline A & B \\
+	\hline C & D \\
+	\hline
+	\end{tabular}
+	\caption{Alphabet}
+\end{table}
+
+\subsection{Dolor sit amet}
+\lipsum[1-3]
+
+% ANNEXES
+\appendix
+\index{Annexe}
+\TBannexe{Lorem ipsum}
+\section{Test}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c | c|}
+		\hline \textbf{Nombre dans $\mathbb{N}$} & \textbf{Classe dans $\mathbb{Z}/2\mathbb{Z}$} \\
+		\hline 0 & 0 \\
+	        \hline 1 & 1 \\
+		\hline 2 & 0 \\
+		\hline 3 & 1 \\
+		\hline 4 & 0 \\
+		\hline 5 & 1 \\
+		\hline $n$ & reste de la division euclidienne de $n$ par 2 \\
+		\hline
+	\end{tabular}
+	\caption{$\mathbb{Z}/2\mathbb{Z}$}
+\end{table}
+\newpage
+\TBannexe{Lorem ipsum}
+\section{Tests annexe}
+\subsection{Test 1}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c | c|}
+		\hline \textbf{Nombre dans $\mathbb{N}$} & \textbf{Classe dans $\mathbb{Z}/3\mathbb{Z}$} \\
+		\hline 0 & 0 \\
+	        \hline 1 & 1 \\
+		\hline 2 & 2 \\
+		\hline 3 & 0 \\
+		\hline 4 & 1 \\
+		\hline 5 & 2 \\
+		\hline $n$ & reste de la division euclidienne de $n$ par 3 \\
+		\hline
+	\end{tabular}
+	\caption{$\mathbb{Z}/3\mathbb{Z}$}
+\end{table}
+\subsection{Test 2}
+\begin{latex}
+% test code latex
+\usepackage[Brest, version]{telecom}
+\end{latex}
+
+% INDEX, RÉFÉRENCES et GLOSSAIRE
+\TBindex
+\TBbiblio{plain-fr}{includes/biblio}
+\TBglossary
+
+% ne pas modifier ! imprime la dernière page du document
+\TBcoverpage
+\end{document}

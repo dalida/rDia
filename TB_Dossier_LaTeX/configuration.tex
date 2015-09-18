@@ -1,0 +1,44 @@
+%%% FICHIER DE CONFIGURATION OPTIONNEL
+
+%%%%%%%% Propriétés pdf %%%%%%%%%%%
+\hypersetup{
+	bookmarks=true,
+	unicode= yes,
+	pdftitle={Document témoin du modèle LaTeX pour Télécom Bretagne},
+	pdfauthor={Charles Duchêne},
+	pdfsubject={},
+	pdfkeywords={Télécom, TB, modèle, LaTeX},
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=black,
+	filecolor=black,
+	urlcolor = black
+}
+
+\lstset{
+	basicstyle=\ttfamily\small,
+	breaklines=true,
+	keywordstyle=\bfseries\color{TBbrun},
+	inputencoding=utf8/latin1,
+}
+
+\lstdefinestyle{stylelatex}{%
+	language=tex,
+	morekeywords={usepackage,newcommand,begin,renewcommand,section,
+	TBannexe,TBsommaire,subsection},
+	commentstyle=\itshape\color{TBvert}
+}
+
+\lstnewenvironment{latex}{%
+	\lstset{style=stylelatex}}{}
+
+\lstnewenvironment{bash}{%
+\lstset{
+	language=bash,
+	basicstyle=\color{white}\ttfamily\small,
+	keywordstyle=\color{TBvert}\bfseries,
+	backgroundcolor=\color{black},
+	morekeywords={sudo, cp, mkdir},
+	deletekeywords={local},
+}
+}{}

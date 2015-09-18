@@ -1,0 +1,41 @@
+Tout d'abord, merci de prendre quelques minutes pour lire ce fichier !
+
+Dans ce dossier, vous trouvez :
+
+.
+├── configuration.tex		fichier de configuration permettant entre autres de définir les options PDF et les styles de code 
+├── includes			dossier permettant de séparer les fichiers tex de chapitres des corps de documents
+│   ├── options.tex			chapitre présentant les options du modèle
+│   └── presentation.tex		chapitre présentant le modèle
+├── modele.pdf			<== À LIRE : documentation du modèle
+├── modele.tex			source de la documentation du modèle, pour lecture, peut être utilisé comme squelette
+├── pictures			dossier des images : toutes les images doivent y être installées
+│   ├── frise.png			à installer (voir 1.2 du modèle)
+│   ├── logoTB.jpg			idem
+│   └── logoTBMT.png			idem
+├── README			vous êtes en train de le lire ;-)	
+├── telecom.sty			<== À INSTALLER (voir 1.2 du modèle) le paquet télécom !	
+├── template.pdf		<== À CONSULTER : document témoin
+└── template.tex		<== À UTILISER : utiliser ce document comme squelette (ou modele.tex), du moins au début
+
+Après installation, vous devriez avoir, en considérant un dossier par rapport :
+
+.
+├── [configuration.tex]		optionnellement un fichier de configuration
+├── includes			éventuellement un dossier pour les chapitres (recommandé)
+│   ├── chapitre1.tex
+│   ├── chapitre2.tex
+...    	
+│   └── chapitren.tex
+├── pictures			le dossier des images (inutile si aucune image)
+│   ├── image1.png
+...    	
+│   └── imagen.jpg
+└── rapport.tex			par exemple template.tex renommé pour l'utiliser en squelette	
+
+
+La lecture du document modele.pdf est vivement recommandée !
+N'hésitez pas à rapporter toute erreur que cela soit de français, de LaTeX et de chartre à charles.duchene@tb.
+
+Charles Duchêne.
+Juin 2013.

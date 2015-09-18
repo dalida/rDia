@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2015.4.10)  17 SEP 2015 16:56
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2015.4.10)  18 SEP 2015 10:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1196,12 +1196,12 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-<pictures/logoTBMTdia.png, id=367, 1847.90375pt x 1069.9975pt>
+<pictures/logoTBMTdia.png, id=367, 3408.735pt x 1069.9975pt>
 File: pictures/logoTBMTdia.png Graphic file (type png)
 
 <use pictures/logoTBMTdia.png>
 Package pdftex.def Info: pictures/logoTBMTdia.png used on input line 104.
-(pdftex.def)             Requested size: 142.25237pt x 82.36884pt.
+(pdftex.def)             Requested size: 227.60907pt x 71.44618pt.
 
 <pictures/frise.png, id=369, 302.63063pt x 69.25874pt>
 File: pictures/frise.png Graphic file (type png)
@@ -1383,7 +1383,7 @@ t>
 File: thesis_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-10-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-10-1.pdf used 
-on input line 886.
+on input line 888.
 (pdftex.def)             Requested size: 325.2142pt x 188.70453pt.
  [27 <./thesis_files/figure-latex/unnamed-chunk-10-1.pdf>]
 <thesis_files/figure-latex/unnamed-chunk-11-1.pdf, id=872, 469.755pt x 198.7425
@@ -1391,60 +1391,60 @@ pt>
 File: thesis_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-11-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-11-1.pdf used 
-on input line 961.
+on input line 963.
 (pdftex.def)             Requested size: 455.24608pt x 192.6041pt.
  [28] [29 <./thesis_files/figure-latex/unnamed-chunk-11-1.pdf>] [30
 
 ]
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 1026.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 1028.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-Overfull \hbox (30.9353pt too wide) in paragraph at lines 1060--1060
+Overfull \hbox (30.9353pt too wide) in paragraph at lines 1062--1062
 []\T1/pcr/m/n/10.95 0000  00 80 f4 0f 35 aa 00 18  63 37 9b 5b 08 00 45 00   ..
 ..5... c7.[..E.[] 
  []
 
 
-Overfull \hbox (30.9353pt too wide) in paragraph at lines 1060--1060
+Overfull \hbox (30.9353pt too wide) in paragraph at lines 1062--1062
 []\T1/pcr/m/n/10.95 0010  00 34 41 35 40 00 80 06  1f 0e c0 a8 0c 33 c0 a8   .4
 A5@... .....3..[] 
  []
 
 
-Overfull \hbox (30.9353pt too wide) in paragraph at lines 1060--1060
+Overfull \hbox (30.9353pt too wide) in paragraph at lines 1062--1062
 []\T1/pcr/m/n/10.95 0020  0c fd 09 c3 01 f6 05 1a  47 65 63 b7 1f c5 50 18   ..
 ...... Gec...P.[] 
  []
 
 
-Overfull \hbox (30.9353pt too wide) in paragraph at lines 1060--1060
+Overfull \hbox (30.9353pt too wide) in paragraph at lines 1062--1062
 []\T1/pcr/m/n/10.95 0030  fa 14 3e 57 00 00 00 14  00 00 00 06 01 04 00 00   ..
 >W.... ........[] 
  []
 
 
-Overfull \hbox (30.9353pt too wide) in paragraph at lines 1075--1075
+Overfull \hbox (30.9353pt too wide) in paragraph at lines 1077--1077
 []\T1/pcr/m/n/10.95 0000  00 18 63 37 9b 5b 00 80  f4 0f 35 aa 08 00 45 00   ..
 c7.[.. ..5...E.[] 
  []
 
 
-Overfull \hbox (30.9353pt too wide) in paragraph at lines 1075--1075
+Overfull \hbox (30.9353pt too wide) in paragraph at lines 1077--1077
 []\T1/pcr/m/n/10.95 0010  00 33 89 26 40 00 40 06  17 1e c0 a8 0c fd c0 a8   .3
 .&@.@. ........[] 
  []
 
 
-Overfull \hbox (30.9353pt too wide) in paragraph at lines 1075--1075
+Overfull \hbox (30.9353pt too wide) in paragraph at lines 1077--1077
 []\T1/pcr/m/n/10.95 0020  0c 33 01 f6 09 c3 63 b7  1f c5 05 1a 47 71 50 18   .3
 ....c. ....GqP.[] 
  []
 
 
-Overfull \hbox (30.9353pt too wide) in paragraph at lines 1075--1075
+Overfull \hbox (30.9353pt too wide) in paragraph at lines 1077--1077
 []\T1/pcr/m/n/10.95 0030  22 08 9f 5a 00 00 00 14  00 00 00 05 01 04 02 00   ".
 .Z.... ........[] 
  []
@@ -1455,7 +1455,7 @@ pt>
 File: thesis_files/figure-latex/unnamed-chunk-15-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-15-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-15-1.pdf used 
-on input line 1188.
+on input line 1190.
 (pdftex.def)             Requested size: 289.09251pt x 272.02803pt.
  [33] [34 <./thesis_files/figure-latex/unnamed-chunk-15-1.pdf>]
 <thesis_files/figure-latex/warning-1.pdf, id=925, 246.9225pt x 212.795pt>
@@ -1463,14 +1463,14 @@ File: thesis_files/figure-latex/warning-1.pdf Graphic file (type pdf)
 
 <use thesis_files/figure-latex/warning-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/warning-1.pdf used on input 
-line 1257.
+line 1259.
 (pdftex.def)             Requested size: 246.92188pt x 212.79446pt.
  [35 <./thesis_files/figure-latex/warning-1.pdf>]
 <thesis_files/figure-latex/unnamed-chunk-21-1.pdf, id=937, 353.32pt x 128.48pt>
 File: thesis_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/unnamed-chunk-21-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-21-1.pdf used 
-on input line 1351.
+on input line 1353.
 (pdftex.def)             Requested size: 353.32452pt x 128.48163pt.
 
 
@@ -1482,7 +1482,7 @@ pt>
 File: thesis_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-22-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-22-1.pdf used 
-on input line 1368.
+on input line 1370.
 (pdftex.def)             Requested size: 337.26431pt x 219.82404pt.
 
 <thesis_files/figure-latex/unnamed-chunk-23-1.pdf, id=944, 337.26pt x 219.82124
@@ -1490,7 +1490,7 @@ pt>
 File: thesis_files/figure-latex/unnamed-chunk-23-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-23-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-23-1.pdf used 
-on input line 1380.
+on input line 1382.
 (pdftex.def)             Requested size: 337.26431pt x 219.82404pt.
 
 
@@ -1504,7 +1504,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: thesis_files/figure-latex/unnamed-chunk-24-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-24-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-24-1.pdf used 
-on input line 1391.
+on input line 1393.
 (pdftex.def)             Requested size: 412.54024pt x 318.18796pt.
 
 <thesis_files/figure-latex/unnamed-chunk-26-1.pdf, id=975, 380.42125pt x 193.72
@@ -1512,7 +1512,7 @@ on input line 1391.
 File: thesis_files/figure-latex/unnamed-chunk-26-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-26-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-26-1.pdf used 
-on input line 1400.
+on input line 1402.
 (pdftex.def)             Requested size: 380.4261pt x 193.72621pt.
 
 
@@ -1524,7 +1524,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: thesis_files/figure-latex/unnamed-chunk-27-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-27-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-27-1.pdf used 
-on input line 1409.
+on input line 1411.
 (pdftex.def)             Requested size: 230.86192pt x 195.73076pt.
 
 
@@ -1536,7 +1536,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: thesis_files/figure-latex/unnamed-chunk-28-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-28-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-28-1.pdf used 
-on input line 1418.
+on input line 1420.
 (pdftex.def)             Requested size: 455.26204pt x 246.72266pt.
 
 
@@ -1548,38 +1548,38 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: thesis_files/figure-latex/unnamed-chunk-29-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-29-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-29-1.pdf used 
-on input line 1427.
+on input line 1429.
 (pdftex.def)             Requested size: 455.26204pt x 247.7017pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (24.36531pt too wide) in paragraph at lines 1456--1456
+Overfull \hbox (24.36531pt too wide) in paragraph at lines 1458--1458
 []   \T1/pcr/m/n/10.95 resp.func.code mbtcp.modbus.reference_num count d.min   
   d.mean d.max[] 
  []
 
 
-Overfull \hbox (24.36531pt too wide) in paragraph at lines 1456--1456
+Overfull \hbox (24.36531pt too wide) in paragraph at lines 1458--1458
 []\T1/pcr/m/n/10.95 1:              4                          0 10273   112  1
 12.00000   112[] 
  []
 
 
-Overfull \hbox (24.36531pt too wide) in paragraph at lines 1456--1456
+Overfull \hbox (24.36531pt too wide) in paragraph at lines 1458--1458
 []\T1/pcr/m/n/10.95 2:              4                          1 11737    64   
 81.31448    84[] 
  []
 
 
-Overfull \hbox (24.36531pt too wide) in paragraph at lines 1456--1456
+Overfull \hbox (24.36531pt too wide) in paragraph at lines 1458--1458
 []\T1/pcr/m/n/10.95 3:              4                          2  1468  4758 50
 05.32493  5242[] 
  []
 
 
-Overfull \hbox (24.36531pt too wide) in paragraph at lines 1456--1456
+Overfull \hbox (24.36531pt too wide) in paragraph at lines 1458--1458
 []\T1/pcr/m/n/10.95 4:              4                          3  1467     0 33
 92.64554  6890[] 
  []
@@ -1595,7 +1595,7 @@ s/figure-latex/unnamed-chunk-29-1.pdf>]
 File: thesis_files/figure-latex/unnamed-chunk-31-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-31-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-31-1.pdf used 
-on input line 1469.
+on input line 1471.
 (pdftex.def)             Requested size: 429.61049pt x 303.13638pt.
 
 <thesis_files/figure-latex/unnamed-chunk-32-1.pdf, id=1033, 301.125pt x 208.78p
@@ -1603,7 +1603,7 @@ t>
 File: thesis_files/figure-latex/unnamed-chunk-32-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-32-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-32-1.pdf used 
-on input line 1497.
+on input line 1499.
 (pdftex.def)             Requested size: 301.14262pt x 208.7922pt.
 
 
@@ -1615,7 +1615,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: thesis_files/figure-latex/unnamed-chunk-33-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-33-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-33-1.pdf used 
-on input line 1506.
+on input line 1508.
 (pdftex.def)             Requested size: 275.03941pt x 220.83455pt.
 
 
@@ -1631,7 +1631,7 @@ pt>
 File: thesis_files/figure-latex/unnamed-chunk-34-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-34-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-34-1.pdf used 
-on input line 1517.
+on input line 1519.
 (pdftex.def)             Requested size: 377.40907pt x 295.10176pt.
  [44
 
@@ -1641,7 +1641,7 @@ on input line 1517.
 File: thesis_files/figure-latex/unnamed-chunk-35-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-35-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-35-1.pdf used 
-on input line 1560.
+on input line 1562.
 (pdftex.def)             Requested size: 397.49614pt x 110.41557pt.
 
 <thesis_files/figure-latex/unnamed-chunk-36-1.pdf, id=1079, 469.755pt x 250.937
@@ -1649,7 +1649,7 @@ on input line 1560.
 File: thesis_files/figure-latex/unnamed-chunk-36-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-36-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-36-1.pdf used 
-on input line 1585.
+on input line 1587.
 (pdftex.def)             Requested size: 455.24608pt x 243.18698pt.
 
 
@@ -1664,7 +1664,7 @@ pt>
 File: thesis_files/figure-latex/unnamed-chunk-37-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-37-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-37-1.pdf used 
-on input line 1641.
+on input line 1643.
 (pdftex.def)             Requested size: 433.63878pt x 102.38693pt.
 
 <thesis_files/figure-latex/unnamed-chunk-38-1.pdf, id=1103, 433.62pt x 112.42pt
@@ -1672,7 +1672,7 @@ on input line 1641.
 File: thesis_files/figure-latex/unnamed-chunk-38-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-38-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-38-1.pdf used 
-on input line 1681.
+on input line 1683.
 (pdftex.def)             Requested size: 433.63878pt x 112.42487pt.
  [47 <./thesis_files/figure-latex/unnamed-chunk-37-1.pdf> <./thesis_files/figur
 e-latex/unnamed-chunk-38-1.pdf>] [48] [49
@@ -1688,7 +1688,7 @@ Overfull \vbox (4.94525pt too high) has occurred while \output is active []
 ]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 2001.
+(hyperref)                be the same. Added a new anchor on input line 2003.
 
 
 <thesis_files/figure-latex/unnamed-chunk-42-1.pdf, id=1150, 469.755pt x 325.215
@@ -1696,14 +1696,14 @@ pt>
 File: thesis_files/figure-latex/unnamed-chunk-42-1.pdf Graphic file (type pdf)
  <use thesis_files/figure-latex/unnamed-chunk-42-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/unnamed-chunk-42-1.pdf used 
-on input line 2003.
+on input line 2005.
 (pdftex.def)             Requested size: 455.24608pt x 315.17035pt.
  [53
 
  <./thesis_files/figure-latex/unnamed-chunk-42-1.pdf>]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 2011.
+(hyperref)                be the same. Added a new anchor on input line 2013.
 
 
 Overfull \vbox (7.75793pt too high) has occurred while \output is active []
@@ -1714,99 +1714,99 @@ Overfull \vbox (7.75793pt too high) has occurred while \output is active []
 ]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 2084.
+(hyperref)                be the same. Added a new anchor on input line 2086.
 
 
-Overfull \hbox (9.3299pt too wide) in alignment at lines 2086--2092
+Overfull \hbox (9.3299pt too wide) in alignment at lines 2088--2094
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (9.3299pt too wide) in alignment at lines 2092--2097
+Overfull \hbox (9.3299pt too wide) in alignment at lines 2094--2099
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (9.3299pt too wide) in alignment at lines 2097--2111
+Overfull \hbox (9.3299pt too wide) in alignment at lines 2099--2113
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (45.09296pt too wide) in alignment at lines 2113--2117
+Overfull \hbox (45.09296pt too wide) in alignment at lines 2115--2119
  [] [] [] [] [] 
  []
 
 
-Overfull \hbox (45.09296pt too wide) in alignment at lines 2117--2123
+Overfull \hbox (45.09296pt too wide) in alignment at lines 2119--2125
  [] [] [] [] [] 
  []
 
 [55
 
 ] [56]
-Overfull \hbox (9.3299pt too wide) in alignment at lines 2173--2179
+Overfull \hbox (9.3299pt too wide) in alignment at lines 2175--2181
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (9.3299pt too wide) in alignment at lines 2179--2184
+Overfull \hbox (9.3299pt too wide) in alignment at lines 2181--2186
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (9.3299pt too wide) in alignment at lines 2184--2198
+Overfull \hbox (9.3299pt too wide) in alignment at lines 2186--2200
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (45.09296pt too wide) in alignment at lines 2200--2204
+Overfull \hbox (45.09296pt too wide) in alignment at lines 2202--2206
  [] [] [] [] [] 
  []
 
 
-Overfull \hbox (45.09296pt too wide) in alignment at lines 2204--2210
+Overfull \hbox (45.09296pt too wide) in alignment at lines 2206--2212
  [] [] [] [] [] 
  []
 
 [57]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 2267.
+(hyperref)                be the same. Added a new anchor on input line 2269.
 
 [58
 
 ]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 2356.
+(hyperref)                be the same. Added a new anchor on input line 2358.
 
 [59] [60]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 2448.
+(hyperref)                be the same. Added a new anchor on input line 2450.
 
 [61]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 2496.
+(hyperref)                be the same. Added a new anchor on input line 2498.
 
 [62] [63] [64] [65]
 
 Package hyperref Warning: The anchor of a bookmark and its parent's must not
-(hyperref)                be the same. Added a new anchor on input line 2656.
+(hyperref)                be the same. Added a new anchor on input line 2658.
 
-LaTeX Font Info:    Try loading font information for TS1+pcr on input line 2703
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 2705
 .
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 ) [66] [67]
-Underfull \hbox (badness 10000) in paragraph at lines 2742--2747
+Underfull \hbox (badness 10000) in paragraph at lines 2744--2749
 \T1/phv/m/n/10.95 (+20) Guide + to + supervisory + control + and + data + acqui
 sition + (SCADA ) +and + industrial + control +
  []
 
 [68]
-Underfull \hbox (badness 10000) in paragraph at lines 2867--2870
+Underfull \hbox (badness 10000) in paragraph at lines 2869--2872
 \T1/phv/m/n/10.95 (+20) &dq = The + State + of + the + Art + in + Intrusion + P
 revention + and + Detection / &ots = yD8AGesoz9 /
  []
@@ -1845,22 +1845,22 @@ revention + and + Detection / &ots = yD8AGesoz9 /
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <9> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 3052.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3054.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 3054.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3056.
  <pictures/logoTB.jpg, id=1319, 284.7438pt x 284.7438pt>
 File: pictures/logoTB.jpg Graphic file (type jpg)
 
 <use pictures/logoTB.jpg>
-Package pdftex.def Info: pictures/logoTB.jpg used on input line 3054.
+Package pdftex.def Info: pictures/logoTB.jpg used on input line 3056.
 (pdftex.def)             Requested size: 68.85258pt x 68.85258pt.
  [73
 
 
  <./pictures/logoTB.jpg>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3054.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3056.
  (./thesis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 3054.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3054.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 3056.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3056.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 599161111920576DFCDED605670A777F;13466.
@@ -1868,7 +1868,7 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 3054.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 3056.
  ) 
 Here is how much of TeX's memory you used:
  16167 strings out of 493485
@@ -1926,7 +1926,7 @@ texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf
 type1/urw/helvetic/uhvbo8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/h
 elvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr
 o8a.pfb>
-Output written on thesis.pdf (80 pages, 6141912 bytes).
+Output written on thesis.pdf (80 pages, 6334040 bytes).
 PDF statistics:
  1417 PDF objects out of 1440 (max. 8388607)
  1112 compressed objects within 12 object streams

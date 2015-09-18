@@ -1,0 +1,28 @@
+\select@language {english}
+\contentsline {figure}{\numberline {1}{\ignorespaces SCADA components\relax }}{19}{figure.caption.1}
+\contentsline {figure}{\numberline {2}{\ignorespaces OSI Model\relax }}{20}{figure.caption.2}
+\contentsline {figure}{\numberline {3}{\ignorespaces IPv4 Header\relax }}{21}{figure.caption.3}
+\contentsline {figure}{\numberline {4}{\ignorespaces TCP Header\relax }}{22}{figure.caption.4}
+\contentsline {figure}{\numberline {5}{\ignorespaces MODBUS TCP/IP Communication Architecture\relax }}{23}{figure.caption.5}
+\contentsline {figure}{\numberline {6}{\ignorespaces MODBUS/TCP Frame\relax }}{23}{figure.caption.6}
+\contentsline {figure}{\numberline {7}{\ignorespaces Functional Architecture of an A-NIDS\relax }}{27}{figure.caption.7}
+\contentsline {figure}{\numberline {8}{\ignorespaces Fundamentals of A-NIDS Techniques\relax }}{29}{figure.caption.8}
+\contentsline {figure}{\numberline {9}{\ignorespaces Boxplot\relax }}{34}{figure.caption.9}
+\contentsline {figure}{\numberline {10}{\ignorespaces SCADA Network Graph\relax }}{37}{figure.caption.10}
+\contentsline {figure}{\numberline {11}{\ignorespaces Source Packet Size Boxplot\relax }}{37}{figure.caption.11}
+\contentsline {figure}{\numberline {12}{\ignorespaces Boxplot of Request Packets\relax }}{37}{figure.caption.12}
+\contentsline {figure}{\numberline {13}{\ignorespaces Boxplot of Response Packets\relax }}{38}{figure.caption.13}
+\contentsline {figure}{\numberline {14}{\ignorespaces Bar Charts of Packet Counts\relax }}{39}{figure.caption.14}
+\contentsline {figure}{\numberline {15}{\ignorespaces Scatterplot of Time as a Function of Frame Number\relax }}{40}{figure.caption.15}
+\contentsline {figure}{\numberline {16}{\ignorespaces Boxplot of Modbus/TCP Data Length\relax }}{40}{figure.caption.16}
+\contentsline {figure}{\numberline {17}{\ignorespaces Graph of MODBUS Data Values over Time by MODBUS Reference Number\relax }}{41}{figure.caption.17}
+\contentsline {figure}{\numberline {18}{\ignorespaces Graph of MODBUS Data Values over Time by Function Code\relax }}{41}{figure.caption.18}
+\contentsline {figure}{\numberline {19}{\ignorespaces Bar Chart of MODBUS Reference Numbers by Function Code\relax }}{42}{figure.caption.19}
+\contentsline {figure}{\numberline {20}{\ignorespaces Boxplot of MODBUS Data Values by Function and Reference Number\relax }}{43}{figure.caption.20}
+\contentsline {figure}{\numberline {21}{\ignorespaces Scatterplot Matrix of Pairs of Variables\relax }}{43}{figure.caption.21}
+\contentsline {figure}{\numberline {22}{\ignorespaces 3D Scatterplot of MODBUS Reference Number and Data Over Time for Function Code 4\relax }}{44}{figure.caption.22}
+\contentsline {figure}{\numberline {23}{\ignorespaces Technical Architecture\relax }}{45}{figure.caption.23}
+\contentsline {figure}{\numberline {24}{\ignorespaces Architecture of secure IDS \relax }}{46}{figure.caption.24}
+\contentsline {figure}{\numberline {25}{\ignorespaces Process Flow\relax }}{47}{figure.caption.25}
+\contentsline {figure}{\numberline {26}{\ignorespaces Statistical Computational Process\relax }}{47}{figure.caption.26}
+\contentsfinish 
