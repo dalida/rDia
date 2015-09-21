@@ -1,27 +1,13 @@
-%\documentclass[11pt,]{article}
-
-\documentclass[11pt,a4paper]{article}
+\documentclass[11pt,]{article}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-
-\RequirePackage[utf8]{inputenc} 
-%\RequirePackage[T1]{fontenc}
-%\usepackage[english,francais]{babel}
-\usepackage[english]{babel}
-%\usepackage[pdftex]{hyperref}	
-\usepackage[Brest,version]{telecom}	
-\usepackage{aeguill}
-\usepackage{times}
-\usepackage{listingsutf8}
-
 \usepackage{fixltx2e} % provides \textsubscript
 % Set line spacing
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
 \else % if luatex or xelatex
   \ifxetex
@@ -34,21 +20,28 @@
   \newcommand{\euro}{€}
 \fi
 % use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-%\usepackage[margin=1in]{geometry}
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\usepackage[margin=1in]{geometry}
 \usepackage{longtable,booktabs}
 \usepackage{graphicx}
+% Redefine \includegraphics so that, unless explicit options are
+% given, the image width will not exceed the width of the page.
+% Images get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\def\ScaleIfNeeded{%
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
 \makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\let\Oldincludegraphics\includegraphics
+{%
+ \catcode`\@=11\relax%
+ \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
+}%
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -71,22 +64,10 @@
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \setcounter{secnumdepth}{5}
 
-%%% Use protect on footnotes to avoid problems with footnotes in titles
-\let\rmarkdownfootnote\footnote%
-\def\footnote{\protect\rmarkdownfootnote}
-
 %%% Change title format to be more compact
 \usepackage{titling}
-
-% Create subtitle command for use in maketitle
-\newcommand{\subtitle}[1]{
-  \posttitle{
-    \begin{center}\large#1\end{center}
-    }
-}
-
 \setlength{\droptitle}{-2em}
-  \title{diateam\\SCAD@COPS\\A Hybrid Network Intrusion\\Detection System}
+  \title{diateam\\SCAD@COPS\\A Hybrid Network Intrusion Detection System}
   \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
   \author{Lisa MALIPHOL}
@@ -95,20 +76,10 @@
   \date{}
   \predate{}\postdate{}
 
-\version{1.0}													% version du document, avec option version
-\docdescription{Master's Thesis}
+
 
 
 \begin{document}
-
-\TBfrontcover
-
-\thispagestyle{empty}
-
-\newpage
-\thispagestyle{empty} \mbox{}
-
-\clearpage
 
 \maketitle
 
@@ -378,24 +349,52 @@ Télécom Bretagne.
 \addcontentsline{toc}{section}{Acronyms}
 
 \begin{longtable}[c]{@{}rl@{}}
-\toprule
-A-NIDS & Anomaly-based Network Intrusion Detection System\tabularnewline
-DARPA & Defense Advanced Research Project Agency\tabularnewline
-DoS & Denial of Service\tabularnewline
-EDA & Exploratory Data Analysis\tabularnewline
-HMI & Human-Machine Interface\tabularnewline
-HNS & Hybrid Network Simulation\tabularnewline
-ICS & Industrial Control System\tabularnewline
-IDS & Intrusion Detection System\tabularnewline
-IPS & Intrusion Prevention System\tabularnewline
-MTU & Master Terminal Unit\tabularnewline
-NIDS & Network Intrusion Detection System\tabularnewline
-OSI & Open Standards Interconnection\tabularnewline
-PLC & Programmable Logic Controller\tabularnewline
-POC & Proof of Concept\tabularnewline
-RTU & Remote Terminal Unit\tabularnewline
-SCADA & Supervisory Control and Data Acquisition\tabularnewline
-TCP/IP & Transmission Control Protocol/Internet Protocol\tabularnewline
+\toprule\addlinespace
+A-NIDS & Anomaly-based Network Intrusion Detection System
+\\\addlinespace
+DARPA & Defense Advanced Research Project Agency
+\\\addlinespace
+DoS & Denial of Service
+\\\addlinespace
+EDA & Exploratory Data Analysis
+\\\addlinespace
+HMI & Human-Machine Interface
+\\\addlinespace
+HNS & Hybrid Network Simulation
+\\\addlinespace
+ICS & Industrial Control System
+\\\addlinespace
+IDS & Intrusion Detection System
+\\\addlinespace
+IPS & Intrusion Prevention System
+\\\addlinespace
+MTU & Master Terminal Unit
+\\\addlinespace
+NIDS & Network Intrusion Detection System
+\\\addlinespace
+OSI & Open Standards Interconnection
+\\\addlinespace
+PLC & Programmable Logic Controller
+\\\addlinespace
+POC & Proof of Concept
+\\\addlinespace
+RTU & Remote Terminal Unit
+\\\addlinespace
+SCADA & Supervisory Control and Data Acquisition
+\\\addlinespace
+TCP/IP & Transmission Control Protocol/Internet Protocol
+\\\addlinespace
+\bottomrule
+\end{longtable}
+
+\section*{Additional References}\label{additional-references}
+\addcontentsline{toc}{section}{Additional References}
+
+\begin{longtable}[c]{@{}l@{}}
+\toprule\addlinespace
+edaReport\_v1.pdf - Initial EDA on dataset generated from original
+Virtual SCADA box.
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
@@ -613,9 +612,8 @@ networking.
 TCP/IP provides reliable, ordered and error-checked delivery of streams
 of octets between applications running on hosts communicating over an IP
 network. A detailed illustration of the IP and TCP headers can be seen
-in Figure 3
-(\href{http://nmap.org/book/images/hdr/MJB-TCP-Header}{Image credit: Max
-Baxter}) and Figure 4
+in Figure 3 (\href{http://nmap.org/book/images/hdr/MJB-TCP-Header}{Image
+credit: Max Baxter}) and Figure 4
 (\href{http://nmap.org/book/images/hdr/MJB-IP-Header}{Image credit: Max
 Baxter}).
 
@@ -679,8 +677,6 @@ the TCP layer (Figure 6).
 
 \caption{MODBUS/TCP Frame}\label{fig:unnamed-chunk-9}
 \end{figure}
-
-\pagebreak
 
 Included in the MODBUS Application Protocol (MBAP) are:
 
@@ -1097,6 +1093,10 @@ the network traffic data captured over the simulated SCADA network and
 shows the different ways they can be visualized. The analysis, reporting
 and visualization was done using R and RStudio.
 
+An initial EDA was accomplished utilizing a dataset generated from the
+original Virtual SCADA Box, comprising of various attacks.
+(edaReport\_v1.pdf)
+
 \subsection{Statistical Definitions}\label{statistical-definitions}
 
 \subsubsection{Mean}\label{mean}
@@ -1216,27 +1216,44 @@ Below is a summary of the packet capture file that was created under
 ``normal'' conditions over the virtual SCADA network.
 
 \begin{longtable}[c]{@{}ll@{}}
-\toprule
-\textbf{capture\_schneider\_20150903\_normal.pcapng} &\tabularnewline
-\midrule
-\endhead
-\textbf{File} &\tabularnewline
-Length: & 3969470 bytes\tabularnewline
-Format: & Wireshark - pcapng\tabularnewline
-Encapsulation: & Ethernet\tabularnewline
-Packet size limit: & 65535\tabularnewline
-\textbf{Time} &\tabularnewline
-First packet: & 2015-09-03 15:26:26\tabularnewline
-Last packet: & 2015-09-03 15:36:29\tabularnewline
-Elapsed: & 00:10:02\tabularnewline
-\textbf{Traffic Captured} &\tabularnewline
-Packets & 39784\tabularnewline
-B/t first and last pkt & 602,865 sec\tabularnewline
-Avg. packets/sec & 65,992\tabularnewline
-Avg. packet size & 65,343 bytes\tabularnewline
-Bytes & 2599593\tabularnewline
-Avg. bytes/sec & 4312,063\tabularnewline
-Avg. Mit/sec & 0,034\tabularnewline
+\toprule\addlinespace
+\textbf{capture\_schneider\_20150903\_normal.pcapng} &
+\\\addlinespace
+\midrule\endhead
+\textbf{File} &
+\\\addlinespace
+Length: & 3969470 bytes
+\\\addlinespace
+Format: & Wireshark - pcapng
+\\\addlinespace
+Encapsulation: & Ethernet
+\\\addlinespace
+Packet size limit: & 65535
+\\\addlinespace
+\textbf{Time} &
+\\\addlinespace
+First packet: & 2015-09-03 15:26:26
+\\\addlinespace
+Last packet: & 2015-09-03 15:36:29
+\\\addlinespace
+Elapsed: & 00:10:02
+\\\addlinespace
+\textbf{Traffic Captured} &
+\\\addlinespace
+Packets & 39784
+\\\addlinespace
+B/t first and last pkt & 602,865 sec
+\\\addlinespace
+Avg. packets/sec & 65,992
+\\\addlinespace
+Avg. packet size & 65,343 bytes
+\\\addlinespace
+Bytes & 2599593
+\\\addlinespace
+Avg. bytes/sec & 4312,063
+\\\addlinespace
+Avg. Mit/sec & 0,034
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
@@ -1269,79 +1286,75 @@ The following Tables 3-7 list the data extracted from the packet capture
 file:
 
 \begin{longtable}[c]{@{}lllr@{}}
-\caption{Source / Destination / UnitID}\tabularnewline
-\toprule
-ip.src & ip.dst & mbtcp.modbus.unit\_id & count\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ip.src & ip.dst & mbtcp.modbus.unit\_id & count\tabularnewline
-\midrule
-\endhead
-192.168.12.53 & 192.168.12.253 & 1 & 19323\tabularnewline
-192.168.12.253 & 192.168.12.53 & 1 & 19323\tabularnewline
+\toprule\addlinespace
+ip.src & ip.dst & mbtcp.modbus.unit\_id & count
+\\\addlinespace
+\midrule\endhead
+192.168.12.53 & 192.168.12.253 & 1 & 19323
+\\\addlinespace
+192.168.12.253 & 192.168.12.53 & 1 & 19323
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Source / Destination / UnitID}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lr@{}}
-\caption{Sources}\tabularnewline
-\toprule
-ip.src & count\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ip.src & count\tabularnewline
-\midrule
-\endhead
-192.168.12.53 & 19323\tabularnewline
-192.168.12.253 & 19323\tabularnewline
+\toprule\addlinespace
+ip.src & count
+\\\addlinespace
+\midrule\endhead
+192.168.12.53 & 19323
+\\\addlinespace
+192.168.12.253 & 19323
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Sources}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lr@{}}
-\caption{Destination}\tabularnewline
-\toprule
-ip.dst & count\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ip.dst & count\tabularnewline
-\midrule
-\endhead
-192.168.12.253 & 19323\tabularnewline
-192.168.12.53 & 19323\tabularnewline
+\toprule\addlinespace
+ip.dst & count
+\\\addlinespace
+\midrule\endhead
+192.168.12.253 & 19323
+\\\addlinespace
+192.168.12.53 & 19323
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Destination}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lll@{}}
-\caption{Destination / UnitID}\tabularnewline
-\toprule
-ip.dst & mbtcp.modbus.unit\_id & ip.dst.unit\_id\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ip.dst & mbtcp.modbus.unit\_id & ip.dst.unit\_id\tabularnewline
-\midrule
-\endhead
-192.168.12.253 & 1 & 192.168.12.253/1\tabularnewline
-192.168.12.53 & 1 & 192.168.12.53/1\tabularnewline
+\toprule\addlinespace
+ip.dst & mbtcp.modbus.unit\_id & ip.dst.unit\_id
+\\\addlinespace
+\midrule\endhead
+192.168.12.253 & 1 & 192.168.12.253/1
+\\\addlinespace
+192.168.12.53 & 1 & 192.168.12.53/1
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Destination / UnitID}
 \end{longtable}
 
+\newpage
 
 \begin{longtable}[c]{@{}lll@{}}
-\caption{Source / Function Code}\tabularnewline
-\toprule
-ip.src & mbtcp.modbus.func\_code & src.func\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ip.src & mbtcp.modbus.func\_code & src.func\tabularnewline
-\midrule
-\endhead
-192.168.12.53 & 4 & 192.168.12.53/4\tabularnewline
-192.168.12.253 & 4 & 192.168.12.253/4\tabularnewline
+\toprule\addlinespace
+ip.src & mbtcp.modbus.func\_code & src.func
+\\\addlinespace
+\midrule\endhead
+192.168.12.53 & 4 & 192.168.12.53/4
+\\\addlinespace
+192.168.12.253 & 4 & 192.168.12.253/4
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Source / Function Code}
 \end{longtable}
 
 \subsection{Packet Analysis}\label{packet-analysis}
@@ -1356,8 +1369,6 @@ Figure 11 depicts a boxplot indicating packet size.
 
 \caption{Source Packet Size Boxplot}\label{fig:unnamed-chunk-21}
 \end{figure}
-
-\newpage
 
 \subsubsection{MODBUS/TCP Request/Response Packet Statistics (Appendix
 C)}\label{modbustcp-requestresponse-packet-statistics-appendix-c}
@@ -1445,16 +1456,16 @@ converted from a hex to a decimal value. (Appendix D)
 Statistics}\label{modbus-data-value-statistics}
 
 \begin{verbatim}
-   resp.func.code mbtcp.modbus.reference_num count d.min     d.mean d.max
-1:              4                          0 10273   112  112.00000   112
-2:              4                          1 11737    64   81.31448    84
-3:              4                          2  1468  4758 5005.32493  5242
-4:              4                          3  1467     0 3392.64554  6890
+   respFuncCode mbtcp.modbus.reference_num count d.min    d.mean d.max
+1:            4                          0  7959   112  112.0000   112
+2:            4                          1  9089    64   81.9923    84
+3:            4                          2  1137  4809 4998.8206  5197
+4:            4                          3  1136    63 3291.7650  6753
           d.sd min.resp.time.rel min.resp.time.rel
-1:    0.000000          0.196988          778.1052
-2:    3.891773          0.246152          778.1175
-3:  179.359760          0.185127          778.0571
-4: 2074.517793          0.270168          777.6427
+1:    0.000000          0.180583           602.865
+2:    2.225103          0.220595           602.485
+3:  139.846462          0.669601           602.823
+4: 1848.924231          0.239662           602.395
 \end{verbatim}
 
 \clearpage
@@ -1793,148 +1804,143 @@ The following tables list anomalies and differences detected in the
 attack simulation:
 
 \begin{longtable}[c]{@{}l@{}}
-\caption{Anomalous Sources}\tabularnewline
-\toprule
-ip.src\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ip.src\tabularnewline
-\midrule
-\endhead
-192.168.12.34\tabularnewline
+\toprule\addlinespace
+ip.src
+\\\addlinespace
+\midrule\endhead
+192.168.12.34
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Anomalous Sources}
 \end{longtable}
 
 \begin{longtable}[c]{@{}l@{}}
-\caption{Anomalous Destinations}\tabularnewline
-\toprule
-ip.dst\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ip.dst\tabularnewline
-\midrule
-\endhead
-192.168.12.34\tabularnewline
+\toprule\addlinespace
+ip.dst
+\\\addlinespace
+\midrule\endhead
+192.168.12.34
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Anomalous Destinations}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lll@{}}
-\caption{Anomalous Source / MODBUS Unit Pairs}\tabularnewline
-\toprule
-IP\_DST\_MODBUS\_UNIT\_ID & ip.dst &
-mbtcp.modbus.unit\_id\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-IP\_DST\_MODBUS\_UNIT\_ID & ip.dst &
-mbtcp.modbus.unit\_id\tabularnewline
-\midrule
-\endhead
-192.168.12.253/ & 192.168.12.253 &\tabularnewline
-192.168.12.253/0 & 192.168.12.253 & 0\tabularnewline
-192.168.12.34/ & 192.168.12.34 &\tabularnewline
-192.168.12.34/0 & 192.168.12.34 & 0\tabularnewline
+\toprule\addlinespace
+IP\_DST\_MODBUS\_UNIT\_ID & ip.dst & mbtcp.modbus.unit\_id
+\\\addlinespace
+\midrule\endhead
+192.168.12.253/ & 192.168.12.253 &
+\\\addlinespace
+192.168.12.253/0 & 192.168.12.253 & 0
+\\\addlinespace
+192.168.12.34/ & 192.168.12.34 &
+\\\addlinespace
+192.168.12.34/0 & 192.168.12.34 & 0
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Anomalous Source / MODBUS Unit Pairs}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lll@{}}
-\caption{Anomalous Source / MAC Address Pairs}\tabularnewline
-\toprule
-IP\_SRC\_MAC\_ADDR & ip.src & eth.src\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-IP\_SRC\_MAC\_ADDR & ip.src & eth.src\tabularnewline
-\midrule
-\endhead
-192.168.12.34/08:00:27:4a:25:6c & 192.168.12.34 &
-08:00:27:4a:25:6c\tabularnewline
+\toprule\addlinespace
+IP\_SRC\_MAC\_ADDR & ip.src & eth.src
+\\\addlinespace
+\midrule\endhead
+192.168.12.34/08:00:27:4a:25:6c & 192.168.12.34 & 08:00:27:4a:25:6c
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Anomalous Source / MAC Address Pairs}
 \end{longtable}
 
 In Table 12, we see MODBUS function code 90, which is ordinarily sent to
 perform administrative commands without authentication.
 
 \begin{longtable}[c]{@{}lll@{}}
-\caption{Anomalous Source / MODBUS Function Code Pairs}\tabularnewline
-\toprule
-IP\_SRC\_MOD\_FUNC & ip.src & mbtcp.modbus.func\_code\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-IP\_SRC\_MOD\_FUNC & ip.src & mbtcp.modbus.func\_code\tabularnewline
-\midrule
-\endhead
-192.168.12.253/ & 192.168.12.253 &\tabularnewline
-192.168.12.253/90 & 192.168.12.253 & 90\tabularnewline
-192.168.12.34/ & 192.168.12.34 &\tabularnewline
-192.168.12.34/90 & 192.168.12.34 & 90\tabularnewline
-192.168.12.53/ & 192.168.12.53 &\tabularnewline
+\toprule\addlinespace
+IP\_SRC\_MOD\_FUNC & ip.src & mbtcp.modbus.func\_code
+\\\addlinespace
+\midrule\endhead
+192.168.12.253/ & 192.168.12.253 &
+\\\addlinespace
+192.168.12.253/90 & 192.168.12.253 & 90
+\\\addlinespace
+192.168.12.34/ & 192.168.12.34 &
+\\\addlinespace
+192.168.12.34/90 & 192.168.12.34 & 90
+\\\addlinespace
+192.168.12.53/ & 192.168.12.53 &
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Anomalous Source / MODBUS Function Code Pairs}
 \end{longtable}
 
 The difference in average frequency shown in Table 13 and 15 are
 indicated by a prefix `n' for normal and `a' for attack.
 
 \begin{longtable}[c]{@{}lll@{}}
-\caption{Differences in Frequency of Source/Function
-Code}\tabularnewline
-\toprule
-ip.src & ip.dst & mbtcp.modbus.func\_code\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-ip.src & ip.dst & mbtcp.modbus.func\_code\tabularnewline
-\midrule
-\endhead
-192.168.12.253 & 192.168.12.53 & 4\tabularnewline
-192.168.12.53 & 192.168.12.253 & 4\tabularnewline
+\toprule\addlinespace
+ip.src & ip.dst & mbtcp.modbus.func\_code
+\\\addlinespace
+\midrule\endhead
+192.168.12.253 & 192.168.12.53 & 4
+\\\addlinespace
+192.168.12.53 & 192.168.12.253 & 4
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Differences in Frequency of Source/Function Code}
 \end{longtable}
 
 \begin{longtable}[c]{@{}rrr@{}}
-\caption{Differences in Frequency of Source/Function Code/Reference
-Number}\tabularnewline
-\toprule
-avgFrequencySec.n & avgFrequencySec.a &
-avgFrequencySec.diff\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-avgFrequencySec.n & avgFrequencySec.a &
-avgFrequencySec.diff\tabularnewline
-\midrule
-\endhead
-33.14408 & 33.08108 & 0.0630013\tabularnewline
-33.14408 & 33.08108 & 0.0630013\tabularnewline
+\toprule\addlinespace
+avgFrequencySec.n & avgFrequencySec.a & avgFrequencySec.diff
+\\\addlinespace
+\midrule\endhead
+33.14408 & 33.08108 & 0.0630013
+\\\addlinespace
+33.14408 & 33.08108 & 0.0630013
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Differences in Frequency of Source/Function Code/Reference
+Number}
 \end{longtable}
 
 \begin{longtable}[c]{@{}llll@{}}
-\toprule
-ip.src & ip.dst & mbtcp.modbus.func\_code &
-mbtcp.modbus.reference\_num\tabularnewline
-\midrule
-\endhead
-192.168.12.53 & 192.168.12.253 & 4 & 0\tabularnewline
-192.168.12.53 & 192.168.12.253 & 4 & 1\tabularnewline
-192.168.12.53 & 192.168.12.253 & 4 & 2\tabularnewline
-192.168.12.53 & 192.168.12.253 & 4 & 3\tabularnewline
+\toprule\addlinespace
+ip.src & ip.dst & mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num
+\\\addlinespace
+\midrule\endhead
+192.168.12.53 & 192.168.12.253 & 4 & 0
+\\\addlinespace
+192.168.12.53 & 192.168.12.253 & 4 & 1
+\\\addlinespace
+192.168.12.53 & 192.168.12.253 & 4 & 2
+\\\addlinespace
+192.168.12.53 & 192.168.12.253 & 4 & 3
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}rrr@{}}
-\toprule
-avgFrequncySec.n & avgFrequncySec.a &
-avgFrequencySec.diff\tabularnewline
-\midrule
-\endhead
-13.675258 & 13.714286 & -0.0390280\tabularnewline
-15.618557 & 15.567568 & 0.0509891\tabularnewline
-1.962069 & 1.959184 & 0.0028853\tabularnewline
-1.962004 & 1.959184 & 0.0028198\tabularnewline
+\toprule\addlinespace
+avgFrequncySec.n & avgFrequncySec.a & avgFrequencySec.diff
+\\\addlinespace
+\midrule\endhead
+13.675258 & 13.714286 & -0.0390280
+\\\addlinespace
+15.618557 & 15.567568 & 0.0509891
+\\\addlinespace
+1.962069 & 1.959184 & 0.0028853
+\\\addlinespace
+1.962004 & 1.959184 & 0.0028198
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
@@ -2018,60 +2024,90 @@ of the exported files:
 Entire pcap file exported in CSV format:
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule
-SCADA\_20150429\_042915.csv\tabularnewline
-\midrule
-\endhead
-Time\tabularnewline
-Source\tabularnewline
-Destination\tabularnewline
-Protocol\tabularnewline
-Length\tabularnewline
-Info\tabularnewline
+\toprule\addlinespace
+SCADA\_20150429\_042915.csv
+\\\addlinespace
+\midrule\endhead
+Time
+\\\addlinespace
+Source
+\\\addlinespace
+Destination
+\\\addlinespace
+Protocol
+\\\addlinespace
+Length
+\\\addlinespace
+Info
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 List of endpoints, the traffic to and from an IP address:
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule
-SCADA\_Security\_042915\_TCP\_Endpoints.csv\tabularnewline
-\midrule
-\endhead
-Address\tabularnewline
-Port\tabularnewline
-Packets\tabularnewline
-Bytes\tabularnewline
-Tx.Packets\tabularnewline
-Tx.Bytes\tabularnewline
-Rx.Packets\tabularnewline
-Rx.Bytes\tabularnewline
-Latitude\tabularnewline
-Longitude\tabularnewline
+\toprule\addlinespace
+SCADA\_Security\_042915\_TCP\_Endpoints.csv
+\\\addlinespace
+\midrule\endhead
+Address
+\\\addlinespace
+Port
+\\\addlinespace
+Packets
+\\\addlinespace
+Bytes
+\\\addlinespace
+Tx.Packets
+\\\addlinespace
+Tx.Bytes
+\\\addlinespace
+Rx.Packets
+\\\addlinespace
+Rx.Bytes
+\\\addlinespace
+Latitude
+\\\addlinespace
+Longitude
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 List of conversations, the traffic between two endpoints :
 
 \begin{longtable}[c]{@{}l@{}}
-\toprule
-SCADA\_Security\_042915\_TCP\_Conversations.csv\tabularnewline
-\midrule
-\endhead
-Address.A\tabularnewline
-Port.A\tabularnewline
-Address.B\tabularnewline
-Port.B\tabularnewline
-Packets\tabularnewline
-Bytes\tabularnewline
-Packets.A.B\tabularnewline
-Bytes.A.B\tabularnewline
-Packets.A.B.1\tabularnewline
-Bytes.A.B.1\tabularnewline
-Rel.Start\tabularnewline
-Duration\tabularnewline
-bps.A.B\tabularnewline
-bps.A.B.1\tabularnewline
+\toprule\addlinespace
+SCADA\_Security\_042915\_TCP\_Conversations.csv
+\\\addlinespace
+\midrule\endhead
+Address.A
+\\\addlinespace
+Port.A
+\\\addlinespace
+Address.B
+\\\addlinespace
+Port.B
+\\\addlinespace
+Packets
+\\\addlinespace
+Bytes
+\\\addlinespace
+Packets.A.B
+\\\addlinespace
+Bytes.A.B
+\\\addlinespace
+Packets.A.B.1
+\\\addlinespace
+Bytes.A.B.1
+\\\addlinespace
+Rel.Start
+\\\addlinespace
+Duration
+\\\addlinespace
+bps.A.B
+\\\addlinespace
+bps.A.B.1
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
@@ -2086,175 +2122,216 @@ Statistics}\label{modbustcp-requestresponse-packet-statistics}
 Statistics}
 
 \begin{longtable}[c]{@{}lcllcll@{}}
-\caption{Requests Summary}\tabularnewline
-\toprule
+\toprule\addlinespace
 & frame.number & frame.time\_relative & frame.time\_delta & frame.len &
-ip.proto & ip.version\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
-ip.proto & ip.version\tabularnewline
-\midrule
-\endhead
+ip.proto & ip.version
+\\\addlinespace
+\midrule\endhead
 & Min. : 2 & Min. : 0.1604 & Min. :0.000164 & Min. :66 & 6:19323 &
-4:19323\tabularnewline
+4:19323
+\\\addlinespace
 & 1st Qu.: 9947 & 1st Qu.:150.7170 & 1st Qu.:0.000300 & 1st Qu.:66 & NA
-& NA\tabularnewline
+& NA
+\\\addlinespace
 & Median :19892 & Median :301.2814 & Median :0.000347 & Median :66 & NA
-& NA\tabularnewline
-& Mean :19892 & Mean :300.9954 & Mean :0.012626 & Mean :66 & NA &
-NA\tabularnewline
+& NA
+\\\addlinespace
+& Mean :19892 & Mean :300.9954 & Mean :0.012626 & Mean :66 & NA & NA
+\\\addlinespace
 & 3rd Qu.:29837 & 3rd Qu.:451.8589 & 3rd Qu.:0.000368 & 3rd Qu.:66 & NA
-& NA\tabularnewline
-& Max. :39784 & Max. :602.8653 & Max. :1.905327 & Max. :66 & NA &
-NA\tabularnewline
+& NA
+\\\addlinespace
+& Max. :39784 & Max. :602.8653 & Max. :1.905327 & Max. :66 & NA & NA
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Requests Summary}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lcccc@{}}
-\toprule
-& ip.src & eth.src & ip.dst & eth.dst\tabularnewline
-\midrule
-\endhead
+\toprule\addlinespace
+& ip.src & eth.src & ip.dst & eth.dst
+\\\addlinespace
+\midrule\endhead
 & 192.168.12.253: 0 & 00:80:f4:0f:35:aa: 0 & 192.168.12.253:19323 &
-00:80:f4:0f:35:aa:19323\tabularnewline
+00:80:f4:0f:35:aa:19323
+\\\addlinespace
 & 192.168.12.53 :19323 & 08:00:27:a5:dc:c4:19323 & 192.168.12.53 : 0 &
-08:00:27:a5:dc:c4: 0\tabularnewline
+08:00:27:a5:dc:c4: 0
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}llllll@{}}
-\toprule
+\toprule\addlinespace
 & mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport & mbtcp.prot\_id &
-mbtcp.trans\_id\tabularnewline
-\midrule
-\endhead
-& : 0 & 1044:19323 & 1044: 0 & : 0 & Min. : 0.0\tabularnewline
-& 1:19323 & 502 : 0 & 502 :19323 & 0:19323 & 1st Qu.:
-64.0\tabularnewline
-& NA & NA & NA & NA & Median :127.0\tabularnewline
-& NA & NA & NA & NA & Mean :127.4\tabularnewline
-& NA & NA & NA & NA & 3rd Qu.:191.0\tabularnewline
-& NA & NA & NA & NA & Max. :255.0\tabularnewline
+mbtcp.trans\_id
+\\\addlinespace
+\midrule\endhead
+& : 0 & 1044:19323 & 1044: 0 & : 0 & Min. : 0.0
+\\\addlinespace
+& 1:19323 & 502 : 0 & 502 :19323 & 0:19323 & 1st Qu.: 64.0
+\\\addlinespace
+& NA & NA & NA & NA & Median :127.0
+\\\addlinespace
+& NA & NA & NA & NA & Mean :127.4
+\\\addlinespace
+& NA & NA & NA & NA & 3rd Qu.:191.0
+\\\addlinespace
+& NA & NA & NA & NA & Max. :255.0
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}llll@{}}
-\toprule
+\toprule\addlinespace
 & mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num &
-mbtcp.modbus.word\_cnt\tabularnewline
-\midrule
-\endhead
-& : 0 & : 0 & Min. :1\tabularnewline
-& 4:19323 & 0:7959 & 1st Qu.:1\tabularnewline
-& NA & 1:9090 & Median :1\tabularnewline
-& NA & 2:1138 & Mean :1\tabularnewline
-& NA & 3:1136 & 3rd Qu.:1\tabularnewline
-& NA & NA & Max. :1\tabularnewline
+mbtcp.modbus.word\_cnt
+\\\addlinespace
+\midrule\endhead
+& : 0 & : 0 & Min. :1
+\\\addlinespace
+& 4:19323 & 0:7959 & 1st Qu.:1
+\\\addlinespace
+& NA & 1:9090 & Median :1
+\\\addlinespace
+& NA & 2:1138 & Mean :1
+\\\addlinespace
+& NA & 3:1136 & 3rd Qu.:1
+\\\addlinespace
+& NA & NA & Max. :1
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}lclc@{}}
-\toprule
-& mbtcp.len & mbtcp.modbus.data & frame.second\tabularnewline
-\midrule
-\endhead
-& Min. :6 & :19323 & Min. : 0.0\tabularnewline
-& 1st Qu.:6 & 00:3f : 0 & 1st Qu.:150.0\tabularnewline
-& Median :6 & 00:40 : 0 & Median :301.0\tabularnewline
-& Mean :6 & 00:41 : 0 & Mean :300.5\tabularnewline
-& 3rd Qu.:6 & 00:50 : 0 & 3rd Qu.:451.0\tabularnewline
-& Max. :6 & 00:54 : 0 & Max. :602.0\tabularnewline
-& NA & (Other): 0 & NA\tabularnewline
+\toprule\addlinespace
+& mbtcp.len & mbtcp.modbus.data & frame.second
+\\\addlinespace
+\midrule\endhead
+& Min. :6 & :19323 & Min. : 0.0
+\\\addlinespace
+& 1st Qu.:6 & 00:3f : 0 & 1st Qu.:150.0
+\\\addlinespace
+& Median :6 & 00:40 : 0 & Median :301.0
+\\\addlinespace
+& Mean :6 & 00:41 : 0 & Mean :300.5
+\\\addlinespace
+& 3rd Qu.:6 & 00:50 : 0 & 3rd Qu.:451.0
+\\\addlinespace
+& Max. :6 & 00:54 : 0 & Max. :602.0
+\\\addlinespace
+& NA & (Other): 0 & NA
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \newpage
 
 \begin{longtable}[c]{@{}lcllcll@{}}
-\caption{Responses Summary}\tabularnewline
-\toprule
+\toprule\addlinespace
 & frame.number & frame.time\_relative & frame.time\_delta & frame.len &
-ip.proto & ip.version\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-& frame.number & frame.time\_relative & frame.time\_delta & frame.len &
-ip.proto & ip.version\tabularnewline
-\midrule
-\endhead
+ip.proto & ip.version
+\\\addlinespace
+\midrule\endhead
 & Min. : 3 & Min. : 0.169 & Min. :0.001774 & Min. :65 & 6:19323 &
-4:19323\tabularnewline
+4:19323
+\\\addlinespace
 & 1st Qu.: 9948 & 1st Qu.:150.727 & 1st Qu.:0.009454 & 1st Qu.:65 & NA &
-NA\tabularnewline
+NA
+\\\addlinespace
 & Median :19893 & Median :301.291 & Median :0.009655 & Median :65 & NA &
-NA\tabularnewline
-& Mean :19893 & Mean :301.002 & Mean :0.009573 & Mean :65 & NA &
-NA\tabularnewline
+NA
+\\\addlinespace
+& Mean :19893 & Mean :301.002 & Mean :0.009573 & Mean :65 & NA & NA
+\\\addlinespace
 & 3rd Qu.:29838 & 3rd Qu.:451.869 & 3rd Qu.:0.009773 & 3rd Qu.:65 & NA &
-NA\tabularnewline
-& Max. :39783 & Max. :602.865 & Max. :0.120188 & Max. :65 & NA &
-NA\tabularnewline
+NA
+\\\addlinespace
+& Max. :39783 & Max. :602.865 & Max. :0.120188 & Max. :65 & NA & NA
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Responses Summary}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lcccc@{}}
-\toprule
-& ip.src & eth.src & ip.dst & eth.dst\tabularnewline
-\midrule
-\endhead
+\toprule\addlinespace
+& ip.src & eth.src & ip.dst & eth.dst
+\\\addlinespace
+\midrule\endhead
 & 192.168.12.253:19323 & 00:80:f4:0f:35:aa:19323 & 192.168.12.253: 0 &
-00:80:f4:0f:35:aa: 0\tabularnewline
+00:80:f4:0f:35:aa: 0
+\\\addlinespace
 & 192.168.12.53 : 0 & 08:00:27:a5:dc:c4: 0 & 192.168.12.53 :19323 &
-08:00:27:a5:dc:c4:19323\tabularnewline
+08:00:27:a5:dc:c4:19323
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}llllll@{}}
-\toprule
+\toprule\addlinespace
 & mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport & mbtcp.prot\_id &
-mbtcp.trans\_id\tabularnewline
-\midrule
-\endhead
-& : 0 & 1044: 0 & 1044:19323 & : 0 & Min. : 0.0\tabularnewline
-& 1:19323 & 502 :19323 & 502 : 0 & 0:19323 & 1st Qu.:
-64.0\tabularnewline
-& NA & NA & NA & NA & Median :127.0\tabularnewline
-& NA & NA & NA & NA & Mean :127.4\tabularnewline
-& NA & NA & NA & NA & 3rd Qu.:191.0\tabularnewline
-& NA & NA & NA & NA & Max. :255.0\tabularnewline
+mbtcp.trans\_id
+\\\addlinespace
+\midrule\endhead
+& : 0 & 1044: 0 & 1044:19323 & : 0 & Min. : 0.0
+\\\addlinespace
+& 1:19323 & 502 :19323 & 502 : 0 & 0:19323 & 1st Qu.: 64.0
+\\\addlinespace
+& NA & NA & NA & NA & Median :127.0
+\\\addlinespace
+& NA & NA & NA & NA & Mean :127.4
+\\\addlinespace
+& NA & NA & NA & NA & 3rd Qu.:191.0
+\\\addlinespace
+& NA & NA & NA & NA & Max. :255.0
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}llll@{}}
-\toprule
+\toprule\addlinespace
 & mbtcp.modbus.func\_code & mbtcp.modbus.reference\_num &
-mbtcp.modbus.word\_cnt\tabularnewline
-\midrule
-\endhead
-& : 0 & :19323 & Min. : NA\tabularnewline
-& 4:19323 & 0: 0 & 1st Qu.: NA\tabularnewline
-& NA & 1: 0 & Median : NA\tabularnewline
-& NA & 2: 0 & Mean :NaN\tabularnewline
-& NA & 3: 0 & 3rd Qu.: NA\tabularnewline
-& NA & NA & Max. : NA\tabularnewline
-& NA & NA & NA's :19323\tabularnewline
+mbtcp.modbus.word\_cnt
+\\\addlinespace
+\midrule\endhead
+& : 0 & :19323 & Min. : NA
+\\\addlinespace
+& 4:19323 & 0: 0 & 1st Qu.: NA
+\\\addlinespace
+& NA & 1: 0 & Median : NA
+\\\addlinespace
+& NA & 2: 0 & Mean :NaN
+\\\addlinespace
+& NA & 3: 0 & 3rd Qu.: NA
+\\\addlinespace
+& NA & NA & Max. : NA
+\\\addlinespace
+& NA & NA & NA's :19323
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}lclc@{}}
-\toprule
-& mbtcp.len & mbtcp.modbus.data & frame.second\tabularnewline
-\midrule
-\endhead
-& Min. :5 & 00:70 :7959 & Min. : 0.0\tabularnewline
-& 1st Qu.:5 & 00:54 :4636 & 1st Qu.:150.0\tabularnewline
-& Median :5 & 00:50 :4427 & Median :301.0\tabularnewline
-& Mean :5 & 14:2a : 56 & Mean :300.5\tabularnewline
-& 3rd Qu.:5 & 12:e2 : 43 & 3rd Qu.:451.0\tabularnewline
-& Max. :5 & 12:d8 : 41 & Max. :602.0\tabularnewline
-& NA & (Other):2161 & NA\tabularnewline
+\toprule\addlinespace
+& mbtcp.len & mbtcp.modbus.data & frame.second
+\\\addlinespace
+\midrule\endhead
+& Min. :5 & 00:70 :7959 & Min. : 0.0
+\\\addlinespace
+& 1st Qu.:5 & 00:54 :4636 & 1st Qu.:150.0
+\\\addlinespace
+& Median :5 & 00:50 :4427 & Median :301.0
+\\\addlinespace
+& Mean :5 & 14:2a : 56 & Mean :300.5
+\\\addlinespace
+& 3rd Qu.:5 & 12:e2 : 43 & 3rd Qu.:451.0
+\\\addlinespace
+& Max. :5 & 12:d8 : 41 & Max. :602.0
+\\\addlinespace
+& NA & (Other):2161 & NA
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
@@ -2269,80 +2346,85 @@ Statistics}\label{merged-requestresponse-packet-statistics}
 Statistics}
 
 \begin{longtable}[c]{@{}lcllc@{}}
-\caption{Merged Packets Summary}\tabularnewline
-\toprule
-& frame.number & frame.time\_relative & frame.time\_delta &
-frame.len\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-& frame.number & frame.time\_relative & frame.time\_delta &
-frame.len\tabularnewline
-\midrule
-\endhead
-& Min. : 2 & Min. : 0.1803 & Min. :0.000148 & Min. :66\tabularnewline
-& 1st Qu.:12839 & 1st Qu.:198.0456 & 1st Qu.:0.000277 & 1st
-Qu.:66\tabularnewline
-& Median :25678 & Median :388.5031 & Median :0.000350 & Median
-:66\tabularnewline
-& Mean :25678 & Mean :388.8066 & Mean :0.010094 & Mean
-:66\tabularnewline
-& 3rd Qu.:38517 & 3rd Qu.:584.1655 & 3rd Qu.:0.000376 & 3rd
-Qu.:66\tabularnewline
-& Max. :51356 & Max. :778.1055 & Max. :1.893549 & Max.
-:66\tabularnewline
+\toprule\addlinespace
+& frame.number & frame.time\_relative & frame.time\_delta & frame.len
+\\\addlinespace
+\midrule\endhead
+& Min. : 4 & Min. : 0.1694 & Min. :0.000164 & Min. :66
+\\\addlinespace
+& 1st Qu.: 9948 & 1st Qu.:150.7220 & 1st Qu.:0.000300 & 1st Qu.:66
+\\\addlinespace
+& Median :19892 & Median :301.2810 & Median :0.000347 & Median :66
+\\\addlinespace
+& Mean :19892 & Mean :300.9953 & Mean :0.012619 & Mean :66
+\\\addlinespace
+& 3rd Qu.:29836 & 3rd Qu.:451.8540 & 3rd Qu.:0.000368 & 3rd Qu.:66
+\\\addlinespace
+& Max. :39782 & Max. :602.8550 & Max. :1.905330 & Max. :66
+\\\addlinespace
 \bottomrule
+\addlinespace
+\caption{Merged Packets Summary}
 \end{longtable}
 
 \begin{longtable}[c]{@{}lcccc@{}}
-\toprule
-& ip.src & eth.src & ip.dst & eth.dst\tabularnewline
-\midrule
-\endhead
-& : 0 & Length:24945 & : 0 & Length:24945\tabularnewline
-& 192.168.12.117:24945 & Class :character & 192.168.12.252:24945 & Class
-:character\tabularnewline
-& NA & Mode :character & NA & Mode :character\tabularnewline
+\toprule\addlinespace
+& ip.src & eth.src & ip.dst & eth.dst
+\\\addlinespace
+\midrule\endhead
+& 192.168.12.53:19321 & 08:00:27:a5:dc:c4:19321 & 192.168.12.253:19321 &
+00:80:f4:0f:35:aa:19321
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}llll@{}}
-\toprule
-& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport\tabularnewline
-\midrule
-\endhead
-& : 0 & : 0 & : 0\tabularnewline
-& 1:24945 & 1043:24945 & 502:24945\tabularnewline
+\toprule\addlinespace
+& mbtcp.modbus.unit\_id & tcp.srcport & tcp.dstport
+\\\addlinespace
+\midrule\endhead
+& 1:19321 & 1044:19321 & 502:19321
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}lllcl@{}}
-\toprule
-& mbtcp.prot\_id & mbtcp.trans\_id & mbtcp.len &
-mbtcp.modbus.func\_code\tabularnewline
-\midrule
-\endhead
-& : 0 & Min. : 0.0 & Min. :6 & : 0\tabularnewline
-& 0:24945 & 1st Qu.: 64.0 & 1st Qu.:6 & 4:24945\tabularnewline
-& NA & Median :128.0 & Median :6 & NA\tabularnewline
-& NA & Mean :127.6 & Mean :6 & NA\tabularnewline
-& NA & 3rd Qu.:191.0 & 3rd Qu.:6 & NA\tabularnewline
-& NA & Max. :255.0 & Max. :6 & NA\tabularnewline
+\toprule\addlinespace
+& mbtcp.prot\_id & mbtcp.trans\_id & mbtcp.len & mbtcp.modbus.func\_code
+\\\addlinespace
+\midrule\endhead
+& 0:19321 & Min. : 0.0 & Min. :6 & 4:19321
+\\\addlinespace
+& NA & 1st Qu.: 64.0 & 1st Qu.:6 & NA
+\\\addlinespace
+& NA & Median :127.0 & Median :6 & NA
+\\\addlinespace
+& NA & Mean :127.4 & Mean :6 & NA
+\\\addlinespace
+& NA & 3rd Qu.:191.0 & 3rd Qu.:6 & NA
+\\\addlinespace
+& NA & Max. :255.0 & Max. :6 & NA
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
 \begin{longtable}[c]{@{}llcl@{}}
-\toprule
-& mbtcp.modbus.word\_cnt & frame.second &
-mbtcp.modbus.reference\_num\tabularnewline
-\midrule
-\endhead
-& Min. :1 & Min. : 0.0 & : 0\tabularnewline
-& 1st Qu.:1 & 1st Qu.:198.0 & 0:10273\tabularnewline
-& Median :1 & Median :388.0 & 1:11737\tabularnewline
-& Mean :1 & Mean :388.3 & 2: 1468\tabularnewline
-& 3rd Qu.:1 & 3rd Qu.:584.0 & 3: 1467\tabularnewline
-& Max. :1 & Max. :778.0 & NA\tabularnewline
+\toprule\addlinespace
+& mbtcp.modbus.word\_cnt & frame.second & mbtcp.modbus.reference\_num
+\\\addlinespace
+\midrule\endhead
+& Min. :1 & Min. : 0.0 & 0:7959
+\\\addlinespace
+& 1st Qu.:1 & 1st Qu.:150.0 & 1:9089
+\\\addlinespace
+& Median :1 & Median :301.0 & 2:1137
+\\\addlinespace
+& Mean :1 & Mean :300.5 & 3:1136
+\\\addlinespace
+& 3rd Qu.:1 & 3rd Qu.:451.0 & NA
+\\\addlinespace
+& Max. :1 & Max. :602.0 & NA
+\\\addlinespace
 \bottomrule
 \end{longtable}
 
@@ -2440,6 +2522,24 @@ legitimate activities, Metasploit can be utilized to take unauthorized
 actions. One of its major advantages as a modular framework is that it
 allows for combinations of any exploit with any payload, allowing it to
 simulate real-world attacks.
+
+\subsection{Additional tools used in the
+project:}\label{additional-tools-used-in-the-project}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Latex\footnote{en.wikipedia.org/wiki/LaTeX} - Word processor and
+  document markup language.
+\item
+  TexMaker\footnote{www.xm1math.net/texmaker} - Latex editor.
+\item
+  Asana\footnote{asana.com} - Project management tool.
+\item
+  Mendeley\footnote{mendeley.com} - Reference management application.
+\item
+  git\footnote{git-scm.com} - Source code control system.
+\end{itemize}
 
 \newpage
 
@@ -3050,7 +3150,5 @@ Network Traffic for Intrusion Detection Purpose,'' \emph{IEEE}, 2008.
 
 {[}76{]}B. Stroustrup, \emph{The C++ programming language}. 2000, p.
 1019.
-
-\TBcoverpage
 
 \end{document}

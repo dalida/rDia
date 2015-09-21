@@ -36,8 +36,8 @@ library(knitr)
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 
-#homeDir <- "/Users/lstilo/rDia/"
-homeDir <- "/home/lisa/rDia/"
+homeDir <- "/Users/lstilo/rDia/"
+#homeDir <- "/home/lisa/rDia/"
 
 # Load data from save(sewTCPConvDT, sewEndPtsDT, file="sewConvEnd.Rda")
 #load(paste(homeDir, "sewConvEnd.Rda", sep=''))
@@ -266,6 +266,12 @@ As a Data Scientist Intern at diateam, the following work was accomplished durin
      SCADA  Supervisory Control and Data Acquisition
     TCP/IP  Transmission Control Protocol/Internet Protocol
   --------  --------------------------------------------------
+
+# Additional References {-}
+
+  ----------------------------------------------------------
+  edaReport_v1.pdf - Initial EDA on dataset generated from original Virtual SCADA box.
+  ----------------------------------------------------------
 
 \newpage
 \mbox{}
@@ -592,6 +598,8 @@ Originally championed by John Tukey[[@Tukey1977]], Exploratory Data Analysis (ED
 
 Conducting EDA possibly gives further insight into the form and structure of the data set, in addition to extracting value, visualizing the data, and just as importantly, in communicating it. The initial phase of exploratory data analysis was conducted in order to better understand the data. This section presents a short list of statistical terminology, followed by the exploratory data analysis carried out on the network traffic data captured over the simulated SCADA network and shows the different ways they can be visualized. The analysis, reporting and visualization was done using R and RStudio.   	
 
+An initial EDA was accomplished utilizing a dataset generated from the original Virtual SCADA Box, comprising of various attacks. (edaReport_v1.pdf)
+
 ## Statistical Definitions
 
 ### Mean
@@ -839,9 +847,7 @@ rm(bc1, bc2)
 ggplot(normalModbusDT, aes(x=frame.number)) +
   geom_line(aes(y=frame.time_relative, color="frame.time_relative"))+
   geom_point(aes(y=mbtcp.len, color="mbtcp.len")) +
-#  ggtitle("Scatterplot of Time Recorded \nFunction of Frame Number") +
   theme(axis.text = element_text(size = 13),
-#        plot.title = element_text(face="bold"),
         plot.margin = unit(c(1, 0, 1, 0), "cm")) +
   scale_colour_manual(name='', values=c('frame.time_relative'='olivedrab',
                                         'mbtcp.len'='firebrick'), guide='legend') +
@@ -853,31 +859,25 @@ invisible(dev.off())
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.pos='h', fig.height=3.5, fig.width=3.5, fig.align='center', fig.cap="Boxplot of Modbus/TCP Data Length"}
 ggplot(normalModbusDT,  aes(x=factor(0), y=mbtcp.len)) + geom_violin() +
   xlab("") + scale_x_discrete(breaks = NULL) + coord_flip() +
-#  ggtitle("Boxplot of MODBUS/TCP Data Length") +
-  theme(#plot.title = element_text(face="bold"),
-        plot.margin = unit(c(0, 0, 2, 0), "cm"))
+  theme(plot.margin = unit(c(0, 0, 2, 0), "cm"))
 
 invisible(dev.off())
 ```
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.pos='h', fig.align='center', fig.cap="Graph of MODBUS Data Values over Time by MODBUS  Reference Number"}
-ggplot(mergedSewDT, aes(x=frame.time_relative, y=d, color=mbtcp.modbus.reference_num)) +
-  geom_point() + facet_grid(mbtcp.modbus.reference_num~resp.func.code) +
-#  ggtitle("MODBUS Data Values \nOver Time by Reference Number") + 
+ggplot(normalMergedDT, aes(x=frame.time_relative, y=d, color=mbtcp.modbus.reference_num)) +
+  geom_point() + facet_grid(mbtcp.modbus.reference_num~respFuncCode) +
   scale_fill_brewer(palette="Spectral") +
-  theme(#plot.title = element_text(face="bold"),
-        plot.margin = unit(c(0, 0, 2, 0), "cm"),
+  theme(plot.margin = unit(c(0, 0, 2, 0), "cm"),
         legend.position = "top", legend.title = element_text(size=10))
 invisible(dev.off())
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.pos='h', fig.align='center', fig.cap="Graph of MODBUS Data Values over Time by Function Code"}
-ggplot(mergedSewDT, aes(resp.time.rel, d, color=mbtcp.modbus.reference_num)) +
-  geom_point() + facet_grid(~resp.func.code) +
+ggplot(normalMergedDT, aes(respTimeRel, d, color=mbtcp.modbus.reference_num)) +
+  geom_point() + facet_grid(~respFuncCode) +
   scale_fill_brewer(palette="Set1") +
-#  ggtitle("MODBUS Data Value Over Time by Function Code") +
-  theme(#plot.title = element_text(face="bold"),
-        plot.margin = unit(c(0, 0, 2, 0), "cm"),
+  theme(plot.margin = unit(c(0, 0, 2, 0), "cm"),
         legend.position = "top", legend.title = element_text(size=10))
 invisible(dev.off())
 ```
@@ -893,11 +893,11 @@ field "d" is the data field "resp.data" converted from a hex to a decimal value.
 ### MODBUS Data Value Statistics
 
 ```{r, comment='', echo=FALSE, warning=FALSE, message=FALSE}
-mergedSewDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
-            d.sd=sd(d, na.rm=T), min.resp.time.rel=min(resp.time.rel),
-            min.resp.time.rel= max(resp.time.rel)),
-            by =.(resp.func.code, mbtcp.modbus.reference_num)][
-           order(resp.func.code, mbtcp.modbus.reference_num)]
+normalMergedDT[,.(count=.N, d.min=min(d), d.mean=mean(d, na.rm=T), d.max=max(d),
+            d.sd=sd(d, na.rm=T), min.resp.time.rel=min(respTimeRel),
+            min.resp.time.rel= max(respTimeRel)),
+            by =.(respFuncCode, mbtcp.modbus.reference_num)][
+           order(respFuncCode, mbtcp.modbus.reference_num)]
 ```
 
 \clearpage
@@ -927,33 +927,30 @@ In Figures 17-20, reference numbers refer to the register number of the PLC devi
 The bar chart in Figure 19 shows roughly half the number of packets containing no reference number; this is due to the fact that a value for the MODBUS reference number is given in the response.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.pos='h', fig.width=4.5, fig.height=3.5, fig.align='center', fig.cap="Boxplot of MODBUS Data Values by Function and Reference Number"}
-ggplot(mergedSewDT, aes(x = factor(0), y = d)) +
+ggplot(normalMergedDT, aes(x = factor(0), y = d)) +
   geom_boxplot(fill="lightpink4") +
   facet_grid(mbtcp.modbus.func_code~mbtcp.modbus.reference_num) +
   xlab("") + scale_x_discrete(breaks = NULL) +
-  theme( plot.title = element_text(size=10))
-#  theme(plot.margin = unit(c(0, 1, 5, 1), "cm")  +
-#  ggtitle("Boxplot of MODBUS Data Values\n by Function/Reference Number")
+  theme(plot.title = element_text(size=10))
 
 invisible(dev.off())
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.pos='h', fig.width=4.5, fig.height=3.75, fig.align='center', fig.cap="Scatterplot Matrix of Pairs of Variables"}
-pairs(mergedSewDT[,.(mbtcp.len, mbtcp.modbus.func_code=as.numeric(mbtcp.modbus.func_code),
+pairs(normalMergedDT[,.(mbtcp.len, mbtcp.modbus.func_code=as.numeric(mbtcp.modbus.func_code),
                      mbtcp.modbus.reference_num=as.numeric(mbtcp.modbus.reference_num) , d)])
 ```
 
 \clearpage
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.pos='h', fig.align='center', fig.cap="3D Scatterplot of MODBUS Reference Number\n and Data Over Time for Function Code 4"}
-cloud(resp.time.rel ~ d + mbtcp.modbus.reference_num | resp.func.code, data = mergedSewDT[resp.func.code=="4"],
-      col.point = mergedSewDT$mbtcp.modbus.reference_num, pch= 19,
+cloud(respTimeRel ~ d + mbtcp.modbus.reference_num | respFuncCode, data = normalMergedDT[respFuncCode=="4"],
+      col.point = normalMergedDT$mbtcp.modbus.reference_num, pch= 19,
       xlab = "d", ylab = "refNum", zlab = "resp.time.rel",
       panel.aspect = 0.7,
-#      main="3D Scatterplot \nReference Number, Data Value Over Time for Function Code 4",
-      key = list(points = list(pch = 19, col = seq_along(levels(mergedSewDT$mbtcp.modbus.reference_num))), 
-                 text = list(levels(mergedSewDT$mbtcp.modbus.reference_num)), space = 'top',
-                 columns = nlevels(mergedSewDT$mbtcp.modbus.reference_num)))
+      key = list(points = list(pch = 19, col = seq_along(levels(normalMergedDT$mbtcp.modbus.reference_num))), 
+                 text = list(levels(normalMergedDT$mbtcp.modbus.reference_num)), space = 'top',
+                 columns = nlevels(normalMergedDT$mbtcp.modbus.reference_num)))
 invisible(dev.off())
 rm(cor.test.2.sample)
 ```
@@ -1369,12 +1366,11 @@ rm(responses, requests)
 ## Merged Request/Response Packet Statistics {-}
 
 ```{r, comment='', warning=FALSE, echo=FALSE, message=FALSE}
-#summary(mergedSewDT)
-rep1<-summary(mergedSewDT[,.(frame.number, frame.time_relative, frame.time_delta, frame.len)])
-rep2<-summary(mergedSewDT[,.(ip.src, eth.src, ip.dst, eth.dst)])
-rep3<-summary(mergedSewDT[,.(mbtcp.modbus.unit_id, tcp.srcport, tcp.dstport)])
-rep4<-summary(mergedSewDT[,.(mbtcp.prot_id, mbtcp.trans_id, mbtcp.len, mbtcp.modbus.func_code)])
-rep5<-summary(mergedSewDT[,.(mbtcp.modbus.word_cnt, frame.second, mbtcp.modbus.reference_num)])
+rep1<-summary(normalMergedDT[,.(frame.number, frame.time_relative, frame.time_delta, frame.len)])
+rep2<-summary(normalMergedDT[,.(ip.src, eth.src, ip.dst, eth.dst)])
+rep3<-summary(normalMergedDT[,.(mbtcp.modbus.unit_id, tcp.srcport, tcp.dstport)])
+rep4<-summary(normalMergedDT[,.(mbtcp.prot_id, mbtcp.trans_id, mbtcp.len, mbtcp.modbus.func_code)])
+rep5<-summary(normalMergedDT[,.(mbtcp.modbus.word_cnt, frame.second, mbtcp.modbus.reference_num)])
 
 kable(rep1, caption="Merged Packets Summary")
 kable(rep2)
@@ -1382,7 +1378,7 @@ kable(rep3)
 kable(rep4)
 kable(rep5)
 
-rm(mergedSewDT)
+rm(normalMergedSewDT, normalModbusDT)
 ```
 
 \newpage
@@ -1435,6 +1431,20 @@ Suricata is a high performing NIDS, IPS, and network security monitoring engine,
 [^12]: http://www.metasploit.com/index.jsp
 
 The open source network security tool was Metsaploit, created in 2003 by H.D.Moore, that is used to test weaknesses in computer systems, including breaking into systems that are remote. In addition to legitimate activities, Metasploit can be utilized to take unauthorized actions. One of its major advantages as a modular framework is that it allows for combinations of any exploit with any payload, allowing it to simulate real-world attacks.
+
+## Additional tools used in the project:
+
+*  Latex[^13] - Word processor and document markup language.
+*  TexMaker[^14] - Latex editor.
+*  Asana[^15] - Project management tool.
+*  Mendeley[^16] - Reference management application.
+*  git[^17] - Source code control system.
+
+[^13]: https://en.wikipedia.org/wiki/LaTeX
+[^14]: http://www.xm1math.net/texmaker
+[^15]: https://asana.com
+[^16]: http://mendeley.com
+[^17]: https://git-scm.com
 
 \newpage
 

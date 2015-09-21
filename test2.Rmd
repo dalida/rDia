@@ -8,293 +8,40 @@ output:
     toc_depth: 3
     number_sections: true
     keep_tex: yes
-    includes:
-      in_header: header.tex
   word_document: default
 ---
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, comment=''}
 
 require(knitr)
+require(ggplot2)
+require(gplots)
+require(lattice)
+require(grid)
 require(data.table)
-#install.packages("xtable")
-require(xtable)
-
 
 # import datafile
-load("normal.Rda")
-
-normalModbusDT$frame.second <- floor(normalModbusDT$frame.time_relative)
-
-
-# Sources
-srcs  <- unique(normalModbusDT, by=c("ip.src"))[,.(ip.src)]
-
-
-# Destinations
-dst <- unique(normalModbusDT, by=c("ip.dst"))[,.(ip.dst)]
-
-
-# Destination / UnitID
-du <- unique(normalModbusDT,
-             by=c("ip.dst",
-                  "mbtcp.modbus.unit_id"))[
-                    ,.(IP_DST_MODBUS_UNIT_ID = paste(ip.dst,
-                                                     mbtcp.modbus.unit_id, sep="/"),
-                       ip.dst,
-                       mbtcp.modbus.unit_id)]
-
-
-# Source / MAC Address
-smac <- unique(normalModbusDT,
-               by=c("ip.src", "eth.src"))[
-                 ,.(IP_SRC_MAC_ADDR = paste(ip.src, eth.src, sep="/"),
-                    ip.src,
-                    eth.src)]
-
-
-# Source / Function Code
-sfunc <- normalModbusDT[,.(IP_SRC_MOD_FUNC = paste(ip.src, mbtcp.modbus.func_code, sep="/"))
-                     , by=.(ip.src, mbtcp.modbus.func_code)][
-                       ,.(IP_SRC_MOD_FUNC, ip.src,
-                          mbtcp.modbus.func_code)]
-
-
-#############################################################################################################
-
-reqs <- normalModbusDT[mbtcp.modbus.reference_num != '']
-resp <- normalModbusDT[is.na(mbtcp.modbus.reference_num)]
-
-#############################################################################################################
-
-# Source / Function Code
-
-sfuncRef <- reqs[,.(IP_SRC_MOD_FUNC_REF = paste(ip.src, mbtcp.modbus.func_code,
-                                                mbtcp.modbus.reference_num, sep="/"))
-                 , by=.(ip.src, mbtcp.modbus.func_code, mbtcp.modbus.reference_num)][
-                   ,.(IP_SRC_MOD_FUNC_REF,
-                      ip.src,
-                      mbtcp.modbus.func_code,
-                      mbtcp.modbus.reference_num)][order(mbtcp.modbus.reference_num)]
-
-#rm(txt1, txt2, txt3, txt4, txt5, txt6, srcs, dst, du, smac, sfunc, sfuncRef, whitelist)
-
-# Packet Analysis
-
-# STATS
-# Average frequency of packets per second
-avgPkt <- normalModbusDT[,.(frequency=.N),by=frame.second][,mean(frequency)]
-
-# Frequency per second, per source/edst ip and function code
-srcFuncFreq <- normalModbusDT[,.(frequency=.N),
-                           by =.(ip.src, ip.dst, mbtcp.modbus.func_code,
-                                 frame.second)][
-                                   order(ip.src, ip.dst, mbtcp.modbus.func_code,
-                                         frame.second)][,.(avgFrequencySec=mean(frequency)),
-                                                        by=.(ip.src, ip.dst, mbtcp.modbus.func_code)]
-
-# Frequency per second, per source/dest ip, function code, and reference num
-srcFuncRefFreq <- reqs[,.(frequency=.N),
-                       by =.(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num,
-                             frame.second)][
-                               order(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num,
-                                     frame.second)][,.(avgFrequncySec=mean(frequency)),
-                                                    by=.(ip.src, ip.dst, mbtcp.modbus.func_code,
-                                                         mbtcp.modbus.reference_num)]
-
-
-# modbusStats <- mergednormalDT[,.(frequency=.N, d.min=min(d), d.mean=mean(d, na.rm=T),
-#                               d.sd=sd(d, na.rm=T), d.max=max(d)
-# ), by =.(mbtcp.modbus.func_code, mbtcp.modbus.reference_num)][
-#   order(mbtcp.modbus.func_code, mbtcp.modbus.reference_num)]
-# 
-# rm(reqs, reps)
-# rm(txt1, txt2, txt3,srcFuncFreq, srcFuncRefFreq, avgPkt, stats)
-# rm(modbusStats, datafile, mergedfile, normalModbusDT, mergednormalDT)
-
-
-
-#####################################################################################
-
-# Attacks injected
-
-#####################################################################################
-
-
-load("attack.Rda")
-
-attackModbusDT$frame.second <- floor(attackModbusDT$frame.time_relative)
-
-attackSrcs  <- unique(attackModbusDT, by=c("ip.src"))[,.(ip.src)]
-
-attackDst <- unique(attackModbusDT, by=c("ip.dst"))[,.(ip.dst)]
-
-attackDu <- unique(attackModbusDT,
-             by=c("ip.dst",
-                  "mbtcp.modbus.unit_id"))[
-                    ,.(IP_DST_MODBUS_UNIT_ID = paste(ip.dst,
-                                                     mbtcp.modbus.unit_id, sep="/"),
-                       ip.dst,
-                       mbtcp.modbus.unit_id)]
-
-attackSmac <- unique(attackModbusDT,
-               by=c("ip.src", "eth.src"))[
-                 ,.(IP_SRC_MAC_ADDR = paste(ip.src, eth.src, sep="/"),
-                    ip.src,
-                    eth.src)]
-
-attackSfunc <- attackModbusDT[,.(IP_SRC_MOD_FUNC = paste(ip.src, mbtcp.modbus.func_code, sep="/"))
-                     , by=.(ip.src, mbtcp.modbus.func_code)][
-                       ,.(IP_SRC_MOD_FUNC, ip.src,
-                          mbtcp.modbus.func_code)]
-
-
-#############################################################################################################
-
-attackReqs <- attackModbusDT[mbtcp.modbus.reference_num != '']
-attackResp <- attackModbusDT[is.na(mbtcp.modbus.reference_num)]
-
-#############################################################################################################
-
-
-attackSfuncRef <- attackReqs[,.(IP_SRC_MOD_FUNC_REF = paste(ip.src, mbtcp.modbus.func_code,
-                                                mbtcp.modbus.reference_num, sep="/"))
-                 , by=.(ip.src, mbtcp.modbus.func_code, mbtcp.modbus.reference_num)][
-                   ,.(IP_SRC_MOD_FUNC_REF,
-                      ip.src,
-                      mbtcp.modbus.func_code,
-                      mbtcp.modbus.reference_num)][order(mbtcp.modbus.reference_num)]
-
-attackAvgPkt <- attackModbusDT[,.(frequency=.N),by=frame.second][,mean(frequency)]
-
-# Frequency per second, per source/dest ip and function code
-attackSrcFuncFreq <- attackModbusDT[,.(frequency=.N),
-                           by =.(ip.src, ip.dst, mbtcp.modbus.func_code,
-                                 frame.second)][
-                                   order(ip.src, ip.dst, mbtcp.modbus.func_code,
-                                         frame.second)][,.(avgFrequencySec=mean(frequency)),
-                                                        by=.(ip.src, ip.dst, mbtcp.modbus.func_code)]
-
-# Frequency per second, per source/dest ip, function code, and reference num
-attackSrcFuncRefFreq <- attackReqs[,.(frequency=.N),
-                       by =.(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num,
-                             frame.second)][
-                               order(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num,
-                                     frame.second)][,.(avgFrequncySec=mean(frequency)),
-                                                    by=.(ip.src, ip.dst, mbtcp.modbus.func_code,
-                                                         mbtcp.modbus.reference_num)]
-
-#############################################################################################################
-
-# Comparison
-
-#############################################################################################################
-
-#badSrcs <- attackSrcs[!srcs]
-#badSrcs
-
-#badDsts <- attackDst[!dst]
-#badDsts
-
-#badDus <- attackDu[!du]
-#badDus
-
-#badSmac <- attackSmac[!smac]
-#badSmac
-
-#badSfunc <- attackSfunc[!sfunc]
-#badSfunc
-
-#badSfuncRef <- attackSfuncRef[!sfuncRef]
-#badSfuncRef
-
-#badSrcFuncFreq <- attackSrcFuncFreq[!srcFuncFreq]
-#badSrcFuncFreq
-```
-
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE, comment=''}
-
-#kable(avgPkt - attackAvgPkt, caption='Difference in Packet Averages')
-
-setkey(attackSrcs, ip.src)
-kable(attackSrcs[!srcs], caption='Anomalous Sources')
-
-setkey(attackDst, ip.dst)
-kable(attackDst[!dst], caption='Anomalous Destinations')
-
-setkey(attackDu, IP_DST_MODBUS_UNIT_ID)
-kable(attackDu[!du], caption='Anomalous Source / Modbus Unit Pairs')
-
-setkey(attackSmac, IP_SRC_MAC_ADDR)
-kable(attackSmac[!smac], caption='Anomalous Source / MAC Address Pairs')
-
-setkey(attackSfunc, IP_SRC_MOD_FUNC)
-kable(attackSfunc[!sfunc], caption='Anomalous Source / MODBUS Function Code Pairs')
-
-#setkey(attackSfuncRef, IP_SRC_MOD_FUNC_REF)
-#kable(attackSfuncRef[!sfuncRef], caption='Anomalous Source / MODBUS Function Code / Reference Number')
-
-#mergedSrcFuncFreq <- merge(srcFuncFreq,attackSrcFuncFreq, by=c("ip.src","ip.dst","mbtcp.modbus.func_code"),suffixes=c(".n", ".a"))
-#kable(mergedSrcFuncFreq[avgFrequencySec.n - avgFrequencySec.a,])
-
-mergedSrcFuncFreq <- merge(srcFuncFreq,attackSrcFuncFreq, 
-                           by=c("ip.src","ip.dst","mbtcp.modbus.func_code"),
-                           suffixes=c(".n", ".a"))
-mergedSrcFuncFreq$avgFrequencySec.diff <- mergedSrcFuncFreq$avgFrequencySec.n - mergedSrcFuncFreq$avgFrequencySec.a
-m1 <- mergedSrcFuncFreq[,.(ip.src,ip.dst, mbtcp.modbus.func_code)]
-kable(m1, caption='Differences in Frequency \nof Source/Function Code')
-m2 <- mergedSrcFuncFreq[,.(avgFrequencySec.n, avgFrequencySec.a, avgFrequencySec.diff)]
-kable(m2, caption='(cont.)')
-
-```
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE, comment=''}
-mergedSrcFuncRefFreq <- merge(srcFuncRefFreq,attackSrcFuncRefFreq, 
-                              by=c("ip.src","ip.dst","mbtcp.modbus.func_code","mbtcp.modbus.reference_num"),
-                              suffixes=c(".n", ".a"))
-mergedSrcFuncRefFreq$avgFrequencySec.diff <- mergedSrcFuncRefFreq$avgFrequncySec.n - mergedSrcFuncRefFreq$avgFrequncySec.a
-m3 <- mergedSrcFuncRefFreq[,.(ip.src, ip.dst, mbtcp.modbus.func_code, mbtcp.modbus.reference_num)]
-kable(m3, caption='Differences in Frequency \nof Source/Function Code/Reference Number')
-m4 <- mergedSrcFuncRefFreq[,.(avgFrequncySec.n, avgFrequncySec.a, avgFrequencySec.diff)]
-kable(m4, caption='(cont.)')
-
-
-#######
-```
-\newpage
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE, comment=''}
-
-responses<-sewModbusDT[tcp.srcport=="502"]
-responses
-
-req1<-summary(responses[,.(frame.number, frame.time_relative, frame.time_delta, frame.len, ip.proto, ip.version)])
-kable(req1, caption="Requests Summary")
-
-req2<-summary(responses[,.(ip.src, eth.src, ip.dst, eth.dst)])
-kable(req2)
-                      
-req3<-summary(responses[,.(mbtcp.modbus.unit_id, tcp.srcport, tcp.dstport, mbtcp.prot_id, mbtcp.trans_id, mbtcp.len)])
-kable(req3)
-
-req4<-summary(responses[,.(mbtcp.modbus.func_code, mbtcp.modbus.reference_num, mbtcp.modbus.word_cnt)])
-kable(req4)
-
-#req5<-summary(responses[,.(mbtcp.modbus.data, frame.second)])
-#kable(req5)
-
-#print(xtable(summary(reqs)), floating.environment="sidewaystable", comment=FALSE)
-#mergedSrcFuncRefFreq$avgFrequncySec.n - mergedSrcFuncRefFreq$avgFrequncySec.a
-#mergedSrcFuncRefFreq$avgFreqDiff <- 
-```
-
-```{r, results='asis', echo=FALSE}
-
-tab<-summary(reqs[,.(frame.number, frame.time_relative, frame.time_delta)])
-#print(xtable(tab), floating.environment="sidewaystable", comment=FALSE, size="small")
-#sideways <- xtable(summary(reqs))
-#sideways
-#print(sideways, floating=FALSE)
+load("normalMerged.Rda")
+
+ggplot(normalMergedDT, aes(x=frame.time_relative, y=d, color=mbtcp.modbus.reference_num)) +
+  geom_point() + facet_grid(mbtcp.modbus.reference_num~respFuncCode) +
+  scale_fill_brewer(palette="Spectral") +
+  theme(plot.margin = unit(c(0, 0, 2, 0), "cm"),
+        legend.position = "top", legend.title = element_text(size=10))
+invisible(dev.off())
 
 ``` 
+
+## Additional tools used in the project:
+
+*  Latex[^13] - Word processor and document markup language.
+*  TexMaker[^14] - Latex editor.
+*  Asana[^15] - Project management tool.
+*  Mendeley[^16] - Reference management application.
+*  git[^17] - Source code control system.
+
+[^13]: en.wikipedia.org/wiki/LaTeX
+[^14]: www.xm1math.net/texmaker
+[^15]: asana.com
+[^16]: mendeley.com
+[^17]: git-scm.com
